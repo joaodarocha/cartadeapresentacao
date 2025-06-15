@@ -14,8 +14,10 @@
     "pdfjs-dist": "3.3.122",
     "qrcode.react": "3.1.0",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "react-icons": "4.8.0",
+    "react-router-dom": "^6.26.2",
     "stripe": "13.3.0",
     "wasp": "file:.wasp/out/sdk/wasp",
     "zod": "^3.22.4"
