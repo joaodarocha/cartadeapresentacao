@@ -66,7 +66,7 @@ export default function ProfilePage({ user }: { user: User }) {
               </Box>
               <Text textAlign='center' fontSize='sm' textColor='text-contrast-lg'>
                 Your subscription is past due. <br /> Please update your payment method{' '}
-                <Link textColor='purple.400' href='https://billing.stripe.com/p/login/5kA7sS0Wc3gD2QM6oo'>
+                <Link textColor='purple.400' href='https://billing.stripe.com/p/login/test_6oU6oJ9il3Aderv6P65AQ00'>
                   by clicking here
                 </Link>
               </Text>
@@ -84,7 +84,7 @@ export default function ProfilePage({ user }: { user: User }) {
               )}
               <Text alignSelf='initial' fontSize='sm' fontStyle='italic' textColor='text-contrast-sm'>
                 To manage your subscription, please{' '}
-                <Link textColor='purple.600' href='https://billing.stripe.com/p/login/5kA7sS0Wc3gD2QM6oo'>
+                <Link textColor='purple.600' href='https://billing.stripe.com/p/login/test_6oU6oJ9il3Aderv6P65AQ00'>
                   click here.
                 </Link>
               </Text>
