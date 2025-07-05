@@ -83,7 +83,7 @@ railway link
     - add `WASP_SERVER_URL` - enter the `server` domain (e.g. `https://server-production-XXXX.up.railway.app`). `https://` prefix is required!
     - add `JWT_SECRET` - enter a random string at least 32 characters long (use an [online generator](https://djecrety.ir/))
 
->:::tip Using an external auth method? If your app is using an external authentication method(s) supported by Wasp (such as Google or GitHub), make sure to additionally set the necessary environment variables specifically required by these method(s). :::
+:::tip Using an external auth method? If your app is using an external authentication method(s) supported by Wasp (such as Google or GitHub), make sure to additionally set the necessary environment variables specifically required by these method(s). :::
    
 
 4. Push and deploy the project:
@@ -199,7 +199,6 @@ railway link
    ```
 
    </details>
-   :::
 
 5. Set the `PORT` environment variable to `8043` under the `Variables` tab.
 
