@@ -1,6 +1,6 @@
 app CoverLetterGPT {
   wasp: {
-    version: "^0.15.0"
+    version: "^0.16.0"
   },
   title: "CoverLetterGPT",
   head: [
@@ -84,7 +84,7 @@ page CheckoutPage {
 route TosRoute { path: "/tos", to: TosPage }
 page TosPage {
   component: import Tos from "@src/client/legal/TosPage"
-} 
+}
 
 route PrivacyRoute { path: "/privacy", to: PrivacyPage }
 page PrivacyPage {
@@ -209,7 +209,7 @@ query getCoverLetterCount {
 
 /* 📡 These are custom Wasp API Endpoints. Use them for callbacks, webhooks, etc.
  * https://wasp-lang.dev/docs/language/features#apis
- */ 
+ */
 
 api stripeWebhook {
   fn: import { stripeWebhook } from "@src/server/webhooks.js",
@@ -233,7 +233,7 @@ job checkUserSubscription {
     fn: import { updateUserSubscription } from "@src/server/workers/updateUserSubscription.js"
   },
   schedule: {
-    cron: "0 23 * * *" 
+    cron: "0 23 * * *"
   },
   entities: [User]
 }

@@ -29,7 +29,7 @@
       "node_modules/@types"
     ],
     // Updated outDir to match Wasp requirements
-    "outDir": ".wasp/phantom",
+    "outDir": ".wasp/out/user",
     // Added required fields for Wasp
     "composite": true,
     "skipLibCheck": true
