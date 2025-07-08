@@ -2,7 +2,7 @@ app CoverLetterGPT {
   wasp: {
     version: "^0.16.0"
   },
-  title: "CoverLetterGPT",
+  title: "Carta de Apresentacao.pt",
   head: [
         "<meta charset=\"UTF-8\" />",
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
@@ -10,7 +10,7 @@ app CoverLetterGPT {
         "<meta name=\"keywords\" content=\"cover letter, gpt, ai, job search, resume\" />",
         "<meta name=\"author\" content=\"CoverLetterGPT\" />",
         "<meta property=\"og:type\" content=\"website\" />",
-        "<meta property=\"og:url\" content=\"https://CoverLetterGPT.xyz\" />",
+        "<meta property=\"og:url\" content=\"https://cartadeapresentacao.pt\" />",
         "<meta property=\"og:title\" content=\"CoverLetterGPT\" />",
         "<meta property=\"og:description\" content=\"Create Unique Cover Letters Based on Your Skills using GPT. Supercharge Your Job Search with Cover Letter GPT.\" />",
         "<meta property=\"og:image\" content=\"https://CoverLetterGPT.xyz/homepage.png\" />",
