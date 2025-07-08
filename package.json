@@ -1,6 +1,12 @@
 {
   "name": "coverlettergpt",
   "type": "module",
+  "scripts": {
+    "build": "wasp build",
+    "deploy": "npm run build && npm run deploy-server && npm run deploy-client",
+    "deploy-server": "cd .wasp/build && railway up --service server && cd ../..",
+    "deploy-client": "REACT_APP_API_URL=https://api.cartadeapresentacao.pt/ ./deploy_client.sh"
+  },
   "dependencies": {
     "@chakra-ui/react": "2.8.0",
     "@emotion/react": "11.10.6",
