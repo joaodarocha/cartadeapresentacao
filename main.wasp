@@ -7,11 +7,11 @@ app CoverLetterGPT {
         "<meta charset=\"UTF-8\" />",
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />",
         "<meta name=\"description\" content=\"Create Unique Cover Letters Based on Your Skills using GPT. Supercharge Your Job Search with Cover Letter GPT.\" />",
-        "<meta name=\"keywords\" content=\"cover letter, gpt, ai, job search, resume\" />",
-        "<meta name=\"author\" content=\"CoverLetterGPT\" />",
+        "<meta name=\"keywords\" content=\"carta de apresentacao, carta de apresentação, cover letter, gpt, ai, job search, resume\" />",
+        "<meta name=\"author\" content=\"Carta de Apresentação.pt\" />",
         "<meta property=\"og:type\" content=\"website\" />",
         "<meta property=\"og:url\" content=\"https://cartadeapresentacao.pt\" />",
-        "<meta property=\"og:title\" content=\"CoverLetterGPT\" />",
+        "<meta property=\"og:title\" content=\"Carta de Apresentação.pt\" />",
         "<meta property=\"og:description\" content=\"Create Unique Cover Letters Based on Your Skills using GPT. Supercharge Your Job Search with Cover Letter GPT.\" />",
         "<meta property=\"og:image\" content=\"https://CoverLetterGPT.xyz/homepage.png\" />",
         "<meta name=\"twitter:image\" content=\"https://CoverLetterGPT.xyz/homepage.png\" />",
@@ -37,7 +37,7 @@ app CoverLetterGPT {
   emailSender: {
     provider: SendGrid,
     defaultFrom: {
-      name: "CoverLetterGPT",
+      name: "Carta de Apresentação.pt",
       email: "vince@wasp-lang.dev",
     },
   },

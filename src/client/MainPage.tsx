@@ -189,7 +189,7 @@ function MainPage() {
         } else {
           throw new Error('fetching lightning invoice failed');
         }
-  
+
         let status = invoice.status;
         while (status === 'pending') {
           lnPayment = await updateLnPayment(invoice);
@@ -200,7 +200,7 @@ function MainPage() {
           throw new Error('payment failed');
         }
         return lnPayment;
-      } 
+      }
     } catch (error) {
       console.error('Error processing payment, please try again');
     }
@@ -365,7 +365,7 @@ function MainPage() {
         _hover={{ bgColor: 'bg-contrast-xs' }}
         transition='0.1s ease-in-out'
       >
-        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Cover Letters Generated! 🎉</Text>
+        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Cartas de Apresentação criadas! 🎉</Text>
       </Box>
       <BorderBox>
         <form

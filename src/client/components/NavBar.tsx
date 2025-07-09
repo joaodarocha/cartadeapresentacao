@@ -47,10 +47,10 @@ export default function NavBar() {
         <Link as={RouterLink} to='/'>
           <HStack gap={0}>
             <Heading size='md' color={'text-contrast-md'}>
-              CoverLetter
+              Carta de Apresentação
             </Heading>
             <Heading size='md' color={gptTextColor}>
-              GPT
+              .pt
             </Heading>
           </HStack>
         </Link>
