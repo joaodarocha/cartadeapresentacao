@@ -32,7 +32,8 @@ app CoverLetterGPT {
   },
   client: {
     rootComponent: import App from "@src/client/App",
-    setupFn: import clientSetup from "@src/client/clientSetup"
+    setupFn: import clientSetup from "@src/client/clientSetup",
+    envValidationSchema: import { envValidationSchema } from "@src/env",
   },
   emailSender: {
     provider: SendGrid,

@@ -1,4 +1,5 @@
 import { useAuth } from 'wasp/client/auth';
+import { env } from 'wasp/client'
 import { ChakraProvider, VStack, Box, Spacer } from '@chakra-ui/react';
 import { theme } from './theme';
 import { useState, useEffect, createContext } from 'react';
@@ -6,12 +7,16 @@ import NavBar from './components/NavBar';
 import { Footer } from './components/CallToAction';
 import { EditPopover } from './components/Popover';
 import { useLocation, Outlet } from 'react-router-dom';
+import ReactGA from 'react-ga4';
+
 
 export const TextareaContext = createContext({
   textareaState: '',
-  setTextareaState: (value: string) => {},
+  setTextareaState: (value: string) => {
+  },
   isLnPayPending: false,
-  setIsLnPayPending: (value: boolean) => {},
+  setIsLnPayPending: (value: boolean) => {
+  },
 });
 
 export default function App() {
@@ -23,6 +28,12 @@ export default function App() {
   const location = useLocation();
 
   const { data: user } = useAuth();
+
+  useEffect(() => {
+    if (env.REACT_APP_ANALYTICS_ID) {
+      ReactGA.initialize(env.REACT_APP_ANALYTICS_ID);
+    }
+  }, []);
 
   useEffect(() => {
     if (isLnPayPending) {
@@ -49,10 +60,12 @@ export default function App() {
         const text = selection.toString();
 
         setTooltip({ x, y, text });
-      } else {
+      }
+      else {
         setTooltip(null);
       }
     }
+
     function handleMouseDown() {
       if (location.pathname.includes('cover-letter')) {
         setCurrentText(null);
@@ -84,13 +97,13 @@ export default function App() {
           position='absolute'
           zIndex={100}
         >
-          {!!user && <EditPopover setTooltip={setTooltip} user={user} />}
+          {!!user && <EditPopover setTooltip={setTooltip} user={user}/>}
         </Box>
         <VStack gap={5} minHeight='100vh'>
-          <NavBar />
-          <Outlet />
-          <Spacer />
-          <Footer />
+          <NavBar/>
+          <Outlet/>
+          <Spacer/>
+          <Footer/>
         </VStack>
       </TextareaContext.Provider>
     </ChakraProvider>
