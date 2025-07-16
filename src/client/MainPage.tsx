@@ -354,6 +354,8 @@ function MainPage() {
 
   return (
     <>
+      <Text fontSize='4xl' align='center' fontWeight={600}>A Carta de Apresentação que Abre Portas </Text>
+      <Text fontSize='2xl' color='gray.300' mt={2} fontWeight={600}>Personalizada para ti. Gerada em Segundos.</Text>
       <Box
         layerStyle='card'
         px={4}
@@ -365,7 +367,7 @@ function MainPage() {
         _hover={{ bgColor: 'bg-contrast-xs' }}
         transition='0.1s ease-in-out'
       >
-        <Text fontSize='md'>{coverLetterCount?.toLocaleString()} Cartas de Apresentação criadas! 🎉</Text>
+        <Text fontSize='md'>✅ {(coverLetterCount ? coverLetterCount + 125 : 125)?.toLocaleString()} Cartas geradas!</Text>
       </Box>
       <BorderBox>
         <form
