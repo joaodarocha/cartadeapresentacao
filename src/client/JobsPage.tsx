@@ -94,7 +94,7 @@ function JobsPage({ user }: { user: User }) {
   return (
     <VStack gap={1}>
       <BorderBox>
-        <Heading size='md'>Your Jobs</Heading>
+        <Heading size='md'>Os Seus Empregos</Heading>
         {isLoading && <Spinner />}
         {!!jobs && (
           <Accordion width='100%'>
@@ -109,7 +109,7 @@ function JobsPage({ user }: { user: User }) {
                         </Text>
                         <Spacer />
                         <Text fontSize='sm' color={!job.isCompleted ? 'text-contrast-xs' : 'text-contrast-lg'}>
-                          Applied
+                          Candidatado
                         </Text>
                         <Checkbox mx={1} isChecked={job.isCompleted} onChange={(e) => checkboxHandler(e, job)} />
                         <AccordionIcon />
@@ -129,16 +129,16 @@ function JobsPage({ user }: { user: User }) {
                           deleteOnOpen();
                         }}
                       >
-                        Delete
+                        Eliminar
                       </Button>
                     </HStack>
                     <VStack alignItems={'space-between'} my={1}>
                       <Text>
-                        <b>Location:</b> {job.location}
+                        <b>Localização:</b> {job.location}
                       </Text>
                       <HStack pb={1}>
                         <Text>
-                          <b>Description:</b>
+                          <b>Descrição:</b>
                         </Text>
                         <Button
                           size='xs'
@@ -148,15 +148,15 @@ function JobsPage({ user }: { user: User }) {
                             desOnOpen();
                           }}
                         >
-                          Display
+                          Mostrar
                         </Button>
                       </HStack>
                       <HStack py={1} justify='space-between'>
                         <Button onClick={() => coverLetterHandler(job)} size='sm'>
-                          Display Cover Letters
+                          Mostrar Cartas de Apresentação
                         </Button>
                         <Button colorScheme='purple' onClick={() => updateCoverLetterHandler(job.id)} size='sm'>
-                          Create Additional Cover Letter
+                          Criar Carta de Apresentação Adicional
                         </Button>
                       </HStack>
                     </VStack>
@@ -164,13 +164,13 @@ function JobsPage({ user }: { user: User }) {
                 </AccordionItem>
               ))
             ) : (
-              <Text textAlign='center'>no jobs yet...</Text>
+              <Text textAlign='center'>ainda não há empregos...</Text>
             )}
           </Accordion>
         )}
       </BorderBox>
       <Button size='sm' mt={3} colorScheme='purple' alignSelf='flex-end' onClick={() => navigate('/')}>
-        Create New Job
+        Criar Novo Emprego
       </Button>
       {coverLetter && coverLetter.length > 0 && (
         <ModalElement coverLetterData={coverLetter} isOpen={isOpen} onOpen={onOpen} onClose={onClose} />

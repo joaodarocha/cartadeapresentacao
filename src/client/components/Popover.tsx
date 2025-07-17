@@ -64,9 +64,9 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
       const selectString = selection!.toString();
       const index = value.indexOf(selectString);
 
-      let loadingString = 'Loading';
+      let loadingString = 'A carregar';
       loadingInterval = setInterval(() => {
-        if (loadingString.length < 'Loading...'.length) {
+        if (loadingString.length < 'A carregar...'.length) {
           loadingString += '.';
           let loading =
             value.slice(0, index + selectString.length) +
@@ -76,7 +76,7 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
             value.slice(index + selectString.length);
           setTextareaState(loading);
         } else {
-          loadingString = 'Loading';
+          loadingString = 'A carregar';
         }
       }, 750);
 
@@ -87,7 +87,7 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
 
       const newText =
         value.slice(0, index + selectString.length) +
-        '\n --- Revision: \n' +
+        '\n --- Revisão: \n' +
         newValue +
         '\n --- \n' +
         value.slice(index + selectString.length);
@@ -96,7 +96,7 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
     } catch (error: any) {
       console.error(error);
       clearInterval(loadingInterval);
-      alert(error?.message ?? 'An error has occurred');
+      alert(error?.message ?? 'Ocorreu um erro');
     }
   };
 
@@ -127,19 +127,19 @@ export function EditPopover({ setTooltip, selectedText, user, ...props }: EditPo
       <VStack {...props} gap={1} bgColor='bg-modal' borderRadius='lg' boxShadow='2xl'>
         <Box layerStyle='cardLg' p={3}>
           <Text fontSize='sm' textAlign='center'>
-            🤔 Ask GPT to make this part more..
+            🤔 Pedir ao GPT para tornar esta parte mais..
           </Text>
           <ButtonGroup size='xs' p={1} variant='solid' colorScheme='purple' isAttached>
             <Button size='xs' color='black' fontSize='xs' onClick={() => handleClick('concise')}>
-              Concise
+              Concisa
             </Button>
 
             <Button size='xs' color='black' fontSize='xs' onClick={() => handleClick('detailed')}>
-              Detailed
+              Detalhada
             </Button>
 
             <Button size='xs' color='black' fontSize='xs' onClick={() => handleClick('Professional')}>
-              Professional
+              Profissional
             </Button>
 
             <Button size='xs' color='black' fontSize='xs' onClick={() => handleClick('informal')}>

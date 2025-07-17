@@ -49,20 +49,20 @@ export function LeaveATip({
         <AlertDialogOverlay backdropFilter='auto' backdropInvert='15%' backdropBlur='2px'>
           <AlertDialogContent bgColor='bg-modal'>
             <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              👋 Thanks for trying CoverLetterGPT.
+              👋 Obrigado por experimentar o CoverLetterGPT.
             </AlertDialogHeader>
 
             <AlertDialogBody textAlign='center'>
               <Text>
-                You have <Code>{credits}</Code> free cover letter {credits === 1 ? 'credit' : 'credits'} left.
+                Tem <Code>{credits}</Code> {credits === 1 ? 'crédito gratuito' : 'créditos gratuitos'} de carta de apresentação restante{credits === 1 ? '' : 's'}.
               </Text>
               <Text mt={4}>
                 {!isUsingLn ? (
                   <>
-                    Purchase unlimited access for only <Code>$2.95</Code> per month!
+                    Compre acesso ilimitado por apenas <Code>$2.95</Code> por mês!
                   </>
                 ) : (
-                  <>After, just pay a small fee per cover letter with your lightning ⚡️ wallet. </>
+                  <>Depois, pague apenas uma pequena taxa por carta de apresentação com a sua carteira lightning ⚡️. </>
                 )}
               </Text>
             </AlertDialogBody>
@@ -71,11 +71,11 @@ export function LeaveATip({
               {!isUsingLn ? (
                 <>
                   <Button isLoading={isLoading} ref={tipRef} colorScheme='purple' onClick={handleClick}>
-                    💰 Buy More
+                    💰 Comprar Mais
                   </Button>
                   <Spacer />
                   <Button alignSelf='flex-end' fontSize='sm' variant='solid' size='sm' onClick={onClose}>
-                    No, Thanks
+                    Não, Obrigado
                   </Button>
                 </>
               ) : (
@@ -108,11 +108,11 @@ export function LoginToBegin({ isOpen, onClose }: { isOpen: boolean; onOpen: () 
             ✋
           </AlertDialogHeader>
 
-          <AlertDialogBody textAlign='center'>Please Login to Begin!</AlertDialogBody>
+          <AlertDialogBody textAlign='center'>Por favor, inicie sessão para começar!</AlertDialogBody>
 
           <AlertDialogFooter justifyContent='center'>
             <Button ref={loginRef} leftIcon={<AiOutlineLogin />} colorScheme='purple' onClick={handleClick}>
-              Login
+              Iniciar Sessão
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -139,13 +139,13 @@ export function DeleteJob({
       <AlertDialogOverlay backdropFilter='auto' backdropInvert='15%' backdropBlur='2px'>
         <AlertDialogContent bgColor='bg-modal'>
           <AlertDialogHeader fontSize='md' mt={3} fontWeight='bold'>
-            ⛔️ Delete Job
+            ⛔️ Eliminar Emprego
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            Delete the job and all its cover letters?
+            Eliminar o emprego e todas as suas cartas de apresentação?
             <br />
-            This action cannot be undone.
+            Esta acção não pode ser desfeita.
           </AlertDialogBody>
 
           <AlertDialogFooter display='grid' gridTemplateColumns='1fr 1fr 1fr'>
@@ -161,11 +161,11 @@ export function DeleteJob({
                 onClose();
               }}
             >
-              Delete
+              Eliminar
             </Button>
             <Spacer />
             <Button ref={cancelRef} size='sm' colorScheme='purple' onClick={onClose}>
-              Cancel
+              Cancelar
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -197,29 +197,29 @@ export function EditAlert({ coverLetter }: { coverLetter: boolean }) {
       <AlertDialogOverlay backdropFilter='auto' backdropInvert='15%' backdropBlur='2px'>
         <AlertDialogContent bgColor='bg-modal'>
           <AlertDialogHeader fontSize='md' mt={3} fontWeight='bold'>
-            📝 Your cover letter is ready!
+            📝 A sua carta de apresentação está pronta!
           </AlertDialogHeader>
 
           <AlertDialogBody gap={5} pointerEvents='none'>
             <Text pb={3}>
-              If you want to make finer edits, highlight the text you'd like to change to access the pop-up below:
+              Se quiser fazer edições mais precisas, realce o texto que gostaria de alterar para aceder ao pop-up abaixo:
             </Text>
             <VStack m={3} gap={1} borderRadius='lg'>
               <Box layerStyle='cardLg' p={3}>
                 <Text fontSize='sm' textAlign='center'>
-                  🤔 Ask GPT to make this part more..
+                  🤔 Pedir ao GPT para tornar esta parte mais..
                 </Text>
                 <ButtonGroup size='xs' p={1} variant='solid' colorScheme='purple' isAttached>
                   <Button size='xs' color='black' fontSize='xs'>
-                    Concise
+                    Concisa
                   </Button>
 
                   <Button size='xs' color='black' fontSize='xs'>
-                    Detailed
+                    Detalhada
                   </Button>
 
                   <Button size='xs' color='black' fontSize='xs'>
-                    Professional
+                    Profissional
                   </Button>
 
                   <Button size='xs' color='black' fontSize='xs'>
@@ -232,7 +232,7 @@ export function EditAlert({ coverLetter }: { coverLetter: boolean }) {
 
           <AlertDialogFooter justifyContent='space-between'>
             <Checkbox onChange={handleCheckboxChange} size='sm' color='text-contrast-md'>
-              Don't show me this again
+              Não me mostrar isto novamente
             </Checkbox>
             <Button ref={cancelRef} size='sm' colorScheme='purple' onClick={onClose}>
               OK

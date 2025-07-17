@@ -164,7 +164,7 @@ function MainPage() {
           clearErrors('pdf');
         })
         .catch((err) => {
-          alert('An Error occured uploading your PDF. Please try again.');
+          alert('Ocorreu um erro ao carregar o seu PDF. Por favor, tente novamente.');
           console.error(err);
         });
     };
@@ -172,7 +172,7 @@ function MainPage() {
     try {
       fileReader.readAsArrayBuffer(pdfFile);
     } catch (error) {
-      alert('An Error occured uploading your PDF. Please try again.');
+      alert('Ocorreu um erro ao carregar o seu PDF. Por favor, tente novamente.');
     }
   }
 
@@ -256,7 +256,7 @@ function MainPage() {
       navigate(`/cover-letter/${coverLetter.id}`);
     } catch (error: any) {
       cancelLoadingText();
-      alert(`${error?.message ?? 'Something went wrong, please try again'}`);
+      alert(`${error?.message ?? 'Algo correu mal, por favor tente novamente'}`);
       console.error(error);
     }
   }
@@ -301,7 +301,7 @@ function MainPage() {
       navigate(`/cover-letter/${coverLetterId}`);
     } catch (error: any) {
       cancelLoadingText();
-      alert(`${error?.message ?? 'Something went wrong, please try again'}`);
+      alert(`${error?.message ?? 'Algo correu mal, por favor tente novamente'}`);
       console.error(error);
     }
   }
@@ -316,7 +316,7 @@ function MainPage() {
 
   function setLoadingText() {
     setLoadingTextTimeout = setTimeout(() => {
-      loadingTextRef.current && (loadingTextRef.current.innerText = ' patience, my friend 🧘...');
+      loadingTextRef.current && (loadingTextRef.current.innerText = ' paciência, meu amigo 🧘...');
     }, 2000);
   }
 
@@ -376,7 +376,7 @@ function MainPage() {
         >
 
             <Heading size={'md'} alignSelf={'start'} mb={3} w='full'>
-              Job Info {isCoverLetterUpdate && <Code ml={1}>Editing...</Code>}
+              Informações do Emprego {isCoverLetterUpdate && <Code ml={1}>A editar...</Code>}
             </Heading>
 
           {showSpinner && <Spinner />}
@@ -387,12 +387,12 @@ function MainPage() {
                   id='title'
                   borderRadius={0}
                   borderTopRadius={7}
-                  placeholder='job title'
+                  placeholder='título do emprego'
                   {...register('title', {
-                    required: 'This is required',
+                    required: 'Este campo é obrigatório',
                     minLength: {
                       value: 2,
-                      message: 'Minimum length should be 2',
+                      message: 'O comprimento mínimo deve ser 2',
                     },
                   })}
                   onFocus={(e: any) => {
@@ -409,12 +409,12 @@ function MainPage() {
                 <Input
                   id='company'
                   borderRadius={0}
-                  placeholder='company'
+                  placeholder='empresa'
                   {...register('company', {
-                    required: 'This is required',
+                    required: 'Este campo é obrigatório',
                     minLength: {
                       value: 1,
-                      message: 'Minimum length should be 1',
+                      message: 'O comprimento mínimo deve ser 1',
                     },
                   })}
                   disabled={isCoverLetterUpdate}
@@ -425,12 +425,12 @@ function MainPage() {
                 <Input
                   id='location'
                   borderRadius={0}
-                  placeholder='location'
+                  placeholder='localização'
                   {...register('location', {
-                    required: 'This is required',
+                    required: 'Este campo é obrigatório',
                     minLength: {
                       value: 2,
-                      message: 'Minimum length should be 2',
+                      message: 'O comprimento mínimo deve ser 2',
                     },
                   })}
                   disabled={isCoverLetterUpdate}
@@ -441,9 +441,9 @@ function MainPage() {
                 <Textarea
                   id='description'
                   borderRadius={0}
-                  placeholder='copy & paste the job description in any language'
+                  placeholder='copie e cole a descrição do emprego em qualquer idioma'
                   {...register('description', {
-                    required: 'This is required',
+                    required: 'Este campo é obrigatório',
                   })}
                 />
                 <FormErrorMessage>
@@ -457,7 +457,7 @@ function MainPage() {
                   accept='application/pdf'
                   placeholder='pdf'
                   {...register('pdf', {
-                    required: 'Please upload a CV/Resume',
+                    required: 'Por favor, carregue um CV/Currículo',
                   })}
                   onChange={(e) => {
                     onFileUpload(e);
@@ -482,14 +482,14 @@ function MainPage() {
                   <HStack>
                     <FormLabel textAlign='center' htmlFor='pdf'>
                       <Button size='sm' colorScheme='contrast' onClick={handleFileButtonClick}>
-                        Upload CV
+                        Carregar CV
                       </Button>
                     </FormLabel>
-                    {isPdfReady && <Text fontSize={'sm'}>👍 uploaded</Text>}
+                    {isPdfReady && <Text fontSize={'sm'}>👍 carregado</Text>}
                     <FormErrorMessage>{!!formErrors.pdf && formErrors.pdf.message?.toString()}</FormErrorMessage>
                   </HStack>
                   <FormHelperText mt={0.5} fontSize={'xs'}>
-                    Upload a PDF only of Your CV/Resumé
+                    Carregue apenas um PDF do seu CV/Currículo
                   </FormHelperText>
                 </VStack>
               </FormControl>
@@ -573,7 +573,7 @@ function MainPage() {
                       color: 'text-contrast-lg',
                     }}
                   >
-                    cover letter creativity level
+                    nível de criatividade da carta de apresentação
                   </FormLabel>
                 </FormControl>
               </VStack>
@@ -604,7 +604,7 @@ function MainPage() {
                       color: 'text-contrast-lg',
                     }}
                   >
-                    include a witty remark at the end of the letter
+                    incluir uma observação espirituosa no final da carta
                   </FormLabel>
                 </FormControl>
               </VStack>
@@ -617,7 +617,7 @@ function MainPage() {
                   disabled={user === null}
                   type='submit'
                 >
-                  {!isCoverLetterUpdate ? 'Generate Cover Letter' : 'Create New Cover Letter'}
+                  {!isCoverLetterUpdate ? 'Gerar Carta de Apresentação' : 'Criar Nova Carta de Apresentação'}
                 </Button>
                 <Text ref={loadingTextRef} fontSize='sm' fontStyle='italic' color='text-contrast-md'>
                   {' '}
@@ -628,7 +628,7 @@ function MainPage() {
           {showJobNotFound && (
             <>
               <Text fontSize='sm' color='text-contrast-md'>
-                Can't find that job...
+                Não conseguimos encontrar esse emprego...
               </Text>
             </>
           )}

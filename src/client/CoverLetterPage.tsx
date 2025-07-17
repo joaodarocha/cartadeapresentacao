@@ -15,7 +15,7 @@ export default function CoverLetterPage() {
 
   const { id } = useParams();
   if (!id) {
-    return <BorderBox>Error: Cover letter ID is required</BorderBox>;
+    return <BorderBox>Erro: É necessário o ID da carta de apresentação</BorderBox>;
   }
 
   const {
@@ -41,7 +41,7 @@ export default function CoverLetterPage() {
     try {
       setEditIsLoading(true);
       if (!id) {
-        throw new Error('Cover letter ID is required');
+        throw new Error('ID da carta de apresentação é necessário');
       }
 
       const editedCoverLetter = await editCoverLetter({ coverLetterId: id, content: textareaState });
@@ -54,7 +54,7 @@ export default function CoverLetterPage() {
       }
     } catch (error) {
       console.error(error);
-      alert('An error occured. Please try again.');
+      alert('Ocorreu um erro. Por favor, tente novamente.');
     }
     setEditIsLoading(false);
   };
@@ -82,7 +82,7 @@ export default function CoverLetterPage() {
         {coverLetter && (
           <HStack>
             <Tooltip
-              label={isEdited && 'Changes Saved!'}
+              label={isEdited && 'Alterações Guardadas!'}
               placement='top'
               hasArrow
               isOpen={isEdited}
@@ -90,17 +90,17 @@ export default function CoverLetterPage() {
               closeOnClick={true}
             >
               <Button size='sm' mr={3} onClick={handleClick} isDisabled={false} isLoading={editIsLoading}>
-                Save Changes
+                Guardar Alterações
               </Button>
             </Tooltip>
             <Tooltip
-              label={hasCopied ? 'Copied!' : 'Copy Letter to Clipboard'}
+              label={hasCopied ? 'Copiado!' : 'Copiar Carta para a Área de Transferência'}
               placement='top'
               hasArrow
               closeOnClick={false}
             >
               <Button colorScheme='purple' size='sm' mr={3} onClick={onCopy}>
-                Copy
+                Copiar
               </Button>
             </Tooltip>
           </HStack>
