@@ -85,3 +85,74 @@ model Job {
   updatedAt   DateTime      @updatedAt
   isCompleted Boolean       @default(false)
 }
+
+
+model SeoPage {
+  id              String   @id @default(uuid())
+  slug            String   @unique
+  title           String
+  metaDescription String
+  content         String   @db.Text
+  category        String   // "profissao", "setor", "cidade", "guia"
+  subcategory     String?  // specific profession, sector, city
+  keywords        String[] // target keywords array
+  isActive        Boolean  @default(true)
+  viewCount       Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  industry        Industry? @relation(fields: [industryId], references: [id])
+  industryId      String?
+  city            City?     @relation(fields: [cityId], references: [id])
+  cityId          String?
+
+  @@index([category, subcategory])
+  @@index([isActive])
+}
+
+model Industry {
+  id          String    @id @default(uuid())
+  name        String    @unique // "Engenheiro de Software"
+  slug        String    @unique // "engenheiro-software"
+  description String    @db.Text
+  salary      String?   // "€25.000 - €45.000"
+  skills      String[]  // ["JavaScript", "React", "Node.js"]
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  seoPages    SeoPage[]
+
+  @@index([isActive])
+}
+
+model City {
+  id          String    @id @default(uuid())
+  name        String    @unique // "Lisboa"
+  slug        String    @unique // "lisboa"
+  district    String?   // "Lisboa"
+  population  Int?
+  description String    @db.Text
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  seoPages    SeoPage[]
+
+  @@index([isActive])
+}
+
+model SeoTemplate {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  category    String   // "profession", "city", "guide"
+  titleTemplate String // "Carta de Apresentação para {profession} | Modelos e Exemplos"
+  metaTemplate  String // "Crie a carta perfeita para {profession}. Modelos, exemplos e dicas."
+  contentTemplate String @db.Text // HTML template with placeholders
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
