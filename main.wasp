@@ -208,6 +208,53 @@ query getCoverLetterCount {
   entities: [CoverLetter]
 }
 
+// SEO Queries
+query getSeoPage {
+  fn: import { getSeoPage } from "@src/server/seo.js",
+  entities: [SeoPage, Industry, City]
+}
+
+query getIndustryData {
+  fn: import { getIndustryData } from "@src/server/seo.js",
+  entities: [Industry]
+}
+
+query getCityData {
+  fn: import { getCityData } from "@src/server/seo.js",
+  entities: [City]
+}
+
+query getAllIndustries {
+  fn: import { getAllIndustries } from "@src/server/seo.js",
+  entities: [Industry]
+}
+
+query getAllCities {
+  fn: import { getAllCities } from "@src/server/seo.js",
+  entities: [City]
+}
+
+query getSeoSitemap {
+  fn: import { getSeoSitemap } from "@src/server/seo.js",
+  entities: [SeoPage]
+}
+
+// SEO Actions
+action generateSeoPages {
+  fn: import { generateSeoPages } from "@src/server/seo.js",
+  entities: [SeoPage, Industry, City, SeoTemplate]
+}
+
+action updateSeoPage {
+  fn: import { updateSeoPage } from "@src/server/seo.js",
+  entities: [SeoPage]
+}
+
+action trackPageView {
+  fn: import { trackPageView } from "@src/server/seo.js",
+  entities: [SeoPage]
+}
+
 /* 📡 These are custom Wasp API Endpoints. Use them for callbacks, webhooks, etc.
  * https://wasp-lang.dev/docs/language/features#apis
  */
