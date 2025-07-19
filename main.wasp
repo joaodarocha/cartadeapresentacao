@@ -92,6 +92,38 @@ page PrivacyPage {
   component: import Privacy from "@src/client/legal/PrivacyPolicyPage"
 }
 
+// SEO Routes
+route ProfessionRoute { path: "/profissao/:profession", to: ProfessionPage }
+page ProfessionPage {
+  component: import ProfessionPage from "@src/client/seo/ProfessionPage"
+}
+
+route SectorRoute { path: "/setor/:sector", to: SectorPage }
+page SectorPage {
+  component: import SectorPage from "@src/client/seo/SectorPage"
+}
+
+route CityRoute { path: "/cidade/:city", to: CityPage }
+page CityPage {
+  component: import CityPage from "@src/client/seo/CityPage"
+}
+
+route CityProfessionRoute { path: "/cidade/:city/:profession", to: CityProfessionPage }
+page CityProfessionPage {
+  component: import CityProfessionPage from "@src/client/seo/CityProfessionPage"
+}
+
+route GuideRoute { path: "/guia/:topic", to: GuidePage }
+page GuidePage {
+  component: import GuidePage from "@src/client/seo/GuidePage"
+}
+
+// TODO: Implement SitemapPage component in Phase 4
+// route SitemapRoute { path: "/sitemap.xml", to: SitemapPage }
+// page SitemapPage {
+//   component: import SitemapPage from "@src/client/seo/SitemapPage"
+// }
+
 /* ⛑ These are the Wasp Operations, which allow the client and server to interact:
  * https://wasp-lang.dev/docs/language/features#queries-and-actions-aka-operations
  */

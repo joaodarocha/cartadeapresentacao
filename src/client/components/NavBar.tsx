@@ -17,6 +17,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { CgProfile } from 'react-icons/cg';
 import { MdWorkOutline } from 'react-icons/md';
 import { AiOutlineMenu } from 'react-icons/ai';
+import { IoLibraryOutline } from 'react-icons/io5';
 import { useRef } from 'react';
 import ThemeSwitch from './ThemeSwitch';
 
@@ -55,6 +56,64 @@ export default function NavBar() {
           </HStack>
         </Link>
         <Spacer />
+        
+        {/* Resources Dropdown - Desktop */}
+        <Menu>
+          <MenuButton
+            as={Button}
+            aria-label="Recursos"
+            leftIcon={<IoLibraryOutline />}
+            display={['none', 'block']}
+            size='md'
+            variant='ghost'
+            _hover={{
+              bg: 'rgba(255, 250, 240, 0.1)',
+              transition: 'all 0.3s ease-in-out',
+            }}
+          >
+            Recursos
+          </MenuButton>
+          <MenuList bgColor='gray.900'>
+            <Link as={RouterLink} to='/guia/como-escrever'>
+              <MenuItem>Como Escrever</MenuItem>
+            </Link>
+            <Link as={RouterLink} to='/guia/exemplos'>
+              <MenuItem>Exemplos</MenuItem>
+            </Link>
+            <Link as={RouterLink} to='/guia/dicas'>
+              <MenuItem>Dicas Profissionais</MenuItem>
+            </Link>
+            <MenuItem as='div' bg='gray.800' _hover={{ bg: 'gray.800' }} cursor='default'>
+              <Text fontSize='xs' color='gray.400' fontWeight='bold'>
+                POR PROFISSÃO
+              </Text>
+            </MenuItem>
+            <Link href='/profissao/engenheiro-software'>
+              <MenuItem>Engenheiro de Software</MenuItem>
+            </Link>
+            <Link href='/profissao/gestor-projetos'>
+              <MenuItem>Gestor de Projetos</MenuItem>
+            </Link>
+            <Link href='/profissao/marketing-digital'>
+              <MenuItem>Marketing Digital</MenuItem>
+            </Link>
+            <MenuItem as='div' bg='gray.800' _hover={{ bg: 'gray.800' }} cursor='default'>
+              <Text fontSize='xs' color='gray.400' fontWeight='bold'>
+                POR CIDADE
+              </Text>
+            </MenuItem>
+            <Link href='/cidade/lisboa'>
+              <MenuItem>Lisboa</MenuItem>
+            </Link>
+            <Link href='/cidade/porto'>
+              <MenuItem>Porto</MenuItem>
+            </Link>
+            <Link href='/cidade/braga'>
+              <MenuItem>Braga</MenuItem>
+            </Link>
+          </MenuList>
+        </Menu>
+        
         <ThemeSwitch />
 
         {user ? (
@@ -137,8 +196,33 @@ function MobileButton({
         {children}
       </MenuButton>
       <MenuList bgColor='gray.900'>
+        {/* SEO Pages - Always visible */}
+        <MenuItem as='div' bg='gray.800' _hover={{ bg: 'gray.800' }} cursor='default'>
+          <Text fontSize='xs' color='gray.400' fontWeight='bold'>
+            RECURSOS
+          </Text>
+        </MenuItem>
+        <Link as={RouterLink} to='/guia/como-escrever'>
+          <MenuItem>Como Escrever</MenuItem>
+        </Link>
+        <Link as={RouterLink} to='/guia/exemplos'>
+          <MenuItem>Exemplos</MenuItem>
+        </Link>
+        <Link href='/profissao/engenheiro-software'>
+          <MenuItem>Engenheiro de Software</MenuItem>
+        </Link>
+        <Link href='/cidade/lisboa'>
+          <MenuItem>Lisboa</MenuItem>
+        </Link>
+        
+        {/* User-specific menu items */}
         {isUser ? (
           <>
+            <MenuItem as='div' bg='gray.800' _hover={{ bg: 'gray.800' }} cursor='default'>
+              <Text fontSize='xs' color='gray.400' fontWeight='bold'>
+                CONTA
+              </Text>
+            </MenuItem>
             <Link as={RouterLink} to={`/jobs`}>
               <MenuItem>Painel de Empregos</MenuItem>
             </Link>
@@ -148,6 +232,11 @@ function MobileButton({
           </>
         ) : (
           <>
+            <MenuItem as='div' bg='gray.800' _hover={{ bg: 'gray.800' }} cursor='default'>
+              <Text fontSize='xs' color='gray.400' fontWeight='bold'>
+                CONTA
+              </Text>
+            </MenuItem>
             <Link as={RouterLink} to='/login'>
               <MenuItem>Iniciar Sessão</MenuItem>
             </Link>
