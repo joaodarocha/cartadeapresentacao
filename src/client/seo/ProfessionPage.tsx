@@ -3,6 +3,27 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from 'wasp/client/operations';
 import { getSeoPage, getIndustryData, getAllCities } from 'wasp/client/operations';
 import SeoPageLayout from './SeoPageLayout';
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Grid,
+  GridItem,
+  List,
+  ListItem,
+  Button,
+  Spinner,
+  Badge,
+  Divider,
+  useColorModeValue,
+  Tag,
+  TagLabel,
+  Wrap,
+  WrapItem
+} from '@chakra-ui/react';
+import { Link } from 'wasp/client/router';
 
 export default function ProfessionPage() {
   const { profession } = useParams();
@@ -11,6 +32,9 @@ export default function ProfessionPage() {
   const [pageData, setPageData] = useState<any>(null);
   const [industryData, setIndustryData] = useState<any>(null);
   const [relatedCities, setRelatedCities] = useState<any[]>([]);
+
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const cardBg = useColorModeValue('white', 'gray.800');
 
   // Generate slug from profession parameter
   const professionSlug = `carta-apresentacao-${profession}`;
@@ -40,8 +64,8 @@ export default function ProfessionPage() {
     }
     
     if (cities && cities.length > 0) {
-      // Get top 5 cities for related links
-      setRelatedCities(cities.slice(0, 5));
+      // Get top 8 cities for related links
+      setRelatedCities(cities.slice(0, 8));
     }
 
     if (seoPageError || industryError) {
@@ -52,26 +76,28 @@ export default function ProfessionPage() {
 
   if (loading || seoPageLoading || industryLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">A carregar...</p>
-        </div>
-      </div>
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={4}>
+          <Spinner size="lg" color="yellow.500" thickness="4px" />
+          <Text color="gray.600">A carregar...</Text>
+        </VStack>
+      </Box>
     );
   }
 
   if (error || !pageData || !industryData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Página não encontrada</h1>
-          <p className="text-gray-600 mb-8">A profissão que procura não existe ou foi removida.</p>
-          <a href="/" className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-md font-medium">
-            Voltar ao Início
-          </a>
-        </div>
-      </div>
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={6} textAlign="center">
+          <Heading size="lg" color="gray.900">Página não encontrada</Heading>
+          <Text color="gray.600">A profissão que procura não existe ou foi removida.</Text>
+          <Link to="/">
+            <Button colorScheme="yellow" size="lg">
+              Voltar ao Início
+            </Button>
+          </Link>
+        </VStack>
+      </Box>
     );
   }
 
@@ -91,12 +117,12 @@ export default function ProfessionPage() {
     {
       title: 'Como Escrever uma Carta de Apresentação',
       href: '/guia/como-escrever',
-      description: 'Guia completo passo a passo'
+      description: 'Guia completo para escrever cartas eficazes'
     },
     {
       title: 'Exemplos de Cartas de Apresentação',
       href: '/guia/exemplos',
-      description: 'Modelos e templates gratuitos'
+      description: 'Modelos e exemplos práticos'
     }
   );
 
@@ -106,136 +132,283 @@ export default function ProfessionPage() {
     "name": pageData.title,
     "description": pageData.metaDescription,
     "url": `https://cartadeapresentacao.pt/profissao/${profession}`,
-    "mainEntity": {
-      "@type": "JobPosting",
-      "title": industryData.name,
+    "about": {
+      "@type": "Occupation",
+      "name": industryData.name,
       "description": industryData.description,
-      "hiringOrganization": {
-        "@type": "Organization",
-        "name": "Empresas em Portugal"
-      },
-      "jobLocation": {
-        "@type": "Place",
-        "addressCountry": "PT"
-      },
-      "baseSalary": industryData.salary ? {
-        "@type": "MonetaryAmount",
+      "skills": industryData.skills,
+      "estimatedSalary": {
+        "@type": "MonetaryAmountDistribution",
+        "name": "Salário estimado",
         "currency": "EUR",
-        "value": {
-          "@type": "QuantitativeValue",
-          "value": industryData.salary
-        }
-      } : undefined
+        "median": industryData.averageSalary
+      }
     }
   };
+
+  // Parse skills if they're stored as a string
+  const skills = typeof industryData.skills === 'string' 
+    ? industryData.skills.split(',').map((s: string) => s.trim())
+    : industryData.skills || [];
 
   return (
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
-      keywords={pageData.keywords}
+      keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map(k => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
       structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
-      <div className="prose prose-lg max-w-none">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          {pageData.title}
-        </h1>
+      <VStack spacing={8} align="stretch">
+        {/* Header */}
+        <Box textAlign="center">
+          <Heading size="xl" color="gray.900" mb={4}>
+            {pageData.title}
+          </Heading>
+          <Text fontSize="lg" color="gray.600">
+            {pageData.metaDescription}
+          </Text>
+        </Box>
 
-        {/* Industry Overview */}
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-6 mb-8">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-blue-800">
-                Informação sobre {industryData.name}
-              </h3>
-              <div className="mt-2 text-sm text-blue-700">
-                <p>{industryData.description}</p>
-                {industryData.salary && (
-                  <p className="mt-2"><strong>Salário médio:</strong> {industryData.salary}</p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Profession Overview */}
+        <Box>
+          <HStack spacing={4} mb={4} align="center">
+            <Box fontSize="4xl">💼</Box>
+            <Heading size="lg" color="gray.900">
+              Sobre a Profissão de {industryData.name}
+            </Heading>
+          </HStack>
+          
+          <Text color="gray.700" mb={6} lineHeight="tall">
+            {industryData.description || `${industryData.name} é uma área profissional com excelentes oportunidades de carreira em Portugal.`}
+          </Text>
 
-        {/* Main Content */}
-        <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+            <GridItem>
+              <VStack align="stretch" spacing={4}>
+                <Box>
+                  <Text fontWeight="bold" color="gray.900" mb={2}>Salário Médio:</Text>
+                  <Badge colorScheme="green" fontSize="md" p={2}>
+                    €{industryData.averageSalary?.toLocaleString() || 'N/A'} / ano
+                  </Badge>
+                </Box>
+                <Box>
+                  <Text fontWeight="bold" color="gray.900" mb={2}>Sector:</Text>
+                  <Text color="gray.700">{industryData.sector || industryData.name}</Text>
+                </Box>
+              </VStack>
+            </GridItem>
+            <GridItem>
+              <Text color="gray.700" lineHeight="tall">
+                Procura trabalho como {industryData.name}? Descubra como criar uma carta de apresentação que destaque as suas competências e experiência nesta área.
+              </Text>
+            </GridItem>
+          </Grid>
+        </Box>
+
+        <Divider />
 
         {/* Skills Section */}
-        {industryData.skills && industryData.skills.length > 0 && (
-          <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Competências Essenciais para {industryData.name}
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {industryData.skills.map((skill: string, index: number) => (
-                <span 
-                  key={index}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
-                >
-                  {skill}
-                </span>
+        {skills.length > 0 && (
+          <Box>
+            <Heading size="lg" color="gray.900" mb={4}>
+              Competências Essenciais
+            </Heading>
+            <Text color="gray.700" mb={4} lineHeight="tall">
+              Para ter sucesso como {industryData.name}, é importante dominar estas competências-chave:
+            </Text>
+            <Wrap spacing={2}>
+              {skills.map((skill: string, index: number) => (
+                <WrapItem key={index}>
+                  <Tag size="lg" colorScheme="blue" variant="subtle">
+                    <TagLabel>{skill}</TagLabel>
+                  </Tag>
+                </WrapItem>
               ))}
-            </div>
-          </div>
+            </Wrap>
+          </Box>
         )}
 
+        <Divider />
+
+        {/* Job Opportunities */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={4}>
+            Oportunidades de {industryData.name}
+          </Heading>
+          
+          <Text color="gray.700" mb={6} lineHeight="tall">
+            O mercado de trabalho para {industryData.name} em Portugal oferece diversas oportunidades em diferentes cidades e sectores.
+          </Text>
+
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+            {relatedCities.slice(0, 8).map((city, index) => (
+              <GridItem key={index}>
+                <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+                  <a href={`/cidade/${city.slug}${profession ? `/${profession}` : ''}`} style={{ textDecoration: 'none' }}>
+                    <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                      {industryData.name} em {city.name}
+                    </Text>
+                  </a>
+                </Box>
+              </GridItem>
+            ))}
+          </Grid>
+        </Box>
+
+        <Divider />
+
         {/* FAQ Section */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Perguntas Frequentes</h2>
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Como personalizar uma carta de apresentação para {industryData.name}?
-              </h3>
-              <p className="text-gray-700">
-                Para personalizar uma carta para {industryData.name}, destaque as competências técnicas relevantes, 
-                mencione projetos específicos da área e demonstre conhecimento sobre as tendências do sector.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Que competências devo destacar para {industryData.name}?
-              </h3>
-              <p className="text-gray-700">
-                As competências mais valorizadas incluem: {industryData.skills?.slice(0, 3).join(', ')} 
-                e competências interpessoais como comunicação e trabalho em equipa.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Qual o salário médio para {industryData.name} em Portugal?
-              </h3>
-              <p className="text-gray-700">
-                {industryData.salary || 'Os salários variam conforme a experiência, localização e dimensão da empresa. Consulte sites especializados para valores atualizados.'}
-              </p>
-            </div>
-          </div>
-        </div>
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Perguntas Frequentes
+          </Heading>
+          
+          <VStack spacing={6} align="stretch">
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Qual é o salário médio de {industryData.name}?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                O salário médio para {industryData.name} em Portugal é de aproximadamente €{industryData.averageSalary?.toLocaleString() || 'N/A'} por ano, podendo variar conforme a experiência, localização e empresa.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Que competências são mais valorizadas para {industryData.name}?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                As competências mais procuradas incluem {skills.slice(0, 3).join(', ')}, entre outras competências técnicas e soft skills relevantes para a área.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Como destacar-me numa carta de apresentação para {industryData.name}?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                Destaque a sua experiência relevante, mencione projetos específicos, demonstre conhecimento do sector e personalize a carta para cada empresa e posição.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Quais são as perspetivas de carreira para {industryData.name}?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                A área de {industryData.name} oferece boas perspetivas de crescimento, com oportunidades de especialização e progressão para cargos de maior responsabilidade.
+              </Text>
+            </Box>
+          </VStack>
+        </Box>
+
+        <Divider />
 
         {/* Call to Action */}
-        <div className="mt-12 p-8 bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Pronto para Criar a Sua Carta de Apresentação?
-          </h2>
-          <p className="text-yellow-100 mb-6">
-            Use a nossa ferramenta AI para criar uma carta personalizada para {industryData.name} em minutos.
-          </p>
-          <a 
-            href="/" 
-            className="inline-block bg-white text-yellow-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            Começar Agora - É Grátis
+        <Box bg="yellow.50" p={6} rounded="lg" border="1px" borderColor="yellow.200" textAlign="center">
+          <Heading size="lg" color="gray.900" mb={4}>
+            Destaque-se como {industryData.name}
+          </Heading>
+          <Text color="gray.700" mb={6}>
+            Crie uma carta de apresentação personalizada que realce as suas competências e experiência em {industryData.name}.
+          </Text>
+          <VStack spacing={4}>
+            <a href="/" style={{ textDecoration: 'none' }}>
+              <Button colorScheme="yellow" size="lg">
+                Criar Carta Agora
+              </Button>
+            </a>
+            <a href="/" style={{ textDecoration: 'none' }}>
+              <Button variant="outline" colorScheme="yellow" size="md">
+                Começar Agora
+              </Button>
+            </a>
+          </VStack>
+        </Box>
+
+        {/* Related Content */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Conteúdo Relacionado
+          </Heading>
+          
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6}>
+            {[
+              { title: 'Como Escrever uma Carta de Apresentação', href: '/guia/como-escrever' },
+              { title: 'Exemplos de Cartas de Apresentação', href: '/guia/exemplos' },
+              { title: 'Dicas para Procurar Emprego', href: '/guia/dicas' },
+              { title: 'Preparação para Entrevistas', href: '/guia/entrevistas' },
+              { title: 'Competências Profissionais', href: '/guia/competencias' },
+              { title: 'Mercado de Trabalho em Portugal', href: '/guia/mercado-trabalho' }
+            ].map((item, index) => (
+              <GridItem key={index}>
+                <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                  <a href={item.href} style={{ textDecoration: 'none' }}>
+                    <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }}>
+                      {item.title}
+                    </Text>
+                  </a>
+                </Box>
+              </GridItem>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* Additional Resources */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Recursos Adicionais
+          </Heading>
+          
+          <List spacing={3}>
+            <ListItem>
+              <a href="/guia/como-escrever" style={{ textDecoration: 'none' }}>
+                <Text color="blue.600" _hover={{ color: 'blue.800' }}>
+                  Guia Completo: Como Escrever uma Carta de Apresentação
+                </Text>
+              </a>
+            </ListItem>
+            <ListItem>
+              <a href="/guia/exemplos" style={{ textDecoration: 'none' }}>
+                <Text color="blue.600" _hover={{ color: 'blue.800' }}>
+                  Modelos e Exemplos de Cartas de Apresentação
+                </Text>
+              </a>
+            </ListItem>
+            <ListItem>
+              <a href="/guia/dicas" style={{ textDecoration: 'none' }}>
+                <Text color="blue.600" _hover={{ color: 'blue.800' }}>
+                  10 Dicas Essenciais para Procurar Emprego
+                </Text>
+              </a>
+            </ListItem>
+            <ListItem>
+              <a href="/guia/entrevistas" style={{ textDecoration: 'none' }}>
+                <Text color="blue.600" _hover={{ color: 'blue.800' }}>
+                  Como se Preparar para Entrevistas de Emprego
+                </Text>
+              </a>
+            </ListItem>
+          </List>
+        </Box>
+
+        {/* Footer CTA */}
+        <Box bg="gray.50" p={6} rounded="lg" textAlign="center">
+          <Text fontSize="lg" color="gray.900" mb={4}>
+            Carta de Apresentação.pt
+          </Text>
+          <Text color="gray.600" mb={4}>
+            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
+          </Text>
+          <a href="/" style={{ textDecoration: 'none' }}>
+            <Button colorScheme="yellow" size="md">
+              Crie a sua carta personalizada em segundos
+            </Button>
           </a>
-        </div>
-      </div>
+        </Box>
+      </VStack>
     </SeoPageLayout>
   );
 }

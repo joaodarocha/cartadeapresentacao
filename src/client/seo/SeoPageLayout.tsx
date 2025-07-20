@@ -1,3 +1,4 @@
+import { Box, Button, Container, Grid, GridItem, Heading, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'wasp/client/router';
 
@@ -12,14 +13,18 @@ interface SeoPageLayoutProps {
 }
 
 export default function SeoPageLayout({
-  title,
-  metaDescription,
-  keywords = [],
-  breadcrumbs = [],
-  children,
-  structuredData,
-  relatedLinks = []
-}: SeoPageLayoutProps) {
+                                        title,
+                                        metaDescription,
+                                        keywords = [],
+                                        breadcrumbs = [],
+                                        children,
+                                        structuredData,
+                                        relatedLinks = []
+                                      }: SeoPageLayoutProps) {
+
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const cardBg = useColorModeValue('white', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   // Set document title and meta tags
   React.useEffect(() => {
@@ -29,7 +34,8 @@ export default function SeoPageLayout({
     let metaDesc = document.querySelector('meta[name="description"]');
     if (metaDesc) {
       metaDesc.setAttribute('content', metaDescription);
-    } else {
+    }
+    else {
       metaDesc = document.createElement('meta');
       metaDesc.setAttribute('name', 'description');
       metaDesc.setAttribute('content', metaDescription);
@@ -41,7 +47,8 @@ export default function SeoPageLayout({
       let metaKeywords = document.querySelector('meta[name="keywords"]');
       if (metaKeywords) {
         metaKeywords.setAttribute('content', keywords.join(', '));
-      } else {
+      }
+      else {
         metaKeywords = document.createElement('meta');
         metaKeywords.setAttribute('name', 'keywords');
         metaKeywords.setAttribute('content', keywords.join(', '));
@@ -63,154 +70,187 @@ export default function SeoPageLayout({
   }, [title, metaDescription, keywords, structuredData]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Box minH="100vh" bg={'transparent'}>
       {/* Navigation */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link to="/" className="flex-shrink-0">
-                <span className="text-xl font-bold text-yellow-500">
-                  Carta de Apresentação.pt
-                </span>
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="text-gray-700 hover:text-yellow-600 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                Entrar
-              </Link>
-              <Link
-                to="/"
-                className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium"
-              >
-                Criar Carta
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/*  <Box bg={cardBg} borderBottom="1px" borderColor={borderColor} shadow="sm">
+       <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }}>
+       <Flex justify="space-between" align="center" h="16">
+       <Link to="/">
+       <Text fontSize="xl" fontWeight="bold" color="yellow.500">
+       Carta de Apresentação.pt
+       </Text>
+       </Link>
+       <HStack spacing={4}>
+       <Link to="/login">
+       <Button variant="ghost" size="sm" colorScheme="gray">
+       Entrar
+       </Button>
+       </Link>
+       <Link to="/">
+       <Button colorScheme="yellow" size="sm">
+       Criar Carta
+       </Button>
+       </Link>
+       </HStack>
+       </Flex>
+       </Container>
+       </Box>*/}
 
       {/* Breadcrumbs */}
-      {breadcrumbs.length > 0 && (
-        <div className="bg-white border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <nav className="flex" aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-2">
-                <li>
-                  <Link to="/" className="text-gray-500 hover:text-gray-700">
-                    Início
-                  </Link>
-                </li>
-                {breadcrumbs.map((crumb, index) => (
-                  <li key={index} className="flex items-center">
-                    <svg className="flex-shrink-0 h-4 w-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                    </svg>
-                    {crumb.href ? (
-                      <a href={crumb.href} className="text-gray-500 hover:text-gray-700">
-                        {crumb.label}
-                      </a>
-                    ) : (
-                      <span className="text-gray-900 font-medium">{crumb.label}</span>
-                    )}
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          </div>
-        </div>
-      )}
+      {/* {breadcrumbs.length > 0 && (
+       <Box bg={cardBg} borderBottom="1px" borderColor={borderColor}>
+       <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }} py={3}>
+       <Breadcrumb separator={<ChevronRightIcon color="gray.500" />}>
+       <BreadcrumbItem>
+       <a href="/" style={{ color: '#3182ce', textDecoration: 'none' }}>
+       Início
+       </a>
+       </BreadcrumbItem>
+       {breadcrumbs.map((crumb, index) => (
+       <BreadcrumbItem key={index} isCurrentPage={!crumb.href}>
+       {crumb.href ? (
+       <a href={crumb.href} style={{ color: '#3182ce', textDecoration: 'none' }}>
+       {crumb.label}
+       </a>
+       ) : (
+       <Text color="gray.900" fontWeight="medium">
+       {crumb.label}
+       </Text>
+       )}
+       </BreadcrumbItem>
+       ))}
+       </Breadcrumb>
+       </Container>
+       </Box>
+       )}*/}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }} py={8}>
+        <Grid templateColumns={{ base: '1fr', lg: '3fr 1fr' }} gap={8}>
           {/* Content */}
-          <div className="lg:col-span-3">
-            <article className="bg-white rounded-lg shadow-sm p-8">
+          <GridItem>
+            <Box bg={'transparent'}  rounded="lg" shadow="sm" p={8}>
               {children}
-            </article>
-          </div>
+            </Box>
+          </GridItem>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1">
+          <GridItem>
             {/* Call to Action */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            <Box bg="yellow.50" border="1px" borderColor="yellow.200" rounded="lg" p={6} mb={6}>
+              <Heading size="md" color="gray.900" mb={3}>
                 Crie a Sua Carta Agora
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">
+              </Heading>
+              <Text color="gray.600" fontSize="sm" mb={4}>
                 Use a nossa ferramenta AI para criar uma carta de apresentação personalizada em segundos.
-              </p>
-              <Link
-                to="/"
-                className="block w-full bg-yellow-500 hover:bg-yellow-600 text-white text-center px-4 py-2 rounded-md font-medium"
-              >
-                Começar Agora
+              </Text>
+              <Link to="/">
+                <Button colorScheme="yellow" size="md" width="full">
+                  Começar Agora
+                </Button>
               </Link>
-            </div>
+            </Box>
 
             {/* Related Links */}
             {relatedLinks.length > 0 && (
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <Box bg={cardBg} rounded="lg" shadow="sm" p={6}>
+                <Heading size="md" color="gray.900" mb={4}>
                   Conteúdo Relacionado
-                </h3>
-                <ul className="space-y-3">
+                </Heading>
+                <VStack spacing={3} align="stretch">
                   {relatedLinks.map((link, index) => (
-                    <li key={index}>
-                      <a
-                        href={link.href}
-                        className="block text-blue-600 hover:text-blue-800 font-medium"
-                      >
-                        {link.title}
+                    <Box key={index}>
+                      <a href={link.href} style={{ textDecoration: 'none' }}>
+                        <Text color="blue.600" fontWeight="medium" _hover={{ color: 'blue.800' }}>
+                          {link.title}
+                        </Text>
                       </a>
                       {link.description && (
-                        <p className="text-gray-600 text-sm mt-1">{link.description}</p>
+                        <Text color="gray.600" fontSize="sm" mt={1}>
+                          {link.description}
+                        </Text>
                       )}
-                    </li>
+                    </Box>
                   ))}
-                </ul>
-              </div>
+                </VStack>
+              </Box>
             )}
-          </div>
-        </div>
-      </main>
+          </GridItem>
+        </Grid>
+      </Container>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <h3 className="text-lg font-semibold mb-4">Carta de Apresentação.pt</h3>
-              <p className="text-gray-300 mb-4">
-                A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal.
-                Powered by AI, designed for success.
-              </p>
-            </div>
-            <div>
-              <h4 className="text-md font-semibold mb-4">Recursos</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><a href="/guia/como-escrever" className="hover:text-white">Como Escrever</a></li>
-                <li><a href="/guia/exemplos" className="hover:text-white">Exemplos</a></li>
-                <li><a href="/guia/dicas" className="hover:text-white">Dicas</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-md font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-gray-300">
-                <li><Link to="/privacy" className="hover:text-white">Privacidade</Link></li>
-                <li><Link to="/tos" className="hover:text-white">Termos</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Carta de Apresentação.pt. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
+      {/* <Box bg={cardBg} borderTop="1px" borderColor={borderColor} mt={16}>
+       <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }} py={12}>
+       <Grid templateColumns={{ base: '1fr', md: '2fr 1fr 1fr' }} gap={8}>
+       <GridItem>
+       <Heading size="lg" color="gray.900" mb={4}>
+       Carta de Apresentação.pt
+       </Heading>
+       <Text color="gray.300" mb={4}>
+       A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal.
+       Powered by AI, designed for success.
+       </Text>
+       </GridItem>
+       <GridItem>
+       <Heading size="md" color="gray.900" mb={4}>
+       Recursos
+       </Heading>
+       <List>
+       <ListItem>
+       <a href="/guia/como-escrever" style={{ color: '#3182ce', textDecoration: 'none' }}>
+       Como Escrever
+       </a>
+       </ListItem>
+       <ListItem>
+       <a href="/guia/exemplos" style={{ color: '#3182ce', textDecoration: 'none' }}>
+       Exemplos
+       </a>
+       </ListItem>
+       <ListItem>
+       <a href="/guia/dicas" style={{ color: '#3182ce', textDecoration: 'none' }}>
+       Dicas
+       </a>
+       </ListItem>
+       </List>
+       </GridItem>
+       <GridItem>
+       <Heading size="md" color="gray.900" mb={4}>
+       Legal
+       </Heading>
+       <List>
+       <ListItem>
+       <a
+       href="/privacy"
+       style={{
+       color: useColorModeValue('#718096', '#A0AEC0'),
+       textDecoration: 'none'
+       }}
+       >
+       Política de Privacidade
+       </a>
+       </ListItem>
+       <ListItem>
+       <a
+       href="/tos"
+       style={{
+       color: useColorModeValue('#718096', '#A0AEC0'),
+       textDecoration: 'none'
+       }}
+       >
+       Termos de Serviço
+       </a>
+       </ListItem>
+       </List>
+       </GridItem>
+       </Grid>
+       <Box border="1px" borderColor={borderColor} mt={8} pt={8}>
+       <Text textAlign="center" color="gray.600" fontSize="sm">
+       &copy; 2024 Carta de Apresentação.pt. Todos os direitos reservados.
+       </Text>
+       </Box>
+       </Container>
+       </Box>*/}
+    </Box>
   );
 }

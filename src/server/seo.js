@@ -150,6 +150,142 @@ export const getSeoSitemap = async (args, context) => {
 // ===== SEO PAGE ACTIONS =====
 
 /**
+ * XML Sitemap API endpoint - serves raw XML with proper headers
+ */
+export const xmlSitemapApi = async (req, res, context) => {
+  try {
+    const seoPages = await context.entities.SeoPage.findMany({
+      where: { isActive: true },
+      select: {
+        slug: true,
+        updatedAt: true,
+        category: true,
+      },
+      orderBy: { updatedAt: 'desc' },
+    });
+
+    const baseUrl = 'https://cartadeapresentacao.pt';
+    
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+
+    // Add main pages
+    xml += `
+  <url>
+    <loc>${baseUrl}/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/login</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/jobs</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+
+    // Add SEO pages
+    seoPages.forEach(page => {
+      const url = getPageUrlForSitemap(page, baseUrl);
+      const lastmod = page.updatedAt ? new Date(page.updatedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+      const changefreq = getCategoryChangeFrequency(page.category);
+      const priority = getCategoryPriority(page.category);
+
+      xml += `
+  <url>
+    <loc>${url}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+    });
+
+    xml += `
+</urlset>`;
+
+    // Set proper XML content type and headers
+    res.set('Content-Type', 'application/xml; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+    
+    return res.send(xml);
+  } catch (error) {
+    console.error('Error generating XML sitemap:', error);
+    res.status(500).set('Content-Type', 'text/plain').send('Error generating sitemap');
+  }
+};
+
+/**
+ * Generate XML sitemap with proper headers
+ */
+export const generateXmlSitemap = async (args, context) => {
+  const seoPages = await context.entities.SeoPage.findMany({
+    where: { isActive: true },
+    select: {
+      slug: true,
+      updatedAt: true,
+      category: true,
+    },
+    orderBy: { updatedAt: 'desc' },
+  });
+
+  const baseUrl = 'https://cartadeapresentacao.pt';
+  
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
+
+  // Add main pages
+  xml += `
+  <url>
+    <loc>${baseUrl}/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/login</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/jobs</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+
+  // Add SEO pages
+  seoPages.forEach(page => {
+    const url = getPageUrlForSitemap(page, baseUrl);
+    const lastmod = page.updatedAt ? new Date(page.updatedAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+    const changefreq = getCategoryChangeFrequency(page.category);
+    const priority = getCategoryPriority(page.category);
+
+    xml += `
+  <url>
+    <loc>${url}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+  });
+
+  xml += `
+</urlset>`;
+
+  return {
+    xml,
+    contentType: 'application/xml; charset=utf-8'
+  };
+};
+
+/**
  * Generate new SEO pages based on templates and data
  */
 export const generateSeoPages = async ({ templateType, limit = 10 }, context) => {
@@ -479,5 +615,33 @@ function getCategoryPriority(category) {
       return 0.6;
     default:
       return 0.5;
+  }
+}
+
+/**
+ * Helper function to generate page URLs for sitemap
+ */
+function getPageUrlForSitemap(page, baseUrl) {
+  switch (page.category) {
+    case 'profissao':
+      return `${baseUrl}/profissao/${page.slug.replace('carta-apresentacao-', '')}`;
+    case 'cidade':
+      return `${baseUrl}/cidade/${page.slug.replace('carta-apresentacao-', '')}`;
+    case 'profissao-cidade':
+      // Extract city and profession from slug
+      const slugPart = page.slug.replace('carta-apresentacao-', '');
+      const parts = slugPart.split('-');
+      if (parts.length >= 2) {
+        const city = parts[parts.length - 1];
+        const profession = parts.slice(0, -1).join('-');
+        return `${baseUrl}/cidade/${city}/${profession}`;
+      }
+      return `${baseUrl}/${page.slug}`;
+    case 'guia':
+      return `${baseUrl}/${page.slug.replace('guia-', 'guia/')}`;
+    case 'setor':
+      return `${baseUrl}/setor/${page.slug.replace('carta-apresentacao-setor-', '')}`;
+    default:
+      return `${baseUrl}/${page.slug}`;
   }
 }

@@ -3,6 +3,23 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from 'wasp/client/operations';
 import { getSeoPage, getAllIndustries } from 'wasp/client/operations';
 import SeoPageLayout from './SeoPageLayout';
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Grid,
+  GridItem,
+  List,
+  ListItem,
+  Button,
+  Spinner,
+  Badge,
+  Divider,
+  useColorModeValue
+} from '@chakra-ui/react';
+import { Link } from 'wasp/client/router';
 
 export default function SectorPage() {
   const { sector } = useParams();
@@ -11,8 +28,11 @@ export default function SectorPage() {
   const [pageData, setPageData] = useState<any>(null);
   const [sectorIndustries, setSectorIndustries] = useState<any[]>([]);
 
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const cardBg = useColorModeValue('white', 'gray.800');
+
   // Generate slug from sector parameter
-  const sectorSlug = `setor-${sector}`;
+  const sectorSlug = `carta-apresentacao-sector-${sector}`;
 
   const { 
     data: seoPageData, 
@@ -28,68 +48,79 @@ export default function SectorPage() {
   useEffect(() => {
     if (seoPageData) {
       setPageData(seoPageData);
-      setLoading(false);
     }
     
-    if (industries && industries.length > 0) {
-      // Filter industries by sector (this is a simplified approach)
-      // In a real implementation, you'd have sector categorization in your data
-      setSectorIndustries(industries.slice(0, 12));
+    if (industries && industries.length > 0 && sector) {
+      // Filter industries by sector
+      const filtered = industries.filter((industry: any) => 
+        industry.sector?.toLowerCase() === sector.toLowerCase() ||
+        industry.name.toLowerCase().includes(sector.toLowerCase())
+      );
+      setSectorIndustries(filtered);
+      
+      if (seoPageData) {
+        setLoading(false);
+      }
     }
 
     if (seoPageError) {
       setError('Página não encontrada');
       setLoading(false);
     }
-  }, [seoPageData, industries, seoPageError]);
+  }, [seoPageData, industries, sector, seoPageError]);
 
   if (loading || seoPageLoading || industriesLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">A carregar...</p>
-        </div>
-      </div>
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={4}>
+          <Spinner size="lg" color="yellow.500" thickness="4px" />
+          <Text color="gray.600">A carregar...</Text>
+        </VStack>
+      </Box>
     );
   }
 
   if (error || !pageData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Página não encontrada</h1>
-          <p className="text-gray-600 mb-8">O sector que procura não existe ou foi removido.</p>
-          <a href="/" className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-md font-medium">
-            Voltar ao Início
-          </a>
-        </div>
-      </div>
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={6} textAlign="center">
+          <Heading size="lg" color="gray.900">Página não encontrada</Heading>
+          <Text color="gray.600">O sector que procura não existe ou foi removido.</Text>
+          <Link to="/">
+            <Button colorScheme="yellow" size="lg">
+              Voltar ao Início
+            </Button>
+          </Link>
+        </VStack>
+      </Box>
     );
   }
 
-  const sectorName = sector ? sector.charAt(0).toUpperCase() + sector.slice(1).replace('-', ' ') : 'Sector';
-  
   const breadcrumbs = [
     { label: 'Sectores', href: '/sectores' },
-    { label: sectorName }
+    { label: sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Sector' }
   ];
 
   const relatedLinks = [
     {
-      title: 'Guia de Cartas por Sector',
-      href: '/guia/sectores',
-      description: 'Como adaptar cartas para diferentes sectores'
+      title: 'Como Escrever uma Carta de Apresentação',
+      href: '/guia/como-escrever',
+      description: 'Guia completo para escrever cartas eficazes'
     },
     {
-      title: 'Tendências do Mercado',
-      href: '/guia/tendencias',
-      description: 'Últimas tendências do mercado de trabalho'
+      title: 'Exemplos de Cartas de Apresentação',
+      href: '/guia/exemplos',
+      description: 'Modelos e exemplos práticos'
     },
     {
-      title: 'Competências Transversais',
-      href: '/guia/competencias',
-      description: 'Competências valorizadas em todos os sectores'
+      title: 'Dicas para Procurar Emprego',
+      href: '/guia/dicas',
+      description: 'Estratégias eficazes de procura de emprego'
+    },
+    {
+      title: 'Preparação para Entrevistas',
+      href: '/guia/entrevistas',
+      description: 'Como se preparar para entrevistas de emprego'
     }
   ];
 
@@ -98,20 +129,11 @@ export default function SectorPage() {
     "@type": "WebPage",
     "name": pageData.title,
     "description": pageData.metaDescription,
-    "url": `https://cartadeapresentacao.pt/setor/${sector}`,
-    "mainEntity": {
-      "@type": "ItemList",
-      "name": `Profissões no sector ${sectorName}`,
-      "description": `Lista de profissões disponíveis no sector ${sectorName}`,
-      "itemListElement": sectorIndustries.map((industry, index) => ({
-        "@type": "ListItem",
-        "position": index + 1,
-        "item": {
-          "@type": "JobPosting",
-          "title": industry.name,
-          "description": industry.description
-        }
-      }))
+    "url": `https://cartadeapresentacao.pt/sector/${sector}`,
+    "about": {
+      "@type": "Industry",
+      "name": sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Sector',
+      "description": `Profissões e oportunidades no sector de ${sector}`
     }
   };
 
@@ -119,149 +141,291 @@ export default function SectorPage() {
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
-      keywords={pageData.keywords}
+      keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map(k => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
       structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
-      <div className="prose prose-lg max-w-none">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          {pageData.title}
-        </h1>
+      <VStack spacing={8} align="stretch">
+        {/* Header */}
+        <Box textAlign="center">
+          <Heading size="xl" color="gray.900" mb={4}>
+            {pageData.title}
+          </Heading>
+          <Text fontSize="lg" color="gray.600">
+            {pageData.metaDescription}
+          </Text>
+        </Box>
 
         {/* Sector Overview */}
-        <div className="bg-purple-50 border-l-4 border-purple-400 p-6 mb-8">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-purple-800">
-                Sector {sectorName}
-              </h3>
-              <div className="mt-2 text-sm text-purple-700">
-                <p>
-                  O sector {sectorName.toLowerCase()} é uma área dinâmica do mercado de trabalho português, 
-                  oferecendo diversas oportunidades de carreira para profissionais qualificados.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Box>
+          <HStack spacing={4} mb={4} align="center">
+            <Box fontSize="4xl">🏢</Box>
+            <Heading size="lg" color="gray.900">
+              Sector de {sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Profissões'}
+            </Heading>
+          </HStack>
+          
+          <Text color="gray.700" mb={6} lineHeight="tall">
+            O sector de {sector} oferece diversas oportunidades de carreira em Portugal, com profissões que vão desde posições de entrada até cargos de gestão sénior.
+          </Text>
 
-        {/* Main Content */}
-        <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+            <GridItem>
+              <VStack align="stretch" spacing={4}>
+                <Box>
+                  <Text fontWeight="bold" color="gray.900" mb={2}>Profissões Disponíveis:</Text>
+                  <Badge colorScheme="blue" fontSize="md" p={2}>
+                    {sectorIndustries.length}+ profissões
+                  </Badge>
+                </Box>
+                <Box>
+                  <Text fontWeight="bold" color="gray.900" mb={2}>Sector:</Text>
+                  <Text color="gray.700">{sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Diversas áreas'}</Text>
+                </Box>
+              </VStack>
+            </GridItem>
+            <GridItem>
+              <Text color="gray.700" lineHeight="tall">
+                Descubra as melhores oportunidades no sector de {sector} e aprenda como criar cartas de apresentação que se destacam no mercado de trabalho português.
+              </Text>
+            </GridItem>
+          </Grid>
+        </Box>
+
+        <Divider />
 
         {/* Professions in Sector */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Profissões no Sector {sectorName}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {sectorIndustries.map((industry, index) => (
-              <a
-                key={index}
-                href={`/profissao/${industry.slug}`}
-                className="block p-6 bg-white border border-gray-200 rounded-lg hover:border-purple-400 hover:shadow-lg transition-all"
-              >
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{industry.name}</h3>
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{industry.description}</p>
-                {industry.salary && (
-                  <p className="text-purple-600 font-medium text-sm mb-3">
-                    💰 {industry.salary}
-                  </p>
-                )}
-                <div className="flex items-center text-purple-600 text-sm font-medium">
-                  Ver detalhes
-                  <svg className="ml-1 h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </div>
+        <Box>
+          <Heading size="lg" color="gray.900" mb={4}>
+            Profissões no Sector de {sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Profissões'}
+          </Heading>
+          
+          <Text color="gray.700" mb={6} lineHeight="tall">
+            Explore as diferentes profissões disponíveis neste sector e descubra qual se adequa melhor ao seu perfil profissional.
+          </Text>
+
+          {sectorIndustries.length > 0 ? (
+            <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap={6}>
+              {sectorIndustries.map((industry, index) => (
+                <GridItem key={index}>
+                  <Box bg={cardBg} p={6} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                    <a href={`/profissao/${industry.slug}`} style={{ textDecoration: 'none' }}>
+                      <Heading size="md" color="blue.600" _hover={{ color: 'blue.800' }} mb={3}>
+                        {industry.name}
+                      </Heading>
+                    </a>
+                    <Text fontSize="sm" color="gray.600" mb={4} noOfLines={3}>
+                      {industry.description || `Oportunidades de carreira em ${industry.name}`}
+                    </Text>
+                    {industry.averageSalary && (
+                      <Badge colorScheme="green" fontSize="sm">
+                        €{industry.averageSalary.toLocaleString()} / ano
+                      </Badge>
+                    )}
+                  </Box>
+                </GridItem>
+              ))}
+            </Grid>
+          ) : (
+            <Box bg="gray.50" p={8} rounded="lg" textAlign="center">
+              <Text color="gray.600" mb={4}>
+                Não foram encontradas profissões específicas para este sector.
+              </Text>
+              <a href="/profissoes" style={{ textDecoration: 'none' }}>
+                <Button variant="outline" colorScheme="blue" size="md">
+                  Ver Todas as Profissões
+                </Button>
               </a>
-            ))}
-          </div>
-        </div>
+            </Box>
+          )}
+        </Box>
 
-        {/* Sector Statistics */}
-        <div className="mt-12 bg-gray-50 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Estatísticas do Sector {sectorName}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">{sectorIndustries.length}+</div>
-              <div className="text-gray-600">Profissões</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">2.5K+</div>
-              <div className="text-gray-600">Vagas/Mês</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">78%</div>
-              <div className="text-gray-600">Taxa Emprego</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-orange-600 mb-2">+12%</div>
-              <div className="text-gray-600">Crescimento</div>
-            </div>
-          </div>
-        </div>
+        <Divider />
 
-        {/* Tips for Sector */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Dicas para Cartas no Sector {sectorName}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 border border-gray-200 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Linguagem Específica</h3>
-              <p className="text-gray-600">
-                Use terminologia específica do sector {sectorName.toLowerCase()} para demonstrar 
-                conhecimento técnico e familiaridade com a área.
-              </p>
-            </div>
-            <div className="bg-white p-6 border border-gray-200 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Competências Relevantes</h3>
-              <p className="text-gray-600">
-                Destaque competências técnicas e interpessoais valorizadas especificamente 
-                no sector {sectorName.toLowerCase()}.
-              </p>
-            </div>
-            <div className="bg-white p-6 border border-gray-200 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Tendências Atuais</h3>
-              <p className="text-gray-600">
-                Mencione conhecimento sobre tendências e inovações recentes no sector 
-                {sectorName.toLowerCase()}.
-              </p>
-            </div>
-            <div className="bg-white p-6 border border-gray-200 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Resultados Mensuráveis</h3>
-              <p className="text-gray-600">
-                Inclua exemplos concretos de resultados e conquistas relevantes para o sector 
-                {sectorName.toLowerCase()}.
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* Career Tips */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={4}>
+            Dicas de Carreira para o Sector
+          </Heading>
+          
+          <VStack spacing={4} align="stretch">
+            <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+              <Text fontWeight="semibold" color="gray.900" mb={2}>
+                1. Mantenha-se Atualizado
+              </Text>
+              <Text color="gray.700" fontSize="sm">
+                O sector de {sector} está em constante evolução. Mantenha-se informado sobre as últimas tendências e tecnologias.
+              </Text>
+            </Box>
+            
+            <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+              <Text fontWeight="semibold" color="gray.900" mb={2}>
+                2. Desenvolva Competências Relevantes
+              </Text>
+              <Text color="gray.700" fontSize="sm">
+                Identifique as competências mais procuradas no sector e invista na sua formação contínua.
+              </Text>
+            </Box>
+            
+            <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+              <Text fontWeight="semibold" color="gray.900" mb={2}>
+                3. Construa uma Rede Profissional
+              </Text>
+              <Text color="gray.700" fontSize="sm">
+                Participe em eventos do sector, associações profissionais e plataformas online para expandir a sua rede.
+              </Text>
+            </Box>
+          </VStack>
+        </Box>
+
+        <Divider />
+
+        {/* FAQ Section */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Perguntas Frequentes
+          </Heading>
+          
+          <VStack spacing={6} align="stretch">
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Quais são as profissões mais procuradas no sector de {sector}?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                As profissões mais procuradas variam conforme as tendências do mercado, mas geralmente incluem posições que combinam competências técnicas com capacidades de liderança e inovação.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Como me preparar para uma carreira no sector de {sector}?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                Invista na formação adequada, desenvolva competências práticas através de estágios ou projetos, e mantenha-se atualizado com as tendências do sector.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Que competências são mais valorizadas no sector?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                Além das competências técnicas específicas, são valorizadas competências como resolução de problemas, comunicação, trabalho em equipa e adaptabilidade.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
+                Como personalizar uma carta de apresentação para este sector?
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                Destaque a sua experiência relevante no sector, use terminologia específica da área, e demonstre conhecimento sobre as tendências e desafios do mercado.
+              </Text>
+            </Box>
+          </VStack>
+        </Box>
+
+        <Divider />
 
         {/* Call to Action */}
-        <div className="mt-12 p-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Destaque-se no Sector {sectorName}
-          </h2>
-          <p className="text-purple-100 mb-6">
-            Crie uma carta de apresentação personalizada que demonstre a sua adequação ao sector {sectorName.toLowerCase()}.
-          </p>
-          <a 
-            href="/" 
-            className="inline-block bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            Criar Carta Especializada
+        <Box bg="yellow.50" p={6} rounded="lg" border="1px" borderColor="yellow.200" textAlign="center">
+          <Heading size="lg" color="gray.900" mb={4}>
+            Inicie a Sua Carreira no Sector de {sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Profissões'}
+          </Heading>
+          <Text color="gray.700" mb={6}>
+            Crie uma carta de apresentação personalizada que destaque a sua adequação para o sector de {sector}.
+          </Text>
+          <VStack spacing={4}>
+            <a href="/" style={{ textDecoration: 'none' }}>
+              <Button colorScheme="yellow" size="lg">
+                Criar Carta Agora
+              </Button>
+            </a>
+            <a href="/" style={{ textDecoration: 'none' }}>
+              <Button variant="outline" colorScheme="yellow" size="md">
+                Começar Agora
+              </Button>
+            </a>
+          </VStack>
+        </Box>
+
+        {/* Related Content */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Recursos Úteis
+          </Heading>
+          
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/como-escrever" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Como Escrever uma Carta de Apresentação
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Guia completo para criar cartas de apresentação eficazes
+                </Text>
+              </Box>
+            </GridItem>
+            
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/exemplos" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Exemplos de Cartas de Apresentação
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Modelos e exemplos práticos para diferentes sectores
+                </Text>
+              </Box>
+            </GridItem>
+            
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/dicas" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Dicas para Procurar Emprego
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Estratégias eficazes para encontrar oportunidades
+                </Text>
+              </Box>
+            </GridItem>
+            
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/entrevistas" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Preparação para Entrevistas
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Como se preparar para entrevistas de emprego
+                </Text>
+              </Box>
+            </GridItem>
+          </Grid>
+        </Box>
+
+        {/* Footer CTA */}
+        <Box bg="gray.50" p={6} rounded="lg" textAlign="center">
+          <Text fontSize="lg" color="gray.900" mb={4}>
+            Carta de Apresentação.pt
+          </Text>
+          <Text color="gray.600" mb={4}>
+            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
+          </Text>
+          <a href="/" style={{ textDecoration: 'none' }}>
+            <Button colorScheme="yellow" size="md">
+              Crie a sua carta personalizada para o sector de {sector}
+            </Button>
           </a>
-        </div>
-      </div>
+        </Box>
+      </VStack>
     </SeoPageLayout>
   );
 }

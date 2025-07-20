@@ -288,6 +288,128 @@ async function generateInitialSeoPages() {
     }
   }
 
+  // Generate guide pages
+  console.log('🌱 Generating guide pages...');
+  
+  // Define the specific guide pages that are referenced in SEO components
+  const specificGuidePages = [
+    {
+      slug: 'guia-como-escrever',
+      title: 'Como Escrever uma Carta de Apresentação | Guia Completo 2024',
+      metaDescription: 'Guia passo-a-passo para escrever cartas de apresentação eficazes. Estrutura, exemplos e dicas de especialistas para conseguir mais entrevistas.',
+      topic: 'como-escrever',
+      keywords: ['como escrever carta apresentação', 'guia carta apresentação', 'estrutura carta apresentação', 'dicas carta apresentação']
+    },
+    {
+      slug: 'guia-exemplos',
+      title: 'Exemplos de Cartas de Apresentação | Modelos Gratuitos 2024',
+      metaDescription: 'Exemplos práticos de cartas de apresentação para diferentes profissões. Modelos gratuitos e editáveis para download.',
+      topic: 'exemplos',
+      keywords: ['exemplos carta apresentação', 'modelos carta apresentação', 'templates carta apresentação', 'carta apresentação gratis']
+    },
+    {
+      slug: 'guia-dicas',
+      title: 'Dicas para Cartas de Apresentação | Guia de Especialistas 2024',
+      metaDescription: 'Dicas essenciais de especialistas para criar cartas de apresentação que impressionam recrutadores e conseguem entrevistas.',
+      topic: 'dicas',
+      keywords: ['dicas carta apresentação', 'conselhos carta apresentação', 'truques carta apresentação', 'segredos carta apresentação']
+    },
+    {
+      slug: 'guia-entrevistas',
+      title: 'Preparação para Entrevistas | Guia Completo 2024',
+      metaDescription: 'Guia completo para preparação de entrevistas de emprego. Dicas, perguntas frequentes e estratégias para ter sucesso.',
+      topic: 'entrevistas',
+      keywords: ['preparação entrevistas', 'dicas entrevistas emprego', 'como preparar entrevista', 'perguntas entrevista trabalho']
+    },
+    {
+      slug: 'guia-procurar-emprego',
+      title: 'Como Procurar Emprego | Estratégias Eficazes 2024',
+      metaDescription: 'Estratégias comprovadas para procurar emprego com sucesso. Dicas para encontrar oportunidades e destacar-se da concorrência.',
+      topic: 'procurar-emprego',
+      keywords: ['como procurar emprego', 'estratégias procura emprego', 'encontrar trabalho', 'procura trabalho portugal']
+    },
+    {
+      slug: 'guia-competencias',
+      title: 'Competências Profissionais | Guia de Desenvolvimento 2024',
+      metaDescription: 'Guia completo sobre competências profissionais mais valorizadas. Como desenvolver e destacar as suas competências.',
+      topic: 'competencias',
+      keywords: ['competências profissionais', 'skills profissionais', 'desenvolvimento competências', 'competências trabalho']
+    },
+    {
+      slug: 'guia-mercado-trabalho',
+      title: 'Mercado de Trabalho em Portugal | Análise 2024',
+      metaDescription: 'Análise completa do mercado de trabalho português. Tendências, oportunidades e sectores em crescimento.',
+      topic: 'mercado-trabalho',
+      keywords: ['mercado trabalho portugal', 'emprego portugal', 'oportunidades trabalho', 'sectores crescimento portugal']
+    },
+    {
+      slug: 'guia-recem-licenciados',
+      title: 'Carta de Apresentação para Recém-Licenciados | Guia 2024',
+      metaDescription: 'Guia especializado para recém-licenciados criarem cartas de apresentação eficazes. Como destacar potencial quando falta experiência profissional.',
+      topic: 'recem-licenciados',
+      keywords: ['carta apresentação recém licenciado', 'primeiro emprego', 'carta apresentação sem experiência', 'recém graduado']
+    }
+  ];
+
+  for (const guideData of specificGuidePages) {
+    try {
+      // Generate content for the guide page
+      const content = `
+        <div class="guide-content">
+          <h1>${guideData.title}</h1>
+          <div class="introduction">
+            <p>${guideData.metaDescription}</p>
+          </div>
+          <div class="main-content">
+            <h2>Guia Completo</h2>
+            <p>Este guia abrangente foi criado para o ajudar a dominar todos os aspectos relacionados com ${guideData.topic.replace(/-/g, ' ')}.</p>
+            <h3>O que vai aprender:</h3>
+            <ul>
+              <li>Estratégias comprovadas e eficazes</li>
+              <li>Exemplos práticos e casos reais</li>
+              <li>Dicas de especialistas da área</li>
+              <li>Erros comuns a evitar</li>
+              <li>Checklist para sucesso garantido</li>
+            </ul>
+            <div class="cta-section">
+              <h3>Pronto para começar?</h3>
+              <p>Use o nosso gerador de cartas de apresentação para criar a sua carta personalizada em minutos.</p>
+              <a href="/" class="cta-button">Criar Carta de Apresentação</a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      await prisma.seoPage.upsert({
+        where: { slug: guideData.slug },
+        update: {
+          title: guideData.title,
+          metaDescription: guideData.metaDescription,
+          content,
+          category: 'guia',
+          subcategory: guideData.topic,
+          keywords: guideData.keywords,
+          isActive: true,
+        },
+        create: {
+          slug: guideData.slug,
+          title: guideData.title,
+          metaDescription: guideData.metaDescription,
+          content,
+          category: 'guia',
+          subcategory: guideData.topic,
+          keywords: guideData.keywords,
+          isActive: true,
+        },
+      });
+
+      pagesCreated++;
+      console.log(`✅ Guide Page: ${guideData.slug}`);
+    } catch (error) {
+      console.error(`❌ Error creating guide page ${guideData.slug}:`, error);
+    }
+  }
+
   console.log(`✅ Generated ${pagesCreated} initial SEO pages`);
 }
 

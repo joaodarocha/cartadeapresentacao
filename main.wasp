@@ -35,6 +35,9 @@ app CoverLetterGPT {
     setupFn: import clientSetup from "@src/client/clientSetup",
     envValidationSchema: import { envValidationSchema } from "@src/env",
   },
+  server: {
+    setupFn: import { serverSetup } from "@src/server/serverSetup.js",
+  },
   emailSender: {
     provider: SendGrid,
     defaultFrom: {
@@ -117,12 +120,6 @@ route GuideRoute { path: "/guia/:topic", to: GuidePage }
 page GuidePage {
   component: import GuidePage from "@src/client/seo/GuidePage"
 }
-
-// TODO: Implement SitemapPage component in Phase 4
-// route SitemapRoute { path: "/sitemap.xml", to: SitemapPage }
-// page SitemapPage {
-//   component: import SitemapPage from "@src/client/seo/SitemapPage"
-// }
 
 /* ⛑ These are the Wasp Operations, which allow the client and server to interact:
  * https://wasp-lang.dev/docs/language/features#queries-and-actions-aka-operations
@@ -277,6 +274,11 @@ action generateSeoPages {
   entities: [SeoPage, Industry, City, SeoTemplate]
 }
 
+action generateXmlSitemap {
+  fn: import { generateXmlSitemap } from "@src/server/seo.js",
+  entities: [SeoPage]
+}
+
 action updateSeoPage {
   fn: import { updateSeoPage } from "@src/server/seo.js",
   entities: [SeoPage]
@@ -301,6 +303,12 @@ api lnLogin {
   fn: import { lnLogin } from "@src/server/ln.js",
   entities: [User, LnData],
   httpRoute: (GET, "/ln-login")
+}
+
+api xmlSitemap {
+  fn: import { xmlSitemapApi } from "@src/server/seo.js",
+  entities: [SeoPage],
+  httpRoute: (GET, "/sitemap.xml")
 }
 
 /* 🕵️‍♂️ These are the Wasp Cron Jobs. Use them to set up recurring tasks or queues:

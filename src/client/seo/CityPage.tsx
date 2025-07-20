@@ -3,6 +3,24 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from 'wasp/client/operations';
 import { getSeoPage, getCityData, getAllIndustries } from 'wasp/client/operations';
 import SeoPageLayout from './SeoPageLayout';
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Grid,
+  GridItem,
+  List,
+  ListItem,
+  Button,
+  Spinner,
+  Alert,
+  AlertIcon,
+  Badge,
+  Divider,
+  useColorModeValue
+} from '@chakra-ui/react';
 
 export default function CityPage() {
   const { city } = useParams();
@@ -11,6 +29,9 @@ export default function CityPage() {
   const [pageData, setPageData] = useState<any>(null);
   const [cityData, setCityData] = useState<any>(null);
   const [relatedIndustries, setRelatedIndustries] = useState<any[]>([]);
+
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const cardBg = useColorModeValue('white', 'gray.800');
 
   // Generate slug from city parameter
   const citySlug = `carta-apresentacao-${city}`;
@@ -52,26 +73,28 @@ export default function CityPage() {
 
   if (loading || seoPageLoading || cityLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">A carregar...</p>
-        </div>
-      </div>
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={4}>
+          <Spinner size="lg" color="yellow.500" thickness="4px" />
+          <Text color="gray.600">A carregar...</Text>
+        </VStack>
+      </Box>
     );
   }
 
   if (error || !pageData || !cityData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Página não encontrada</h1>
-          <p className="text-gray-600 mb-8">A cidade que procura não existe ou foi removida.</p>
-          <a href="/" className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-md font-medium">
-            Voltar ao Início
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={6} textAlign="center">
+          <Heading size="lg" color="gray.900">Página não encontrada</Heading>
+          <Text color="gray.600">A cidade que procura não existe ou foi removida.</Text>
+          <a href="/">
+            <Button colorScheme="yellow" size="lg">
+              Voltar ao Início
+            </Button>
           </a>
-        </div>
-      </div>
+        </VStack>
+      </Box>
     );
   }
 
@@ -106,13 +129,11 @@ export default function CityPage() {
     "name": pageData.title,
     "description": pageData.metaDescription,
     "url": `https://cartadeapresentacao.pt/cidade/${city}`,
-    "mainEntity": {
+    "about": {
       "@type": "Place",
       "name": cityData.name,
-      "description": cityData.description,
-      "addressCountry": "PT",
-      "addressRegion": cityData.district,
-      "population": cityData.population
+      "addressLocality": cityData.name,
+      "addressCountry": "PT"
     }
   };
 
@@ -120,143 +141,237 @@ export default function CityPage() {
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
-      keywords={pageData.keywords}
+      keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map(k => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
       structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
-      <div className="prose prose-lg max-w-none">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
-          {pageData.title}
-        </h1>
+      <VStack spacing={8} align="stretch">
+        {/* Header */}
+        <Box textAlign="center">
+          <Heading size="xl" color="gray.900" mb={4}>
+            {pageData.title}
+          </Heading>
+          <Text fontSize="lg" color="gray.600">
+            {pageData.metaDescription}
+          </Text>
+        </Box>
 
-        {/* City Overview */}
-        <div className="bg-green-50 border-l-4 border-green-400 p-6 mb-8">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg className="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-green-800">
-                Informação sobre {cityData.name}
-              </h3>
-              <div className="mt-2 text-sm text-green-700">
-                <p>{cityData.description}</p>
-                <div className="mt-2 grid grid-cols-2 gap-4">
-                  {cityData.population && (
-                    <p><strong>População:</strong> {cityData.population.toLocaleString('pt-PT')} habitantes</p>
-                  )}
-                  {cityData.district && (
-                    <p><strong>Distrito:</strong> {cityData.district}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* City Information */}
+        <Box>
+          <HStack spacing={4} mb={4} align="center">
+            <Box fontSize="4xl">📍</Box>
+            <Heading size="lg" color="gray.900">
+              Informação sobre {cityData.name}
+            </Heading>
+          </HStack>
+          
+          <Text color="gray.700" mb={6} lineHeight="tall">
+            {cityData.description || `${cityData.name} é uma cidade importante em Portugal com excelentes oportunidades de emprego.`}
+          </Text>
 
-        {/* Main Content */}
-        <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+            <GridItem>
+              <VStack align="stretch" spacing={3}>
+                <HStack>
+                  <Text fontWeight="bold" color="gray.900">População:</Text>
+                  <Text color="gray.700">{cityData.population?.toLocaleString() || 'N/A'} habitantes</Text>
+                </HStack>
+                <HStack>
+                  <Text fontWeight="bold" color="gray.900">Distrito:</Text>
+                  <Text color="gray.700">{cityData.district || cityData.name}</Text>
+                </HStack>
+              </VStack>
+            </GridItem>
+            <GridItem>
+              <Text color="gray.700" lineHeight="tall">
+                Procura emprego em {cityData.name}? Descubra como criar cartas de apresentação que se destacam no mercado de trabalho local.
+              </Text>
+            </GridItem>
+          </Grid>
+        </Box>
 
-        {/* Job Market Stats */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-blue-50 p-6 rounded-lg text-center">
-            <div className="text-2xl font-bold text-blue-600 mb-2">500+</div>
-            <div className="text-sm text-blue-800">Empresas Ativas</div>
-          </div>
-          <div className="bg-green-50 p-6 rounded-lg text-center">
-            <div className="text-2xl font-bold text-green-600 mb-2">1200+</div>
-            <div className="text-sm text-green-800">Vagas por Mês</div>
-          </div>
-          <div className="bg-purple-50 p-6 rounded-lg text-center">
-            <div className="text-2xl font-bold text-purple-600 mb-2">85%</div>
-            <div className="text-sm text-purple-800">Taxa de Emprego</div>
-          </div>
-        </div>
+        <Divider />
 
-        {/* Top Industries */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Principais Sectores em {cityData.name}
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Job Market in City */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={4}>
+            Oportunidades de Trabalho em {cityData.name}
+          </Heading>
+          
+          <Text color="gray.700" mb={6} lineHeight="tall">
+            {cityData.name} oferece um mercado de trabalho dinâmico com oportunidades em diversos sectores. A cidade destaca-se pela sua economia diversificada e qualidade de vida.
+          </Text>
+
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
             {relatedIndustries.slice(0, 6).map((industry, index) => (
-              <a
-                key={index}
-                href={`/cidade/${city}/${industry.slug}`}
-                className="block p-4 border border-gray-200 rounded-lg hover:border-yellow-400 hover:shadow-md transition-all"
-              >
-                <h3 className="font-semibold text-gray-900 mb-2">{industry.name}</h3>
-                <p className="text-sm text-gray-600 line-clamp-2">{industry.description}</p>
-                <div className="mt-2 text-sm text-yellow-600 font-medium">
-                  Ver oportunidades →
-                </div>
-              </a>
+              <GridItem key={index}>
+                <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+                  <a href={`/cidade/${city}/${industry.slug}`} style={{ textDecoration: 'none' }}>
+                    <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                      {industry.name} em {cityData.name}
+                    </Text>
+                  </a>
+                  <Text fontSize="sm" color="gray.600">
+                    Oportunidades de {industry.name} em {cityData.name}
+                  </Text>
+                </Box>
+              </GridItem>
             ))}
-          </div>
-        </div>
+          </Grid>
+        </Box>
+
+        <Divider />
 
         {/* FAQ Section */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Perguntas Frequentes</h2>
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Perguntas Frequentes
+          </Heading>
+          
+          <VStack spacing={6} align="stretch">
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
                 Como é o mercado de trabalho em {cityData.name}?
-              </h3>
-              <p className="text-gray-700">
-                {cityData.name} oferece um mercado de trabalho dinâmico com oportunidades em diversos sectores. 
-                A cidade destaca-se pela sua economia diversificada e qualidade de vida.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                {cityData.name} oferece um mercado de trabalho dinâmico com oportunidades em diversos sectores. A cidade destaca-se pela sua economia diversificada e qualidade de vida.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
                 Quais são os melhores sites para procurar emprego em {cityData.name}?
-              </h3>
-              <p className="text-gray-700">
-                Os principais sites incluem Net-Empregos, Sapo Emprego, LinkedIn, Indeed Portugal, 
-                e sites específicos das empresas locais. Muitas empresas também publicam vagas nas redes sociais.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                Os principais sites incluem Net-Empregos, Sapo Emprego, LinkedIn, Indeed Portugal, e sites específicos das empresas locais. Muitas empresas também publicam vagas nas redes sociais.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
                 Como adaptar a carta de apresentação para empresas em {cityData.name}?
-              </h3>
-              <p className="text-gray-700">
-                Mencione o seu conhecimento sobre a cidade, destaque a sua disponibilidade para trabalhar localmente, 
-                e demonstre interesse na comunidade empresarial de {cityData.name}.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                Mencione o seu conhecimento sobre a cidade, destaque a sua disponibilidade para trabalhar localmente, e demonstre interesse na comunidade empresarial de {cityData.name}.
+              </Text>
+            </Box>
+
+            <Box>
+              <Heading size="md" color="gray.900" mb={3}>
                 Qual é o custo de vida em {cityData.name}?
-              </h3>
-              <p className="text-gray-700">
-                O custo de vida em {cityData.name} varia conforme a zona, mas geralmente oferece um bom equilíbrio 
-                entre oportunidades profissionais e qualidade de vida comparado com outras cidades portuguesas.
-              </p>
-            </div>
-          </div>
-        </div>
+              </Heading>
+              <Text color="gray.700" lineHeight="tall">
+                O custo de vida em {cityData.name} varia conforme a zona, mas geralmente oferece um bom equilíbrio entre oportunidades profissionais e qualidade de vida comparado com outras cidades europeias.
+              </Text>
+            </Box>
+          </VStack>
+        </Box>
+
+        <Divider />
 
         {/* Call to Action */}
-        <div className="mt-12 p-8 bg-gradient-to-r from-green-400 to-green-500 rounded-lg text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
+        <Box bg="yellow.50" p={6} rounded="lg" border="1px" borderColor="yellow.200" textAlign="center">
+          <Heading size="lg" color="gray.900" mb={4}>
             Encontre o Seu Emprego em {cityData.name}
-          </h2>
-          <p className="text-green-100 mb-6">
+          </Heading>
+          <Text color="gray.700" mb={6}>
             Crie uma carta de apresentação personalizada que destaque a sua motivação para trabalhar em {cityData.name}.
-          </p>
-          <a 
-            href="/" 
-            className="inline-block bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            Criar Carta Agora
+          </Text>
+          <VStack spacing={4}>
+            <a href="/">
+              <Button colorScheme="yellow" size="lg">
+                Criar Carta Agora
+              </Button>
+            </a>
+            <a href="/">
+              <Button variant="outline" colorScheme="yellow" size="md">
+                Crie a Sua Carta Agora
+              </Button>
+            </a>
+          </VStack>
+        </Box>
+
+        {/* Related Content */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Conteúdo Relacionado
+          </Heading>
+          
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6}>
+            {[
+              { title: 'Administrador de Sistemas em Lisboa', href: '/cidade/lisboa/administrador-sistemas' },
+              { title: 'Oportunidades de Administrador de Sistemas em Lisboa', href: '/profissao/administrador-sistemas/lisboa' },
+              { title: 'Advogado em Lisboa', href: '/cidade/lisboa/advogado' },
+              { title: 'Oportunidades de Advogado em Lisboa', href: '/profissao/advogado/lisboa' },
+              { title: 'Analista de Sistemas em Lisboa', href: '/cidade/lisboa/analista-sistemas' },
+              { title: 'Oportunidades de Analista de Sistemas em Lisboa', href: '/profissao/analista-sistemas/lisboa' },
+              { title: 'Analista Financeiro em Lisboa', href: '/cidade/lisboa/analista-financeiro' },
+              { title: 'Oportunidades de Analista Financeiro em Lisboa', href: '/profissao/analista-financeiro/lisboa' },
+              { title: 'Assistente Administrativo em Lisboa', href: '/cidade/lisboa/assistente-administrativo' },
+              { title: 'Oportunidades de Assistente Administrativo em Lisboa', href: '/profissao/assistente-administrativo/lisboa' },
+              { title: 'Atendimento ao Cliente em Lisboa', href: '/cidade/lisboa/atendimento-cliente' },
+              { title: 'Oportunidades de Atendimento ao Cliente em Lisboa', href: '/profissao/atendimento-cliente/lisboa' }
+            ].map((item, index) => (
+              <GridItem key={index}>
+                <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                  <a href={item.href} style={{ textDecoration: 'none' }}>
+                    <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }}>
+                      {item.title}
+                    </Text>
+                  </a>
+                </Box>
+              </GridItem>
+            ))}
+          </Grid>
+        </Box>
+
+        {/* Additional Resources */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Recursos
+          </Heading>
+          
+          <List spacing={3}>
+            <ListItem>
+              <a href="/guia/como-escrever" style={{ textDecoration: 'none' }}>
+                <Text color="blue.600" _hover={{ color: 'blue.800' }}>
+                  Como Escrever uma Carta de Apresentação
+                </Text>
+              </a>
+            </ListItem>
+            <ListItem>
+              <a href="/guia/exemplos" style={{ textDecoration: 'none' }}>
+                <Text color="blue.600" _hover={{ color: 'blue.800' }}>
+                  Exemplos de Cartas de Apresentação
+                </Text>
+              </a>
+            </ListItem>
+            <ListItem>
+              <a href="/guia/dicas" style={{ textDecoration: 'none' }}>
+                <Text color="blue.600" _hover={{ color: 'blue.800' }}>
+                  Dicas para Procurar Emprego
+                </Text>
+              </a>
+            </ListItem>
+          </List>
+        </Box>
+
+        {/* Footer CTA */}
+        <Box bg="gray.50" p={6} rounded="lg" textAlign="center">
+          <Text fontSize="lg" color="gray.900" mb={4}>
+            Carta de Apresentação.pt
+          </Text>
+          <Text color="gray.600" mb={4}>
+            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
+          </Text>
+          <a href="/">
+            <Button colorScheme="yellow" size="md">
+              Use a nossa ferramenta AI para criar uma carta de apresentação personalizada em segundos.
+            </Button>
           </a>
-        </div>
-      </div>
+        </Box>
+      </VStack>
     </SeoPageLayout>
   );
 }

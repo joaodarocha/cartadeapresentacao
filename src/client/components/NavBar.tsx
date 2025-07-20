@@ -56,9 +56,9 @@ export default function NavBar() {
           </HStack>
         </Link>
         <Spacer />
-        
+
         {/* Resources Dropdown - Desktop */}
-        <Menu>
+        {/*<Menu>
           <MenuButton
             as={Button}
             aria-label="Recursos"
@@ -112,8 +112,8 @@ export default function NavBar() {
               <MenuItem>Braga</MenuItem>
             </Link>
           </MenuList>
-        </Menu>
-        
+        </Menu>*/}
+
         <ThemeSwitch />
 
         {user ? (
@@ -214,7 +214,7 @@ function MobileButton({
         <Link href='/cidade/lisboa'>
           <MenuItem>Lisboa</MenuItem>
         </Link>
-        
+
         {/* User-specific menu items */}
         {isUser ? (
           <>

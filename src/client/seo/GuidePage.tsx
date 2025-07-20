@@ -3,12 +3,37 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from 'wasp/client/operations';
 import { getSeoPage } from 'wasp/client/operations';
 import SeoPageLayout from './SeoPageLayout';
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Grid,
+  GridItem,
+  List,
+  ListItem,
+  Button,
+  Spinner,
+  Badge,
+  Divider,
+  useColorModeValue,
+  OrderedList,
+  UnorderedList,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription
+} from '@chakra-ui/react';
 
 export default function GuidePage() {
   const { topic } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pageData, setPageData] = useState<any>(null);
+
+  const bgColor = useColorModeValue('gray.50', 'gray.900');
+  const cardBg = useColorModeValue('white', 'gray.800');
 
   // Generate slug from topic parameter
   const guideSlug = `guia-${topic}`;
@@ -26,43 +51,41 @@ export default function GuidePage() {
     }
 
     if (seoPageError) {
-      setError('Guia não encontrado');
+      setError('Página não encontrada');
       setLoading(false);
     }
   }, [seoPageData, seoPageError]);
 
   if (loading || seoPageLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">A carregar guia...</p>
-        </div>
-      </div>
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={4}>
+          <Spinner size="lg" color="yellow.500" thickness="4px" />
+          <Text color="gray.600">A carregar...</Text>
+        </VStack>
+      </Box>
     );
   }
 
   if (error || !pageData) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Guia não encontrado</h1>
-          <p className="text-gray-600 mb-8">O guia que procura não existe ou foi removido.</p>
-          <a href="/guias" className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-md font-medium">
-            Ver Todos os Guias
+      <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
+        <VStack spacing={6} textAlign="center">
+          <Heading size="lg" color="gray.900">Página não encontrada</Heading>
+          <Text color="gray.600">O guia que procura não existe ou foi removido.</Text>
+          <a href="/">
+            <Button colorScheme="yellow" size="lg">
+              Voltar ao Início
+            </Button>
           </a>
-        </div>
-      </div>
+        </VStack>
+      </Box>
     );
   }
 
-  const topicName = topic?.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ') || 'Guia';
-
   const breadcrumbs = [
     { label: 'Guias', href: '/guias' },
-    { label: topicName }
+    { label: topic ? topic.charAt(0).toUpperCase() + topic.slice(1).replace('-', ' ') : 'Guia' }
   ];
 
   const relatedLinks = [
@@ -77,222 +100,377 @@ export default function GuidePage() {
       description: 'Modelos e templates gratuitos'
     },
     {
-      title: 'Erros Comuns a Evitar',
-      href: '/guia/erros-comuns',
-      description: 'Principais erros e como evitá-los'
+      title: 'Dicas para Procurar Emprego',
+      href: '/guia/dicas',
+      description: 'Estratégias eficazes de procura de emprego'
     },
     {
-      title: 'Dicas para Entrevistas',
+      title: 'Preparação para Entrevistas',
       href: '/guia/entrevistas',
-      description: 'Como se preparar para entrevistas'
-    },
-    {
-      title: 'Negociação Salarial',
-      href: '/guia/salarios',
-      description: 'Estratégias de negociação'
-    },
-    {
-      title: 'Procura de Emprego Online',
-      href: '/guia/procurar-emprego',
-      description: 'Melhores sites e estratégias'
+      description: 'Como se preparar para entrevistas de emprego'
     }
   ];
 
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": pageData.title,
+    "@type": "HowTo",
+    "name": pageData.title,
     "description": pageData.metaDescription,
     "url": `https://cartadeapresentacao.pt/guia/${topic}`,
-    "datePublished": new Date().toISOString(),
-    "dateModified": new Date().toISOString(),
-    "author": {
-      "@type": "Organization",
-      "name": "Carta de Apresentação"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Carta de Apresentação",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://cartadeapresentacao.pt/logo.png"
+    "image": "https://cartadeapresentacao.pt/images/guide-cover.jpg",
+    "totalTime": "PT30M",
+    "supply": ["Computador", "Acesso à internet", "Informações profissionais"],
+    "tool": ["Editor de texto", "Carta de Apresentação.pt"],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Preparação",
+        "text": "Reúna todas as informações necessárias sobre a sua experiência profissional"
+      },
+      {
+        "@type": "HowToStep", 
+        "name": "Estruturação",
+        "text": "Organize o conteúdo da carta seguindo uma estrutura lógica"
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Personalização",
+        "text": "Adapte a carta para a empresa e posição específica"
       }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://cartadeapresentacao.pt/guia/${topic}`
-    }
-  };
-
-  // Guide-specific content based on topic
-  const getGuideIcon = () => {
-    switch (topic) {
-      case 'como-escrever':
-        return (
-          <svg className="h-8 w-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-          </svg>
-        );
-      case 'exemplos':
-        return (
-          <svg className="h-8 w-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-        );
-      case 'entrevistas':
-        return (
-          <svg className="h-8 w-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg className="h-8 w-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
-        );
-    }
+    ]
   };
 
   return (
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
-      keywords={pageData.keywords}
+      keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map(k => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
       structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
-      <div className="prose prose-lg max-w-none">
-        {/* Guide Header */}
-        <div className="flex items-center mb-8">
-          <div className="flex-shrink-0 mr-4">
-            {getGuideIcon()}
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {pageData.title}
-            </h1>
-            <p className="text-lg text-gray-600">
-              {pageData.metaDescription}
-            </p>
-          </div>
-        </div>
+      <VStack spacing={8} align="stretch">
+        {/* Header */}
+        <Box textAlign="center">
+          <Heading size="xl" color="gray.900" mb={4}>
+            {pageData.title}
+          </Heading>
+          <Text fontSize="lg" color="gray.600">
+            {pageData.metaDescription}
+          </Text>
+        </Box>
 
-        {/* Reading Time and Difficulty */}
-        <div className="flex items-center space-x-6 mb-8 p-4 bg-gray-50 rounded-lg">
-          <div className="flex items-center text-sm text-gray-600">
-            <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-            </svg>
-            5-10 min de leitura
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-            Nível: Iniciante
-          </div>
-          <div className="flex items-center text-sm text-gray-600">
-            <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-            </svg>
-            Guia Completo
-          </div>
-        </div>
+        {/* Introduction */}
+        <Box>
+          <HStack spacing={4} mb={4} align="center">
+            <Box fontSize="4xl">📚</Box>
+            <Heading size="lg" color="gray.900">
+              Guia Completo
+            </Heading>
+          </HStack>
+          
+          <Text color="gray.700" mb={6} lineHeight="tall">
+            Este guia foi criado para o ajudar a dominar todos os aspetos relacionados com {topic?.replace('-', ' ')}. 
+            Siga os passos apresentados para obter os melhores resultados.
+          </Text>
 
-        {/* Main Content */}
-        <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+          <Alert status="info" rounded="lg">
+            <AlertIcon />
+            <Box>
+              <AlertTitle>Tempo estimado:</AlertTitle>
+              <AlertDescription>
+                30 minutos para ler e aplicar todas as dicas deste guia.
+              </AlertDescription>
+            </Box>
+          </Alert>
+        </Box>
 
-        {/* Quick Tips Box */}
-        <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center">
-            <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-            </svg>
-            Dicas Rápidas
-          </h3>
-          <ul className="space-y-2 text-blue-700">
-            <li>• Personalize sempre a sua carta para cada candidatura</li>
-            <li>• Mantenha um tom profissional mas autêntico</li>
-            <li>• Destaque conquistas específicas e mensuráveis</li>
-            <li>• Revise cuidadosamente antes de enviar</li>
-            <li>• Use uma estrutura clara e fácil de ler</li>
-          </ul>
-        </div>
+        <Divider />
 
-        {/* Related Guides */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Guias Relacionados</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relatedLinks.slice(0, 6).map((link, index) => (
-              <a
-                key={index}
-                href={link.href}
-                className="block p-6 bg-white border border-gray-200 rounded-lg hover:border-yellow-400 hover:shadow-md transition-all"
-              >
-                <h3 className="font-semibold text-gray-900 mb-2">{link.title}</h3>
-                <p className="text-sm text-gray-600 mb-3">{link.description}</p>
-                <div className="text-sm text-yellow-600 font-medium">
-                  Ler guia →
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
+        {/* Step-by-Step Guide */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Passos a Seguir
+          </Heading>
+          
+          <OrderedList spacing={6}>
+            <ListItem>
+              <Box>
+                <Heading size="md" color="gray.900" mb={3}>
+                  Preparação Inicial
+                </Heading>
+                <Text color="gray.700" lineHeight="tall" mb={4}>
+                  Antes de começar, reúna todas as informações necessárias sobre a sua experiência profissional, 
+                  formação académica e competências relevantes.
+                </Text>
+                <UnorderedList color="gray.600" spacing={2}>
+                  <ListItem>Currículo atualizado</ListItem>
+                  <ListItem>Informações sobre a empresa</ListItem>
+                  <ListItem>Descrição da vaga</ListItem>
+                  <ListItem>Exemplos de trabalhos anteriores</ListItem>
+                </UnorderedList>
+              </Box>
+            </ListItem>
 
-        {/* Action Steps */}
-        <div className="mt-12 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-            Próximos Passos
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                1
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Aplique o Conhecimento</h3>
-              <p className="text-sm text-gray-600">
-                Use as dicas deste guia na sua próxima carta de apresentação
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                2
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Pratique Regularmente</h3>
-              <p className="text-sm text-gray-600">
-                Crie várias versões e adapte para diferentes oportunidades
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-                3
-              </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Obtenha Feedback</h3>
-              <p className="text-sm text-gray-600">
-                Peça opinião a profissionais da área ou use a nossa ferramenta
-              </p>
-            </div>
-          </div>
-        </div>
+            <ListItem>
+              <Box>
+                <Heading size="md" color="gray.900" mb={3}>
+                  Estruturação do Conteúdo
+                </Heading>
+                <Text color="gray.700" lineHeight="tall" mb={4}>
+                  Organize o conteúdo seguindo uma estrutura lógica que facilite a leitura e compreensão.
+                </Text>
+                <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={4}>
+                  <GridItem>
+                    <Box bg="blue.50" p={4} rounded="lg">
+                      <Text fontWeight="semibold" color="blue.900" mb={2}>Introdução</Text>
+                      <Text fontSize="sm" color="blue.800">
+                        Apresente-se e mencione a posição de interesse
+                      </Text>
+                    </Box>
+                  </GridItem>
+                  <GridItem>
+                    <Box bg="green.50" p={4} rounded="lg">
+                      <Text fontWeight="semibold" color="green.900" mb={2}>Corpo</Text>
+                      <Text fontSize="sm" color="green.800">
+                        Destaque experiência e competências relevantes
+                      </Text>
+                    </Box>
+                  </GridItem>
+                  <GridItem>
+                    <Box bg="purple.50" p={4} rounded="lg">
+                      <Text fontWeight="semibold" color="purple.900" mb={2}>Conclusão</Text>
+                      <Text fontSize="sm" color="purple.800">
+                        Reforce o interesse e solicite uma entrevista
+                      </Text>
+                    </Box>
+                  </GridItem>
+                  <GridItem>
+                    <Box bg="orange.50" p={4} rounded="lg">
+                      <Text fontWeight="semibold" color="orange.900" mb={2}>Despedida</Text>
+                      <Text fontSize="sm" color="orange.800">
+                        Termine com uma despedida profissional
+                      </Text>
+                    </Box>
+                  </GridItem>
+                </Grid>
+              </Box>
+            </ListItem>
+
+            <ListItem>
+              <Box>
+                <Heading size="md" color="gray.900" mb={3}>
+                  Personalização
+                </Heading>
+                <Text color="gray.700" lineHeight="tall" mb={4}>
+                  Adapte cada carta para a empresa e posição específica. A personalização é fundamental para o sucesso.
+                </Text>
+                <VStack spacing={3} align="stretch">
+                  <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+                    <Text fontWeight="semibold" color="gray.900" mb={2}>Pesquise a Empresa</Text>
+                    <Text fontSize="sm" color="gray.700">
+                      Conheça a missão, valores e cultura da empresa para adaptar o seu discurso.
+                    </Text>
+                  </Box>
+                  <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+                    <Text fontWeight="semibold" color="gray.900" mb={2}>Analise a Vaga</Text>
+                    <Text fontSize="sm" color="gray.700">
+                      Identifique as competências e requisitos mais importantes mencionados na oferta.
+                    </Text>
+                  </Box>
+                  <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
+                    <Text fontWeight="semibold" color="gray.900" mb={2}>Use Palavras-Chave</Text>
+                    <Text fontSize="sm" color="gray.700">
+                      Inclua termos específicos da área e da empresa para mostrar alinhamento.
+                    </Text>
+                  </Box>
+                </VStack>
+              </Box>
+            </ListItem>
+          </OrderedList>
+        </Box>
+
+        <Divider />
+
+        {/* Best Practices */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={4}>
+            Melhores Práticas
+          </Heading>
+          
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+            <GridItem>
+              <VStack spacing={4} align="stretch">
+                <Box bg="green.50" p={4} rounded="lg" border="1px" borderColor="green.200">
+                  <Text fontWeight="bold" color="green.800" mb={2}>✅ Faça</Text>
+                  <UnorderedList color="green.700" spacing={1}>
+                    <ListItem>Seja conciso e objetivo</ListItem>
+                    <ListItem>Use exemplos concretos</ListItem>
+                    <ListItem>Revise cuidadosamente</ListItem>
+                    <ListItem>Personalize cada carta</ListItem>
+                    <ListItem>Mantenha um tom profissional</ListItem>
+                  </UnorderedList>
+                </Box>
+              </VStack>
+            </GridItem>
+            <GridItem>
+              <VStack spacing={4} align="stretch">
+                <Box bg="red.50" p={4} rounded="lg" border="1px" borderColor="red.200">
+                  <Text fontWeight="bold" color="red.800" mb={2}>❌ Evite</Text>
+                  <UnorderedList color="red.700" spacing={1}>
+                    <ListItem>Cartas genéricas</ListItem>
+                    <ListItem>Erros ortográficos</ListItem>
+                    <ListItem>Informação irrelevante</ListItem>
+                    <ListItem>Tom demasiado informal</ListItem>
+                    <ListItem>Cartas muito longas</ListItem>
+                  </UnorderedList>
+                </Box>
+              </VStack>
+            </GridItem>
+          </Grid>
+        </Box>
+
+        <Divider />
+
+        {/* Common Mistakes */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={4}>
+            Erros Comuns a Evitar
+          </Heading>
+          
+          <VStack spacing={4} align="stretch">
+            <Alert status="warning" rounded="lg">
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Carta Genérica</AlertTitle>
+                <AlertDescription>
+                  Usar a mesma carta para todas as candidaturas é um erro grave. Cada empresa é única.
+                </AlertDescription>
+              </Box>
+            </Alert>
+
+            <Alert status="error" rounded="lg">
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Foco Apenas em Si</AlertTitle>
+                <AlertDescription>
+                  Concentre-se no que pode oferecer à empresa, não apenas no que espera receber.
+                </AlertDescription>
+              </Box>
+            </Alert>
+
+            <Alert status="warning" rounded="lg">
+              <AlertIcon />
+              <Box>
+                <AlertTitle>Falta de Pesquisa</AlertTitle>
+                <AlertDescription>
+                  Não pesquisar sobre a empresa demonstra falta de interesse genuíno na posição.
+                </AlertDescription>
+              </Box>
+            </Alert>
+          </VStack>
+        </Box>
+
+        <Divider />
 
         {/* Call to Action */}
-        <div className="mt-12 p-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-lg text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            Pronto para Criar a Sua Carta?
-          </h2>
-          <p className="text-yellow-100 mb-6">
-            Use a nossa ferramenta AI para aplicar todas estas dicas automaticamente.
-          </p>
-          <a 
-            href="/" 
-            className="inline-block bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-          >
-            Começar Agora - É Grátis
+        <Box bg="yellow.50" p={6} rounded="lg" border="1px" borderColor="yellow.200" textAlign="center">
+          <Heading size="lg" color="gray.900" mb={4}>
+            Pronto para Aplicar o Que Aprendeu?
+          </Heading>
+          <Text color="gray.700" mb={6}>
+            Use a nossa ferramenta AI para criar uma carta de apresentação profissional seguindo todas as melhores práticas.
+          </Text>
+          <VStack spacing={4}>
+            <a href="/">
+              <Button colorScheme="yellow" size="lg">
+                Criar Carta Agora
+              </Button>
+            </a>
+            <a href="/">
+              <Button variant="outline" colorScheme="yellow" size="md">
+                Começar Gratuitamente
+              </Button>
+            </a>
+          </VStack>
+        </Box>
+
+        {/* Related Guides */}
+        <Box>
+          <Heading size="lg" color="gray.900" mb={6}>
+            Guias Relacionados
+          </Heading>
+          
+          <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/como-escrever" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Como Escrever uma Carta de Apresentação
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Guia completo passo a passo para criar cartas eficazes
+                </Text>
+              </Box>
+            </GridItem>
+            
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/exemplos" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Exemplos de Cartas de Apresentação
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Modelos e exemplos práticos para diferentes situações
+                </Text>
+              </Box>
+            </GridItem>
+            
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/dicas" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Dicas para Procurar Emprego
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Estratégias eficazes para encontrar oportunidades
+                </Text>
+              </Box>
+            </GridItem>
+            
+            <GridItem>
+              <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
+                <a href="/guia/entrevistas" style={{ textDecoration: 'none' }}>
+                  <Text fontWeight="semibold" color="blue.600" _hover={{ color: 'blue.800' }} mb={2}>
+                    Preparação para Entrevistas
+                  </Text>
+                </a>
+                <Text fontSize="sm" color="gray.600">
+                  Como se preparar para entrevistas de emprego
+                </Text>
+              </Box>
+            </GridItem>
+          </Grid>
+        </Box>
+
+        {/* Footer CTA */}
+        <Box bg="gray.50" p={6} rounded="lg" textAlign="center">
+          <Text fontSize="lg" color="gray.900" mb={4}>
+            Carta de Apresentação.pt
+          </Text>
+          <Text color="gray.600" mb={4}>
+            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
+          </Text>
+          <a href="/">
+            <Button colorScheme="yellow" size="md">
+              Transforme este conhecimento numa carta vencedora
+            </Button>
           </a>
-        </div>
-      </div>
+        </Box>
+      </VStack>
     </SeoPageLayout>
   );
 }

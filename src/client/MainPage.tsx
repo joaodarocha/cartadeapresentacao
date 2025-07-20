@@ -34,7 +34,7 @@ import {
   RadioGroup,
   Radio,
   Tooltip,
-  useDisclosure,
+  useDisclosure, Highlight,
 } from '@chakra-ui/react';
 import BorderBox from './components/BorderBox';
 import { LeaveATip, LoginToBegin } from './components/AlertDialog';
@@ -93,7 +93,8 @@ function MainPage() {
       setJobToFetch(jobIdParam);
       setIsCoverLetterUpdate(true);
       resetJob();
-    } else {
+    }
+    else {
       setIsCoverLetterUpdate(false);
       reset({
         title: '',
@@ -133,7 +134,7 @@ function MainPage() {
 
     fileReader.onload = function () {
       // turn array buffer into typed array
-      if (this.result == null || !(this.result instanceof ArrayBuffer)) {
+      if (this.result == null || !( this.result instanceof ArrayBuffer )) {
         return;
       }
       const typedarray = new Uint8Array(this.result);
@@ -143,30 +144,30 @@ function MainPage() {
       const loadingTask = pdfjsLib.getDocument(typedarray);
       let textBuilder: string = '';
       loadingTask.promise
-        .then(async (pdf) => {
-          // Loop through each page in the PDF file
-          for (let i = 1; i <= pdf.numPages; i++) {
-            // Get the text content for the page
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            const text = content.items
-              .map((item: any) => {
-                if (item.str) {
-                  return item.str;
-                }
-                return '';
-              })
-              .join(' ');
-            textBuilder += text;
-          }
-          setIsPdfReady(true);
-          setValue('pdf', textBuilder);
-          clearErrors('pdf');
-        })
-        .catch((err) => {
-          alert('Ocorreu um erro ao carregar o seu PDF. Por favor, tente novamente.');
-          console.error(err);
-        });
+                 .then(async (pdf) => {
+                   // Loop through each page in the PDF file
+                   for (let i = 1; i <= pdf.numPages; i++) {
+                     // Get the text content for the page
+                     const page = await pdf.getPage(i);
+                     const content = await page.getTextContent();
+                     const text = content.items
+                                         .map((item: any) => {
+                                           if (item.str) {
+                                             return item.str;
+                                           }
+                                           return '';
+                                         })
+                                         .join(' ');
+                     textBuilder += text;
+                   }
+                   setIsPdfReady(true);
+                   setValue('pdf', textBuilder);
+                   clearErrors('pdf');
+                 })
+                 .catch((err) => {
+                   alert('Ocorreu um erro ao carregar o seu PDF. Por favor, tente novamente.');
+                   console.error(err);
+                 });
     };
     // Read the file as ArrayBuffer
     try {
@@ -186,7 +187,8 @@ function MainPage() {
           lnPayment = await updateLnPayment(invoice);
           setLightningInvoice(invoice);
           lnPaymentOnOpen();
-        } else {
+        }
+        else {
           throw new Error('fetching lightning invoice failed');
         }
 
@@ -211,7 +213,8 @@ function MainPage() {
     if (user.subscriptionStatus === 'past_due') {
       navigate('/profile')
       return true;
-    } else {
+    }
+    else {
       return false;
     }
   }
@@ -309,20 +312,21 @@ function MainPage() {
   function handleFileButtonClick() {
     if (!fileInputRef.current) {
       return;
-    } else {
+    }
+    else {
       fileInputRef.current.click();
     }
   }
 
   function setLoadingText() {
     setLoadingTextTimeout = setTimeout(() => {
-      loadingTextRef.current && (loadingTextRef.current.innerText = ' paciência, meu amigo 🧘...');
+      loadingTextRef.current && ( loadingTextRef.current.innerText = ' paciência, meu amigo 🧘...' );
     }, 2000);
   }
 
   function cancelLoadingText() {
     clearTimeout(setLoadingTextTimeout);
-    loadingTextRef.current && (loadingTextRef.current.innerText = '');
+    loadingTextRef.current && ( loadingTextRef.current.innerText = '' );
   }
 
   function hasUserPaidOrActiveTrial(): Boolean {
@@ -341,21 +345,26 @@ function MainPage() {
       }
       if (user.hasPaid) {
         return true;
-      } else if (!user.hasPaid) {
+      }
+      else if (!user.hasPaid) {
         return false;
       }
     }
     return false;
   }
 
-  const showForm = (isCoverLetterUpdate && job) || !isCoverLetterUpdate;
+  const showForm = ( isCoverLetterUpdate && job ) || !isCoverLetterUpdate;
   const showSpinner = isCoverLetterUpdate && isJobLoading;
   const showJobNotFound = isCoverLetterUpdate && !job && !isJobLoading;
 
   return (
     <>
-      <Text fontSize='4xl' align='center' fontWeight={600}>A Carta de Apresentação que Abre Portas </Text>
-      <Text fontSize='2xl' color='gray.300' mt={2} fontWeight={600}>Personalizada para ti. Gerada em Segundos.</Text>
+      <Heading as='h1' fontSize='4xl' ml={2} mr={2} fontWeight={600}>
+        Cria a tua carta em segundos
+      </Heading>
+      <Heading fontSize='xl' color='gray.300' mt={2} ml={2} fontWeight={600}>
+        Destaca-te sem escrever uma única linha
+      </Heading>
       <Box
         layerStyle='card'
         px={4}
@@ -367,19 +376,19 @@ function MainPage() {
         _hover={{ bgColor: 'bg-contrast-xs' }}
         transition='0.1s ease-in-out'
       >
-        <Text fontSize='md'>✅ {(coverLetterCount ? coverLetterCount + 125 : 125)?.toLocaleString()} Cartas geradas!</Text>
+        <Text fontSize='md'>✅ {( coverLetterCount ? coverLetterCount + 125 : 125 )?.toLocaleString()} Cartas
+          geradas!</Text>
       </Box>
       <BorderBox>
         <form
           onSubmit={!isCoverLetterUpdate ? handleSubmit(onSubmit) : handleSubmit(onUpdate)}
           style={{ width: '100%' }}
         >
+          <Heading size={'md'} alignSelf={'start'} mb={3} w='full'>
+            Informações do Emprego {isCoverLetterUpdate && <Code ml={1}>A editar...</Code>}
+          </Heading>
 
-            <Heading size={'md'} alignSelf={'start'} mb={3} w='full'>
-              Informações do Emprego {isCoverLetterUpdate && <Code ml={1}>A editar...</Code>}
-            </Heading>
-
-          {showSpinner && <Spinner />}
+          {showSpinner && <Spinner/>}
           {showForm && (
             <>
               <FormControl isInvalid={!!formErrors.title}>
@@ -493,7 +502,7 @@ function MainPage() {
                   </FormHelperText>
                 </VStack>
               </FormControl>
-              {(user?.gptModel === 'gpt-4' || user?.gptModel === 'gpt-4o') && (
+              {( user?.gptModel === 'gpt-4' || user?.gptModel === 'gpt-4o' ) && (
                 <FormControl>
                   <VStack
                     border={'sm'}
@@ -552,7 +561,7 @@ function MainPage() {
                     onMouseLeave={() => setShowTooltip(false)}
                   >
                     <SliderTrack>
-                      <SliderFilledTrack />
+                      <SliderFilledTrack/>
                     </SliderTrack>
                     <Tooltip
                       hasArrow
@@ -562,7 +571,7 @@ function MainPage() {
                       isOpen={showTooltip}
                       label={`${convertToSliderLabel(sliderValue)}`}
                     >
-                      <SliderThumb />
+                      <SliderThumb/>
                     </Tooltip>
                   </Slider>
                   <FormLabel
@@ -641,8 +650,8 @@ function MainPage() {
         credits={user?.credits || 0}
         isUsingLn={user?.isUsingLn || false}
       />
-      <LoginToBegin isOpen={loginIsOpen} onOpen={loginOnOpen} onClose={loginOnClose} />
-      <LnPaymentModal isOpen={lnPaymentIsOpen} onClose={lnPaymentOnClose} lightningInvoice={lightningInvoice} />
+      <LoginToBegin isOpen={loginIsOpen} onOpen={loginOnOpen} onClose={loginOnClose}/>
+      <LnPaymentModal isOpen={lnPaymentIsOpen} onClose={lnPaymentOnClose} lightningInvoice={lightningInvoice}/>
     </>
   );
 }
