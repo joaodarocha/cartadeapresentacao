@@ -138,7 +138,7 @@ export const getSeoSitemap = async (args, context) => {
 
   // Transform to sitemap format
   const sitemapData = seoPages.map(page => ({
-    url: `https://cartadeapresentacao.pt/${page.slug}`,
+    url: `${process.env.WASP_WEB_CLIENT_URL || 'https://cartadeapresentacao.pt'}/${page.slug}`,
     lastModified: page.updatedAt.toISOString(),
     changeFrequency: getCategoryChangeFrequency(page.category),
     priority: getCategoryPriority(page.category),
@@ -164,7 +164,7 @@ export const xmlSitemapApi = async (req, res, context) => {
       orderBy: { updatedAt: 'desc' },
     });
 
-    const baseUrl = 'https://cartadeapresentacao.pt';
+    const baseUrl = process.env.WASP_WEB_CLIENT_URL || 'https://cartadeapresentacao.pt';
     
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
@@ -234,7 +234,7 @@ export const generateXmlSitemap = async (args, context) => {
     orderBy: { updatedAt: 'desc' },
   });
 
-  const baseUrl = 'https://cartadeapresentacao.pt';
+  const baseUrl = process.env.WASP_WEB_CLIENT_URL || 'https://cartadeapresentacao.pt';
   
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;

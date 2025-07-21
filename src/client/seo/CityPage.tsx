@@ -141,7 +141,7 @@ export default function CityPage() {
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
-      keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map(k => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
+      keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
       structuredData={structuredData}
       relatedLinks={relatedLinks}

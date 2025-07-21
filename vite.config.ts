@@ -5,10 +5,11 @@ export default defineConfig({
     open: true,
     proxy: {
       '/sitemap.xml': {
-        target: 'http://localhost:3001',
+        target: process.env.REACT_APP_API_URL || 'http://localhost:3001',
         changeOrigin: true,
         rewrite: (path) => path
       }
     }
   },
 })
+
