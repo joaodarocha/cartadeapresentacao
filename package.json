@@ -3,10 +3,14 @@
   "type": "module",
   "scripts": {
     "build": "wasp build",
-    "deploy": "npm run build && npm run deploy-server && npm run deploy-client",
+    "deploy": "npm run build && npm run deploy-server && ./seed-production.sh && npm run generate-sitemap && npm run deploy-client",
     "deploy-server": "cd .wasp/build && railway up --service server --detach && cd ../..",
     "deploy-client": "REACT_APP_API_URL=https://api.cartadeapresentacao.pt/ REACT_APP_ANALYTICS_ID=G-JVQC97V2GV ./deploy_client.sh",
-    "seed": "tsx src/server/seeds/seedDatabase.ts"
+    "seed": "tsx src/server/seeds/seedDatabase.ts",
+    "seed-production": "railway run --service server -- npm run db:seed",
+    "seed-production-manual": "./seed-production.sh",
+    "db:seed": "tsx src/server/seeds/seedDatabase.ts",
+    "generate-sitemap": "node generate-static-sitemap.js"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.2.4",

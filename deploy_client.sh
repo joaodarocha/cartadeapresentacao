@@ -28,6 +28,6 @@ EOF
 echo "$dockerfile_contents" > Dockerfile
 echo "$dockerignore_contents" > .dockerignore
 
-railway up --service client --detach
+railway up --service client
 
 exit 0

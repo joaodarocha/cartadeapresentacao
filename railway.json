@@ -1,0 +1,32 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "restartPolicyType": "ON_FAILURE",
+    "sleepApplication": false,
+    "cronJobs": []
+  },
+  "environments": {
+    "production": {
+      "variables": {
+        "NODE_ENV": "production"
+      },
+      "deployments": {
+        "server": {
+          "buildCommand": "npm install && npm run build",
+          "startCommand": "npm run start",
+          "healthcheckPath": "/",
+          "healthcheckTimeout": 300,
+          "proxy": {
+            "/sitemap.xml": {
+              "target": "http://backend-api",
+              "changeOrigin": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
