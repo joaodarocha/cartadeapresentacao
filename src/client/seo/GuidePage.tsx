@@ -64,7 +64,7 @@ export default function GuidePage() {
     return (
       <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
         <VStack spacing={4}>
-          <Spinner size="lg" color="yellow.500" thickness="4px" />
+          <Spinner size="lg" color="blue.500" thickness="4px" />
           <Text color="gray.600">A carregar...</Text>
         </VStack>
       </Box>
@@ -78,7 +78,7 @@ export default function GuidePage() {
           <Heading size="lg" color="gray.900">Página não encontrada</Heading>
           <Text color="gray.600">O guia que procura não existe ou foi removido.</Text>
           <a href="/">
-            <Button colorScheme="yellow" size="lg">
+            <Button colorScheme="blue" size="lg">
               Voltar ao Início
             </Button>
           </a>
@@ -378,7 +378,7 @@ export default function GuidePage() {
         <Divider />
 
         {/* Call to Action */}
-        <Box bg="yellow.50" p={6} rounded="lg" border="1px" borderColor="yellow.200" textAlign="center">
+        <Box bg="blue.50" p={6} rounded="lg" border="1px" borderColor="blue.200" textAlign="center">
           <Heading size="lg" color="gray.900" mb={4}>
             Pronto para Aplicar o Que Aprendeu?
           </Heading>
@@ -387,12 +387,12 @@ export default function GuidePage() {
           </Text>
           <VStack spacing={4}>
             <a href="/">
-              <Button colorScheme="yellow" size="lg">
+              <Button colorScheme="blue" size="lg">
                 Criar Carta Agora
               </Button>
             </a>
             <a href="/">
-              <Button variant="outline" colorScheme="yellow" size="md">
+              <Button variant="outline" colorScheme="blue" size="md">
                 Começar Gratuitamente
               </Button>
             </a>
@@ -469,7 +469,7 @@ export default function GuidePage() {
             A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
           </Text>
           <a href="/">
-            <Button colorScheme="yellow" size="md">
+            <Button colorScheme="blue" size="md">
               Transforme este conhecimento numa carta vencedora
             </Button>
           </a>

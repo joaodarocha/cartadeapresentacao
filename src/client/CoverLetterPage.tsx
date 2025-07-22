@@ -99,7 +99,7 @@ export default function CoverLetterPage() {
               hasArrow
               closeOnClick={false}
             >
-              <Button colorScheme='purple' size='sm' mr={3} onClick={onCopy}>
+              <Button colorScheme='blue' size='sm' mr={3} onClick={onCopy}>
                 Copiar
               </Button>
             </Tooltip>

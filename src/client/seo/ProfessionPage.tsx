@@ -96,7 +96,7 @@ export default function ProfessionPage() {
           <Heading size="lg" color="gray.900">Página não encontrada</Heading>
           <Text color="gray.600">A profissão que procura não existe ou foi removida.</Text>
           <Link to="/">
-            <Button colorScheme="yellow" size="lg">
+            <Button colorScheme="blue" size="lg">
               Voltar ao Início
             </Button>
           </Link>
@@ -329,7 +329,7 @@ export default function ProfessionPage() {
         <Divider />
 
         {/* Call to Action */}
-        <Box bg="yellow.50" p={6} rounded="lg" border="1px" borderColor="yellow.200" textAlign="center">
+        <Box bg="blue.50" p={6} rounded="lg" border="1px" borderColor="blue.200" textAlign="center">
           <Heading size="lg" color="gray.900" mb={4}>
             Destaque-se como {industryData.name}
           </Heading>
@@ -338,12 +338,12 @@ export default function ProfessionPage() {
           </Text>
           <VStack spacing={4}>
             <a href="/" style={{ textDecoration: 'none' }}>
-              <Button colorScheme="yellow" size="lg">
+              <Button colorScheme="blue" size="lg">
                 Criar Carta Agora
               </Button>
             </a>
             <a href="/" style={{ textDecoration: 'none' }}>
-              <Button variant="outline" colorScheme="yellow" size="md">
+              <Button variant="outline" colorScheme="blue" size="md">
                 Começar Agora
               </Button>
             </a>
@@ -425,7 +425,7 @@ export default function ProfessionPage() {
             A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
           </Text>
           <a href="/" style={{ textDecoration: 'none' }}>
-            <Button colorScheme="yellow" size="md">
+            <Button colorScheme="blue" size="md">
               Crie a sua carta personalizada em segundos
             </Button>
           </a>

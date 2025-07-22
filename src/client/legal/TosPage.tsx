@@ -281,8 +281,8 @@ const TermsOfService = () => {
                 href="https://stripe.com/docs/security" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                color="purple.600"
-                _hover={{ color: 'purple.800' }}
+                color="blue.600"
+                _hover={{ color: 'blue.800' }}
                 ml={1}
               >
                 Stripe's Security Documentation

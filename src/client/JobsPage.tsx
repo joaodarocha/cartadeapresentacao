@@ -155,7 +155,7 @@ function JobsPage({ user }: { user: User }) {
                         <Button onClick={() => coverLetterHandler(job)} size='sm'>
                           Mostrar Cartas de Apresentação
                         </Button>
-                        <Button colorScheme='purple' onClick={() => updateCoverLetterHandler(job.id)} size='sm'>
+                        <Button colorScheme='blue' onClick={() => updateCoverLetterHandler(job.id)} size='sm'>
                           Criar Carta de Apresentação Adicional
                         </Button>
                       </HStack>
@@ -169,7 +169,7 @@ function JobsPage({ user }: { user: User }) {
           </Accordion>
         )}
       </BorderBox>
-      <Button size='sm' mt={3} colorScheme='purple' alignSelf='flex-end' onClick={() => navigate('/')}>
+      <Button size='sm' mt={3} colorScheme='blue' alignSelf='flex-end' onClick={() => navigate('/')}>
         Criar Novo Emprego
       </Button>
       {coverLetter && coverLetter.length > 0 && (

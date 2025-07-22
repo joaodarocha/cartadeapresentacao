@@ -79,7 +79,7 @@ export default function CityProfessionPage() {
     return (
       <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
         <VStack spacing={4}>
-          <Spinner size="lg" color="yellow.500" thickness="4px" />
+          <Spinner size="lg" color="blue.500" thickness="4px" />
           <Text color="gray.600">A carregar...</Text>
         </VStack>
       </Box>
@@ -93,7 +93,7 @@ export default function CityProfessionPage() {
           <Heading size="lg" color="gray.900">Página não encontrada</Heading>
           <Text color="gray.600">A combinação de cidade e profissão que procura não existe.</Text>
           <a href="/">
-            <Button colorScheme="yellow" size="lg">
+            <Button colorScheme="blue" size="lg">
               Voltar ao Início
             </Button>
           </a>
@@ -367,7 +367,7 @@ export default function CityProfessionPage() {
         <Divider />
 
         {/* Call to Action */}
-        <Box bg="yellow.50" p={6} rounded="lg" border="1px" borderColor="yellow.200" textAlign="center">
+        <Box bg="blue.50" p={6} rounded="lg" border="1px" borderColor="blue.200" textAlign="center">
           <Heading size="lg" color="gray.900" mb={4}>
             Candidate-se a {industryData.name} em {cityData.name}
           </Heading>
@@ -376,12 +376,12 @@ export default function CityProfessionPage() {
           </Text>
           <VStack spacing={4}>
             <a href="/">
-              <Button colorScheme="yellow" size="lg">
+              <Button colorScheme="blue" size="lg">
                 Criar Carta Personalizada
               </Button>
             </a>
             <a href="/">
-              <Button variant="outline" colorScheme="yellow" size="md">
+              <Button variant="outline" colorScheme="blue" size="md">
                 Começar Agora
               </Button>
             </a>
@@ -458,7 +458,7 @@ export default function CityProfessionPage() {
             A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
           </Text>
           <a href="/">
-            <Button colorScheme="yellow" size="md">
+            <Button colorScheme="blue" size="md">
               Crie a sua carta personalizada para {industryData.name} em {cityData.name}
             </Button>
           </a>
