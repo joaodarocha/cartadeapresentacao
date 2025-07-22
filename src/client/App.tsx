@@ -1,6 +1,7 @@
 import { useAuth } from 'wasp/client/auth';
 import { env } from 'wasp/client'
 import { ChakraProvider, VStack, Box, Spacer } from '@chakra-ui/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { theme } from './theme';
 import { useState, useEffect, createContext } from 'react';
 import NavBar from './components/NavBar';
@@ -8,7 +9,6 @@ import { Footer } from './components/CallToAction';
 import { EditPopover } from './components/Popover';
 import { useLocation, Outlet } from 'react-router-dom';
 import ReactGA from 'react-ga4';
-
 
 export const TextareaContext = createContext({
   textareaState: '',
@@ -81,31 +81,33 @@ export default function App() {
   }, [tooltip, location, isLnPayPending]);
 
   return (
-    <ChakraProvider theme={theme}>
-      <TextareaContext.Provider
-        value={{
-          textareaState,
-          setTextareaState,
-          isLnPayPending,
-          setIsLnPayPending,
-        }}
-      >
-        <Box
-          top={tooltip?.y}
-          left={tooltip?.x}
-          display={tooltip?.text ? 'block' : 'none'}
-          position='absolute'
-          zIndex={100}
+    <HelmetProvider>
+      <ChakraProvider theme={theme}>
+        <TextareaContext.Provider
+          value={{
+            textareaState,
+            setTextareaState,
+            isLnPayPending,
+            setIsLnPayPending,
+          }}
         >
-          {!!user && <EditPopover setTooltip={setTooltip} user={user}/>}
-        </Box>
-        <VStack gap={5} minHeight='100vh'>
-          <NavBar/>
-          <Outlet/>
-          <Spacer/>
-          <Footer/>
-        </VStack>
-      </TextareaContext.Provider>
-    </ChakraProvider>
+          <Box
+            top={tooltip?.y}
+            left={tooltip?.x}
+            display={tooltip?.text ? 'block' : 'none'}
+            position='absolute'
+            zIndex={100}
+          >
+            {!!user && <EditPopover setTooltip={setTooltip} user={user}/>}
+          </Box>
+          <VStack gap={5} minHeight='100vh'>
+            <NavBar/>
+            <Outlet/>
+            <Spacer/>
+            <Footer/>
+          </VStack>
+        </TextareaContext.Provider>
+      </ChakraProvider>
+    </HelmetProvider>
   );
 }
