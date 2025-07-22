@@ -23,6 +23,11 @@ import {
   Wrap,
   WrapItem
 } from '@chakra-ui/react';
+import StructuredData, { 
+  createWebPageData, 
+  createJobPostingData,
+  createLocalBusinessData 
+} from '../components/StructuredData';
 
 export default function CityProfessionPage() {
   const { city, profession } = useParams();
@@ -121,31 +126,35 @@ export default function CityProfessionPage() {
     }
   ];
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": pageData.title,
-    "description": pageData.metaDescription,
-    "url": `https://cartadeapresentacao.pt/cidade/${city}/${profession}`,
-    "about": [
-      {
-        "@type": "Place",
-        "name": cityData.name,
-        "addressLocality": cityData.name,
-        "addressCountry": "PT"
-      },
-      {
-        "@type": "Occupation",
-        "name": industryData.name,
-        "description": industryData.description
-      }
-    ]
-  };
+  // Create structured data
+  const webPageData = createWebPageData(
+    pageData.title,
+    pageData.metaDescription,
+    `https://cartadeapresentacao.pt/cidade/${city}/profissao/${profession}`
+  );
 
   // Parse skills if they're stored as a string
-  const skills = typeof industryData.skills === 'string'
+  const skills = typeof industryData.skills === 'string' 
     ? industryData.skills.split(',').map((s: string) => s.trim())
     : industryData.skills || [];
+
+  const jobPostingData = createJobPostingData(
+    industryData.name,
+    industryData.description,
+    cityData.name, // city
+    industryData.name, // industry
+    skills,
+    industryData.salaryMin,
+    industryData.salaryMax || industryData.averageSalary
+  );
+
+  const localBusinessData = createLocalBusinessData(
+    `${industryData.name} em ${cityData.name}`,
+    `Oportunidades de ${industryData.name} em ${cityData.name}, Portugal`,
+    cityData.name,
+    `https://cartadeapresentacao.pt/cidade/${city}/profissao/${profession}`,
+    cityData.region
+  );
 
   return (
     <SeoPageLayout
@@ -153,9 +162,9 @@ export default function CityProfessionPage() {
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
-      structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
+      <StructuredData data={[webPageData, jobPostingData, localBusinessData]} />
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">

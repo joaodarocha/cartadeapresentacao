@@ -20,6 +20,10 @@ import {
   useColorModeValue
 } from '@chakra-ui/react';
 import { Link } from 'wasp/client/router';
+import StructuredData, { 
+  createWebPageData, 
+  createOrganizationData 
+} from '../components/StructuredData';
 
 export default function SectorPage() {
   const { sector } = useParams();
@@ -124,18 +128,14 @@ export default function SectorPage() {
     }
   ];
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": pageData.title,
-    "description": pageData.metaDescription,
-    "url": `https://cartadeapresentacao.pt/sector/${sector}`,
-    "about": {
-      "@type": "Industry",
-      "name": sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Sector',
-      "description": `Profissões e oportunidades no sector de ${sector}`
-    }
-  };
+  // Create structured data
+  const webPageData = createWebPageData(
+    pageData.title,
+    pageData.metaDescription,
+    `https://cartadeapresentacao.pt/setor/${sector}`
+  );
+
+  const organizationData = createOrganizationData();
 
   return (
     <SeoPageLayout
@@ -143,9 +143,9 @@ export default function SectorPage() {
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
-      structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
+      <StructuredData data={[webPageData, organizationData]} />
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">

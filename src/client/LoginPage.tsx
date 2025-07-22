@@ -15,7 +15,6 @@ export default function Login() {
   const [lnLoginStatus, setLnLoginStatus] = useState<string>('');
   const { data: lnUserInfo, refetch: fetchLnUser } = useQuery(getLnUserInfo, k1Hash, { enabled: !!k1Hash });
   const { data: user, isLoading } = useAuth();
-  const { onOpen, onClose, isOpen } = useDisclosure();
 
   const navigate = useNavigate();
 
@@ -50,25 +49,6 @@ export default function Login() {
     }
   }, [lnUserInfo]);
 
-  const handleWalletClick = () => {
-    if (!encodedUrl) return;
-    onOpen();
-    setLnIsLoading(true);
-    let interval: any = null;
-    if (interval) clearInterval(interval);
-    interval = setInterval(async () => {
-      fetchLnUser();
-    }, 1000);
-
-    setTimeout(() => {
-      if (!lnUserInfo?.token || !user) {
-        clearInterval(interval);
-        setLnIsLoading(false);
-        alert('Tempo limite de login excedido. Por favor, tente novamente.');
-      }
-    }, 60000);
-  };
-
   return (
     <>
       <BorderBox>
@@ -79,20 +59,9 @@ export default function Login() {
             <a href={signInUrl}>
               <Button leftIcon={<AiOutlineGoogle />}>Iniciar Sessão com Google</Button>
             </a>
-            <Button isLoading={lnIsLoading} onClick={handleWalletClick} leftIcon={<BsCurrencyBitcoin />}>
-              {' '}
-              Iniciar Sessão com Lightning
-            </Button>
           </VStack>
         )}
       </BorderBox>
-      <LnLoginModal
-        handleWalletClick={handleWalletClick}
-        status={lnLoginStatus}
-        encodedUrl={encodedUrl}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
     </>
   );
 }

@@ -25,6 +25,10 @@ import {
   AlertTitle,
   AlertDescription
 } from '@chakra-ui/react';
+import StructuredData, { 
+  createWebPageData, 
+  createHowToData 
+} from '../components/StructuredData';
 
 export default function GuidePage() {
   const { topic } = useParams();
@@ -111,34 +115,34 @@ export default function GuidePage() {
     }
   ];
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": pageData.title,
-    "description": pageData.metaDescription,
-    "url": `https://cartadeapresentacao.pt/guia/${topic}`,
-    "image": "https://cartadeapresentacao.pt/images/guide-cover.jpg",
-    "totalTime": "PT30M",
-    "supply": ["Computador", "Acesso à internet", "Informações profissionais"],
-    "tool": ["Editor de texto", "Carta de Apresentação.pt"],
-    "step": [
-      {
-        "@type": "HowToStep",
-        "name": "Preparação",
-        "text": "Reúna todas as informações necessárias sobre a sua experiência profissional"
-      },
-      {
-        "@type": "HowToStep", 
-        "name": "Estruturação",
-        "text": "Organize o conteúdo da carta seguindo uma estrutura lógica"
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Personalização",
-        "text": "Adapte a carta para a empresa e posição específica"
-      }
-    ]
-  };
+  // Create structured data
+  const webPageData = createWebPageData(
+    pageData.title,
+    pageData.metaDescription,
+    `https://cartadeapresentacao.pt/guia/${topic}`
+  );
+
+  const howToSteps = [
+    {
+      name: "Preparação",
+      text: "Analise a vaga e a empresa para personalizar sua carta de apresentação"
+    },
+    {
+      name: "Estrutura",
+      text: "Organize o conteúdo com introdução, corpo e conclusão profissionais"
+    },
+    {
+      name: "Personalização",
+      text: "Adapte a carta para a empresa e posição específica"
+    }
+  ];
+
+  const howToData = createHowToData(
+    pageData.title,
+    pageData.metaDescription,
+    howToSteps,
+    "PT30M" // 30 minutes
+  );
 
   return (
     <SeoPageLayout
@@ -146,9 +150,9 @@ export default function GuidePage() {
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
-      structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
+      <StructuredData data={[webPageData, howToData]} />
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">

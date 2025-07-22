@@ -21,6 +21,10 @@ import {
   Divider,
   useColorModeValue
 } from '@chakra-ui/react';
+import StructuredData, { 
+  createWebPageData, 
+  createLocalBusinessData 
+} from '../components/StructuredData';
 
 export default function CityPage() {
   const { city } = useParams();
@@ -123,19 +127,20 @@ export default function CityPage() {
     }
   );
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": pageData.title,
-    "description": pageData.metaDescription,
-    "url": `https://cartadeapresentacao.pt/cidade/${city}`,
-    "about": {
-      "@type": "Place",
-      "name": cityData.name,
-      "addressLocality": cityData.name,
-      "addressCountry": "PT"
-    }
-  };
+  // Create structured data
+  const webPageData = createWebPageData(
+    pageData.title,
+    pageData.metaDescription,
+    `https://cartadeapresentacao.pt/cidade/${city}`
+  );
+
+  const localBusinessData = createLocalBusinessData(
+    `Empregos em ${cityData.name}`,
+    `Oportunidades de carreira e mercado de trabalho em ${cityData.name}, Portugal`,
+    cityData.name,
+    `https://cartadeapresentacao.pt/cidade/${city}`,
+    cityData.region
+  );
 
   return (
     <SeoPageLayout
@@ -143,9 +148,9 @@ export default function CityPage() {
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
       breadcrumbs={breadcrumbs}
-      structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
+      <StructuredData data={[webPageData, localBusinessData]} />
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">
