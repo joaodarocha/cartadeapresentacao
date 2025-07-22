@@ -1,0 +1,35 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background -->
+    <rect width="200" height="200" rx="20" fill="#2563eb"/>
+
+    <!-- Document shape -->
+    <rect x="50" y="40" width="100" height="120" rx="8" fill="white"/>
+
+    <!-- Document lines representing text -->
+    <rect x="65" y="60" width="50" height="3" rx="1.5" fill="#e5e7eb"/>
+    <rect x="65" y="70" width="70" height="3" rx="1.5" fill="#e5e7eb"/>
+    <rect x="65" y="80" width="45" height="3" rx="1.5" fill="#e5e7eb"/>
+    <rect x="65" y="90" width="60" height="3" rx="1.5" fill="#e5e7eb"/>
+
+    <!-- AI spark/brain icon -->
+    <g transform="translate(110, 105)">
+        <!-- Central circle -->
+        <circle cx="0" cy="0" r="8" fill="#2563eb"/>
+
+        <!-- Connecting lines/neurons -->
+        <line x1="-6" y1="-6" x2="-15" y2="-15" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+        <line x1="6" y1="-6" x2="15" y2="-15" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+        <line x1="-6" y1="6" x2="-15" y2="15" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+        <line x1="6" y1="6" x2="15" y2="15" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+
+        <!-- Small dots at line ends -->
+        <circle cx="-15" cy="-15" r="2" fill="#2563eb"/>
+        <circle cx="15" cy="-15" r="2" fill="#2563eb"/>
+        <circle cx="-15" cy="15" r="2" fill="#2563eb"/>
+        <circle cx="15" cy="15" r="2" fill="#2563eb"/>
+    </g>
+
+    <!-- Subtle highlight on document -->
+    <rect x="65" y="100" width="40" height="3" rx="1.5" fill="#3b82f6" opacity="0.6"/>
+    <rect x="65" y="110" width="55" height="3" rx="1.5" fill="#3b82f6" opacity="0.6"/>
+</svg>
