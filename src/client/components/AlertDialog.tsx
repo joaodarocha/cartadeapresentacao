@@ -70,7 +70,7 @@ export function LeaveATip({
             <AlertDialogFooter>
               {!isUsingLn ? (
                 <>
-                  <Button isLoading={isLoading} ref={tipRef} colorScheme='purple' onClick={handleClick}>
+                  <Button isLoading={isLoading} ref={tipRef} colorScheme='blue' onClick={handleClick}>
                     💰 Comprar Mais
                   </Button>
                   <Spacer />
@@ -111,7 +111,7 @@ export function LoginToBegin({ isOpen, onClose }: { isOpen: boolean; onOpen: () 
           <AlertDialogBody textAlign='center'>Por favor, inicie sessão para começar!</AlertDialogBody>
 
           <AlertDialogFooter justifyContent='center'>
-            <Button ref={loginRef} leftIcon={<AiOutlineLogin />} colorScheme='purple' onClick={handleClick}>
+            <Button ref={loginRef} leftIcon={<AiOutlineLogin />} colorScheme='blue' onClick={handleClick}>
               Iniciar Sessão
             </Button>
           </AlertDialogFooter>
@@ -164,7 +164,7 @@ export function DeleteJob({
               Eliminar
             </Button>
             <Spacer />
-            <Button ref={cancelRef} size='sm' colorScheme='purple' onClick={onClose}>
+            <Button ref={cancelRef} size='sm' colorScheme='blue' onClick={onClose}>
               Cancelar
             </Button>
           </AlertDialogFooter>
@@ -209,7 +209,7 @@ export function EditAlert({ coverLetter }: { coverLetter: boolean }) {
                 <Text fontSize='sm' textAlign='center'>
                   🤔 Pedir ao GPT para tornar esta parte mais..
                 </Text>
-                <ButtonGroup size='xs' p={1} variant='solid' colorScheme='purple' isAttached>
+                <ButtonGroup size='xs' p={1} variant='solid' colorScheme='blue' isAttached>
                   <Button size='xs' color='black' fontSize='xs'>
                     Concisa
                   </Button>
@@ -234,7 +234,7 @@ export function EditAlert({ coverLetter }: { coverLetter: boolean }) {
             <Checkbox onChange={handleCheckboxChange} size='sm' color='text-contrast-md'>
               Não me mostrar isto novamente
             </Checkbox>
-            <Button ref={cancelRef} size='sm' colorScheme='purple' onClick={onClose}>
+            <Button ref={cancelRef} size='sm' colorScheme='blue' onClick={onClose}>
               OK
             </Button>
           </AlertDialogFooter>

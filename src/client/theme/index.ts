@@ -67,11 +67,12 @@ ChakraButton.defaultProps = {
   fontSize: 'md',
   variant: 'solid',
   backdropFilter: 'blur(4px)',
+  colorScheme: 'blue',
 };
 
 ChakraCheckbox.defaultProps = {
   ...ChakraCheckbox.defaultProps,
-  colorScheme: 'purple',
+  colorScheme: 'blue',
 };
 
 export const Checkbox = {
@@ -131,7 +132,7 @@ export const Input = {
 
 ChakraTextarea.defaultProps = {
   ...ChakraTextarea.defaultProps,
-  focusBorderColor: 'purple.300',
+  focusBorderColor: 'blue.300',
   variant: 'outline',
   sx: {
     '&::-webkit-scrollbar': {
@@ -141,13 +142,13 @@ ChakraTextarea.defaultProps = {
       backgroundColor: 'transparent',
     },
     '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'purple.100',
+      backgroundColor: 'blue.100',
       borderRadius: '20px',
       border: '3px solid transparent',
       backgroundClip: 'content-box',
     },
     '&::-webkit-scrollbar-thumb:hover': {
-      backgroundColor: 'purple.200',
+      backgroundColor: 'blue.200',
     },
   },
 };
@@ -204,7 +205,7 @@ ChakraSelect.defaultProps = {
 
 ChakraRadio.defaultProps = {
   ...ChakraRadio.defaultProps,
-  colorScheme: 'purple',
+  colorScheme: 'blue',
   border: 'md',
   borderColor: 'border-contrast-sm',
 };

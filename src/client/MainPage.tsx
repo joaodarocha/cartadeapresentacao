@@ -555,7 +555,7 @@ function MainPage() {
                     defaultValue={30}
                     min={0}
                     max={68}
-                    colorScheme='purple'
+                    colorScheme='blue'
                     onChange={(v) => setSliderValue(v)}
                     onMouseEnter={() => setShowTooltip(true)}
                     onMouseLeave={() => setShowTooltip(false)}
@@ -565,7 +565,7 @@ function MainPage() {
                     </SliderTrack>
                     <Tooltip
                       hasArrow
-                      bg='purple.300'
+                      bg='blue.300'
                       color='white'
                       placement='top'
                       isOpen={showTooltip}
@@ -619,7 +619,7 @@ function MainPage() {
               </VStack>
               <HStack alignItems='flex-end' gap={1}>
                 <Button
-                  colorScheme='purple'
+                  colorScheme='blue'
                   mt={3}
                   size='sm'
                   isLoading={isSubmitting}

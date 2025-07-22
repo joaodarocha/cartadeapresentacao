@@ -88,13 +88,13 @@ export default function ModalElement({ coverLetterData, isOpen, onOpen, onClose 
             hasArrow
             closeOnClick={false}
           >
-            <Button ref={copyButtonRef} colorScheme='purple' size='sm' mr={3} onClick={onCopy}>
+            <Button ref={copyButtonRef} colorScheme='blue' size='sm' mr={3} onClick={onCopy}>
               Copiar
             </Button>
           </Tooltip>
           <Button
             leftIcon={<AiOutlineEdit />}
-            colorScheme='purple'
+            colorScheme='blue'
             variant='outline'
             size='sm'
             mr={3}

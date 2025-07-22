@@ -8,12 +8,12 @@ export function Footer() {
       <Divider />
       <VStack gap={3}>
         <WaspLink to='/tos'>
-          <Text fontSize='sm' color='purple.300'>
+          <Text fontSize='sm' color='blue.300'>
             Terms of Service
           </Text>
         </WaspLink>
         <WaspLink to='/privacy'>
-          <Text fontSize='sm' color='purple.300'>
+          <Text fontSize='sm' color='blue.300'>
             Privacy Policy
           </Text>
         </WaspLink>

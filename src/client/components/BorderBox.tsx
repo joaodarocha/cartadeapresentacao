@@ -5,7 +5,7 @@ interface BorderBoxProps extends BoxProps {
 }
 
 export default function BorderBox({ children, ...props }: BorderBoxProps) {
-  const bgColor = useColorModeValue('purple.300', 'purple.100');
+  const bgColor = useColorModeValue('blue.300', 'blue.100');
 
   return (
     <Box

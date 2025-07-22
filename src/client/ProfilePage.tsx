@@ -61,12 +61,12 @@ export default function ProfilePage({ user }: { user: User }) {
           <Heading size='md'>👋 Olá {userInfo.email || 'Utilizador'} </Heading>
           {userInfo.subscriptionStatus === 'past_due' ? (
             <VStack gap={3} py={5} alignItems='center'>
-              <Box color='purple.400'>
+              <Box color='blue.400'>
                 <IoWarningOutline size={30} color='inherit' />
               </Box>
               <Text textAlign='center' fontSize='sm' textColor='text-contrast-lg'>
                 A sua subscrição está em atraso. <br /> Por favor, actualize o seu método de pagamento{' '}
-                <Link textColor='purple.400' href='https://billing.stripe.com/p/login/test_6oU6oJ9il3Aderv6P65AQ00'>
+                <Link textColor='blue.400' href='https://billing.stripe.com/p/login/test_6oU6oJ9il3Aderv6P65AQ00'>
                   clicando aqui
                 </Link>
               </Text>
@@ -84,7 +84,7 @@ export default function ProfilePage({ user }: { user: User }) {
               )}
               <Text alignSelf='initial' fontSize='sm' fontStyle='italic' textColor='text-contrast-sm'>
                 Para gerir a sua subscrição, por favor{' '}
-                <Link textColor='purple.600' href='https://billing.stripe.com/p/login/test_6oU6oJ9il3Aderv6P65AQ00'>
+                <Link textColor='blue.600' href='https://billing.stripe.com/p/login/test_6oU6oJ9il3Aderv6P65AQ00'>
                   clique aqui.
                 </Link>
               </Text>
@@ -123,7 +123,7 @@ export default function ProfilePage({ user }: { user: User }) {
                       Comprar Agora
                     </Button>
                   </VStack>
-                  <VStack layerStyle='cardMd' borderColor={'purple.200'} borderWidth={3} py={5} px={7} gap={3} height='100%' width='100%' justifyContent='space-between' alignItems='center'>
+                  <VStack layerStyle='cardMd' borderColor={'blue.200'} borderWidth={3} py={5} px={7} gap={3} height='100%' width='100%' justifyContent='space-between' alignItems='center'>
                     <VStack gap={3} alignItems='start'>
                       <Heading size='xl'>€5.95</Heading>
                       <Text textAlign='start' fontSize='md'>
