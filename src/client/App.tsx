@@ -1,14 +1,13 @@
-import { useAuth } from 'wasp/client/auth';
-import { env } from 'wasp/client'
-import { ChakraProvider, VStack, Box, Spacer } from '@chakra-ui/react';
-import { HelmetProvider } from 'react-helmet-async';
-import { theme } from './theme';
-import { useState, useEffect, createContext } from 'react';
-import NavBar from './components/NavBar';
-import { Footer } from './components/CallToAction';
-import { EditPopover } from './components/Popover';
-import { useLocation, Outlet } from 'react-router-dom';
+import { Box, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
+import { createContext, useEffect, useState } from 'react';
 import ReactGA from 'react-ga4';
+import { HelmetProvider } from 'react-helmet-async';
+import { Outlet, useLocation } from 'react-router-dom';
+import { env } from 'wasp/client'
+import { useAuth } from 'wasp/client/auth';
+import NavBar from './components/NavBar';
+import { EditPopover } from './components/Popover';
+import { theme } from './theme';
 
 export const TextareaContext = createContext({
   textareaState: '',
@@ -104,7 +103,7 @@ export default function App() {
             <NavBar/>
             <Outlet/>
             <Spacer/>
-            <Footer/>
+            {/*<Footer/>*/}
           </VStack>
         </TextareaContext.Provider>
       </ChakraProvider>
