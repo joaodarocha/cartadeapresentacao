@@ -1,26 +1,25 @@
-import { deleteJob, milliSatsToCents } from "wasp/client/operations";
 import {
   AlertDialog,
   AlertDialogBody,
+  AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogContent,
   AlertDialogOverlay,
+  Box,
   Button,
   ButtonGroup,
   Checkbox,
   Code,
-  Text,
   Spacer,
-  VStack,
-  Box,
+  Text,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AiOutlineLogin } from 'react-icons/ai';
 import { BiTrash } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
+import { deleteJob } from "wasp/client/operations";
 
 export function LeaveATip({
   isOpen,
@@ -210,19 +209,19 @@ export function EditAlert({ coverLetter }: { coverLetter: boolean }) {
                   🤔 Pedir ao GPT para tornar esta parte mais..
                 </Text>
                 <ButtonGroup size='xs' p={1} variant='solid' colorScheme='blue' isAttached>
-                  <Button size='xs' color='black' fontSize='xs'>
+                  <Button size='xs' color='white' fontSize='xs'>
                     Concisa
                   </Button>
 
-                  <Button size='xs' color='black' fontSize='xs'>
+                  <Button size='xs' color='white' fontSize='xs'>
                     Detalhada
                   </Button>
 
-                  <Button size='xs' color='black' fontSize='xs'>
+                  <Button size='xs' color='white' fontSize='xs'>
                     Profissional
                   </Button>
 
-                  <Button size='xs' color='black' fontSize='xs'>
+                  <Button size='xs' color='white' fontSize='xs'>
                     Informal
                   </Button>
                 </ButtonGroup>
