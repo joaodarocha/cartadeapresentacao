@@ -295,59 +295,66 @@ async function generateInitialSeoPages() {
   const specificGuidePages = [
     {
       slug: 'guia-como-escrever',
-      title: 'Como Escrever uma Carta de Apresentação | Guia Completo 2024',
+      title: 'Como Escrever uma Carta de Apresentação | Guia Completo 2025',
       metaDescription: 'Guia passo-a-passo para escrever cartas de apresentação eficazes. Estrutura, exemplos e dicas de especialistas para conseguir mais entrevistas.',
       topic: 'como-escrever',
       keywords: ['como escrever carta apresentação', 'guia carta apresentação', 'estrutura carta apresentação', 'dicas carta apresentação']
     },
     {
       slug: 'guia-exemplos',
-      title: 'Exemplos de Cartas de Apresentação | Modelos Gratuitos 2024',
+      title: 'Exemplos de Cartas de Apresentação | Modelos Gratuitos 2025',
       metaDescription: 'Exemplos práticos de cartas de apresentação para diferentes profissões. Modelos gratuitos e editáveis para download.',
       topic: 'exemplos',
       keywords: ['exemplos carta apresentação', 'modelos carta apresentação', 'templates carta apresentação', 'carta apresentação gratis']
     },
     {
       slug: 'guia-dicas',
-      title: 'Dicas para Cartas de Apresentação | Guia de Especialistas 2024',
+      title: 'Dicas para Cartas de Apresentação | Guia de Especialistas 2025',
       metaDescription: 'Dicas essenciais de especialistas para criar cartas de apresentação que impressionam recrutadores e conseguem entrevistas.',
       topic: 'dicas',
       keywords: ['dicas carta apresentação', 'conselhos carta apresentação', 'truques carta apresentação', 'segredos carta apresentação']
     },
     {
       slug: 'guia-entrevistas',
-      title: 'Preparação para Entrevistas | Guia Completo 2024',
+      title: 'Preparação para Entrevistas | Guia Completo 2025',
       metaDescription: 'Guia completo para preparação de entrevistas de emprego. Dicas, perguntas frequentes e estratégias para ter sucesso.',
       topic: 'entrevistas',
       keywords: ['preparação entrevistas', 'dicas entrevistas emprego', 'como preparar entrevista', 'perguntas entrevista trabalho']
     },
     {
       slug: 'guia-procurar-emprego',
-      title: 'Como Procurar Emprego | Estratégias Eficazes 2024',
+      title: 'Como Procurar Emprego | Estratégias Eficazes 2025',
       metaDescription: 'Estratégias comprovadas para procurar emprego com sucesso. Dicas para encontrar oportunidades e destacar-se da concorrência.',
       topic: 'procurar-emprego',
       keywords: ['como procurar emprego', 'estratégias procura emprego', 'encontrar trabalho', 'procura trabalho portugal']
     },
     {
       slug: 'guia-competencias',
-      title: 'Competências Profissionais | Guia de Desenvolvimento 2024',
+      title: 'Competências Profissionais | Guia de Desenvolvimento 2025',
       metaDescription: 'Guia completo sobre competências profissionais mais valorizadas. Como desenvolver e destacar as suas competências.',
       topic: 'competencias',
       keywords: ['competências profissionais', 'skills profissionais', 'desenvolvimento competências', 'competências trabalho']
     },
     {
       slug: 'guia-mercado-trabalho',
-      title: 'Mercado de Trabalho em Portugal | Análise 2024',
+      title: 'Mercado de Trabalho em Portugal | Análise 2025',
       metaDescription: 'Análise completa do mercado de trabalho português. Tendências, oportunidades e sectores em crescimento.',
       topic: 'mercado-trabalho',
       keywords: ['mercado trabalho portugal', 'emprego portugal', 'oportunidades trabalho', 'sectores crescimento portugal']
     },
     {
       slug: 'guia-recem-licenciados',
-      title: 'Carta de Apresentação para Recém-Licenciados | Guia 2024',
+      title: 'Carta de Apresentação para Recém-Licenciados | Guia 2025',
       metaDescription: 'Guia especializado para recém-licenciados criarem cartas de apresentação eficazes. Como destacar potencial quando falta experiência profissional.',
       topic: 'recem-licenciados',
       keywords: ['carta apresentação recém licenciado', 'primeiro emprego', 'carta apresentação sem experiência', 'recém graduado']
+    },
+    {
+      slug: 'guia-modelos',
+      title: 'Melhores Modelos de Carta de Apresentação | Guia Completo 2025',
+      metaDescription: 'Descubra os melhores modelos de carta de apresentação para 2025. Estruturas comprovadas, exemplos práticos e templates profissionais para todas as áreas.',
+      topic: 'modelos',
+      keywords: ['melhores modelos carta apresentação', 'templates carta apresentação', 'estrutura carta apresentação', 'modelo profissional carta']
     }
   ];
 

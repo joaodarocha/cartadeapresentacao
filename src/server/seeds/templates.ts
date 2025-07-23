@@ -5,7 +5,7 @@ export const templatesData = [
     category: "profession",
     subcategory: "main",
     name: "Página Principal de Profissão",
-    title: "Carta de Apresentação para {profession} | Exemplos e Dicas 2024",
+    title: "Carta de Apresentação para {profession} | Exemplos e Dicas 2025",
     metaDescription: "Crie uma carta de apresentação profissional para {profession}. Exemplos práticos, dicas especializadas e templates gratuitos para conseguir o emprego dos seus sonhos.",
     h1: "Carta de Apresentação para {profession}",
     contentStructure: {
@@ -30,7 +30,7 @@ export const templatesData = [
     category: "city",
     subcategory: "main",
     name: "Página Principal de Cidade",
-    title: "Cartas de Apresentação em {city} | Oportunidades de Emprego 2024",
+    title: "Cartas de Apresentação em {city} | Oportunidades de Emprego 2025",
     metaDescription: "Encontre as melhores oportunidades de emprego em {city}. Guia completo para criar cartas de apresentação adaptadas ao mercado de trabalho local.",
     h1: "Oportunidades de Emprego em {city}",
     contentStructure: {
@@ -55,7 +55,7 @@ export const templatesData = [
     category: "profession-city",
     subcategory: "combined",
     name: "Página Combinada Profissão + Cidade",
-    title: "Emprego de {profession} em {city} | Carta de Apresentação 2024",
+    title: "Emprego de {profession} em {city} | Carta de Apresentação 2025",
     metaDescription: "Procura emprego como {profession} em {city}? Guia especializado com exemplos de cartas de apresentação e dicas para o mercado local.",
     h1: "Emprego de {profession} em {city}",
     contentStructure: {
@@ -80,7 +80,7 @@ export const templatesData = [
     category: "guide",
     subcategory: "how-to",
     name: "Guia Como Escrever",
-    title: "Como Escrever uma Carta de Apresentação | Guia Completo 2024",
+    title: "Como Escrever uma Carta de Apresentação | Guia Completo 2025",
     metaDescription: "Guia passo-a-passo para escrever cartas de apresentação eficazes. Estrutura, exemplos e dicas de especialistas para conseguir mais entrevistas.",
     h1: "Como Escrever uma Carta de Apresentação Perfeita",
     contentStructure: {
@@ -105,7 +105,7 @@ export const templatesData = [
     category: "template",
     subcategory: "examples",
     name: "Modelos e Exemplos",
-    title: "Modelos de Carta de Apresentação Gratuitos | Templates 2024",
+    title: "Modelos de Carta de Apresentação Gratuitos | Templates 2025",
     metaDescription: "Modelos gratuitos de cartas de apresentação para diferentes profissões. Templates editáveis e exemplos práticos para download.",
     h1: "Modelos Gratuitos de Carta de Apresentação",
     contentStructure: {
@@ -130,7 +130,7 @@ export const templatesData = [
     category: "experience-level",
     subcategory: "entry-level",
     name: "Recém-Licenciados",
-    title: "Carta de Apresentação para Recém-Licenciados | Guia 2024",
+    title: "Carta de Apresentação para Recém-Licenciados | Guia 2025",
     metaDescription: "Guia especializado para recém-licenciados criarem cartas de apresentação eficazes. Como destacar potencial quando falta experiência profissional.",
     h1: "Carta de Apresentação para Recém-Licenciados",
     contentStructure: {
@@ -155,7 +155,7 @@ export const templatesData = [
     category: "experience-level",
     subcategory: "career-change",
     name: "Mudança de Carreira",
-    title: "Carta de Apresentação para Mudança de Carreira | Guia 2024",
+    title: "Carta de Apresentação para Mudança de Carreira | Guia 2025",
     metaDescription: "Quer mudar de carreira? Aprenda a criar cartas de apresentação que destacam competências transferíveis e justificam a mudança profissional.",
     h1: "Carta de Apresentação para Mudança de Carreira",
     contentStructure: {
@@ -180,7 +180,7 @@ export const templatesData = [
     category: "work-type",
     subcategory: "remote",
     name: "Trabalho Remoto",
-    title: "Carta de Apresentação para Trabalho Remoto | Guia 2024",
+    title: "Carta de Apresentação para Trabalho Remoto | Guia 2025",
     metaDescription: "Procura trabalho remoto? Aprenda a criar cartas de apresentação que destacam as suas competências para trabalho à distância.",
     h1: "Carta de Apresentação para Trabalho Remoto",
     contentStructure: {
@@ -205,7 +205,7 @@ export const templatesData = [
     category: "experience-level",
     subcategory: "internship",
     name: "Estágios",
-    title: "Carta de Apresentação para Estágios | Guia Estudantes 2024",
+    title: "Carta de Apresentação para Estágios | Guia Estudantes 2025",
     metaDescription: "Procura um estágio? Guia completo para estudantes criarem cartas de apresentação que conseguem oportunidades de estágio.",
     h1: "Carta de Apresentação para Estágios",
     contentStructure: {
@@ -230,7 +230,7 @@ export const templatesData = [
     category: "experience-level",
     subcategory: "senior",
     name: "Posições Sénior",
-    title: "Carta de Apresentação para Cargos Sénior | Executivos 2024",
+    title: "Carta de Apresentação para Cargos Sénior | Executivos 2025",
     metaDescription: "Candidata-se a posições de liderança? Guia especializado para executivos criarem cartas de apresentação que demonstram liderança e resultados.",
     h1: "Carta de Apresentação para Cargos Sénior",
     contentStructure: {
@@ -247,6 +247,33 @@ export const templatesData = [
     },
     keywords: ["carta apresentação executivo", "cargos sénior", "posições liderança", "executive search"],
     targetUrl: "/guia/cargos-senior"
+  },
+
+  // 11. Best models guide
+  {
+    id: 11,
+    category: "guide",
+    subcategory: "models",
+    name: "Melhores Modelos",
+    title: "Melhores Modelos de Carta de Apresentação | Guia Completo 2025",
+    metaDescription: "Descubra os melhores modelos de carta de apresentação para 2025. Estruturas comprovadas, exemplos práticos e templates profissionais para todas as áreas.",
+    h1: "Os Melhores Modelos de Carta de Apresentação",
+    contentStructure: {
+      introduction: "Escolher o modelo certo para a sua carta de apresentação é fundamental para causar uma primeira impressão positiva. Conheça os modelos mais eficazes e como utilizá-los.",
+      mainSections: [
+        "Modelo clássico profissional",
+        "Modelo criativo para áreas artísticas",
+        "Modelo técnico para engenharias e IT",
+        "Modelo executivo para cargos de liderança",
+        "Modelo académico para investigação",
+        "Como escolher o modelo ideal",
+        "Personalização e adaptação",
+        "Erros comuns na escolha do modelo"
+      ],
+      cta: "Escolha o seu modelo ideal e comece agora"
+    },
+    keywords: ["melhores modelos carta apresentação", "templates carta apresentação", "estrutura carta apresentação", "modelo profissional carta"],
+    targetUrl: "/guia/modelos"
   }
 ];
 
@@ -291,7 +318,7 @@ export const seoPageTypes = {
     variables: ["profession", "city", "salary", "skills"]
   },
   guides: {
-    templates: [templatesData[3], templatesData[5], templatesData[6], templatesData[7], templatesData[8], templatesData[9]],
+    templates: [templatesData[3], templatesData[5], templatesData[6], templatesData[7], templatesData[8], templatesData[9], templatesData[10], templatesData[11]],
     urlPattern: "/guia/{slug}",
     variables: ["topic", "audience"]
   }
