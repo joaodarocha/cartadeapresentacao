@@ -1,52 +1,49 @@
-import { type User, type LnPayment } from "wasp/entities";
+import {
+  Button,
+  Checkbox,
+  Code,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Heading,
+  HStack,
+  Input,
+  Radio,
+  RadioGroup,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Spinner,
+  Text,
+  Textarea,
+  Tooltip,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
+import * as pdfjsLib from 'pdfjs-dist';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from "wasp/client/auth";
 
 import {
-  generateCoverLetter,
   createJob,
+  generateCoverLetter,
+  getCoverLetterCount,
+  getJob,
   updateCoverLetter,
   updateLnPayment,
   useQuery,
-  getJob,
-  getCoverLetterCount,
 } from "wasp/client/operations";
-
-import {
-  Box,
-  HStack,
-  VStack,
-  Heading,
-  Text,
-  FormErrorMessage,
-  FormControl,
-  FormLabel,
-  Input,
-  Textarea,
-  Button,
-  FormHelperText,
-  Code,
-  Checkbox,
-  Spinner,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  RadioGroup,
-  Radio,
-  Tooltip,
-  useDisclosure, Highlight,
-} from '@chakra-ui/react';
-import BorderBox from './components/BorderBox';
+import { type LnPayment, type User } from "wasp/entities";
 import { LeaveATip, LoginToBegin } from './components/AlertDialog';
-import { convertToSliderValue, convertToSliderLabel } from './components/CreativitySlider';
-import * as pdfjsLib from 'pdfjs-dist';
-import { useState, useEffect, useRef } from 'react';
-import { ChangeEvent } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import BorderBox from './components/BorderBox';
+import { convertToSliderLabel, convertToSliderValue } from './components/CreativitySlider';
 import LnPaymentModal from './components/LnPaymentModal';
-import { fetchLightningInvoice } from './lightningUtils';
 import type { LightningInvoice } from './lightningUtils';
+import { fetchLightningInvoice } from './lightningUtils';
 
 function MainPage() {
   const [isPdfReady, setIsPdfReady] = useState<boolean>(false);
@@ -359,13 +356,13 @@ function MainPage() {
 
   return (
     <>
-      <Heading as='h1' fontSize='4xl' ml={2} mr={2} fontWeight={600}>
-        Cria a tua carta em segundos
+      <Heading as='h1' fontSize='4xl' ml={2} mr={2} fontWeight={600} textAlign='center'>
+        Cria a tua carta de apresentação grátis e em segundos
       </Heading>
-      <Heading fontSize='xl' color='gray.300' mt={2} ml={2} fontWeight={600}>
-        Destaca-te sem escrever uma única linha
+      <Heading fontSize='xl' color='gray.500' mt={2} ml={2} fontWeight={600} textAlign='center'>
+        Destaca-te da concorrência com a tua carta de apresentação profissional
       </Heading>
-      <Box
+      {/*<Box
         layerStyle='card'
         px={4}
         py={2}
@@ -378,7 +375,7 @@ function MainPage() {
       >
         <Text fontSize='md'>✅ {( coverLetterCount ? coverLetterCount + 125 : 125 )?.toLocaleString()} Cartas
           geradas!</Text>
-      </Box>
+      </Box>*/}
       <BorderBox>
         <form
           onSubmit={!isCoverLetterUpdate ? handleSubmit(onSubmit) : handleSubmit(onUpdate)}
@@ -613,7 +610,7 @@ function MainPage() {
                       color: 'text-contrast-lg',
                     }}
                   >
-                    incluir uma observação espirituosa no final da carta
+                    incluir uma observação que te destaca no final da carta
                   </FormLabel>
                 </FormControl>
               </VStack>
