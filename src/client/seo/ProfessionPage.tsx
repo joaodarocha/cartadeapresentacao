@@ -25,8 +25,7 @@ import {
 } from '@chakra-ui/react';
 import { Link } from 'wasp/client/router';
 import StructuredData, { 
-  createWebPageData, 
-  createJobPostingData 
+  createWebPageData
 } from '../components/StructuredData';
 
 export default function ProfessionPage() {
@@ -162,16 +161,6 @@ export default function ProfessionPage() {
     `https://cartadeapresentacao.pt/profissao/${profession}`
   );
 
-  const jobPostingData = createJobPostingData(
-    industryData.name,
-    industryData.description,
-    undefined, // city - not specific to a city on profession pages
-    industryData.name, // industry
-    skills,
-    industryData.salaryMin,
-    industryData.salaryMax || industryData.averageSalary
-  );
-
   return (
     <SeoPageLayout
       title={pageData.title}
@@ -181,7 +170,7 @@ export default function ProfessionPage() {
       structuredData={structuredData}
       relatedLinks={relatedLinks}
     >
-      <StructuredData data={[webPageData, jobPostingData]} />
+      <StructuredData data={webPageData} />
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">

@@ -1,34 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from 'wasp/client/operations';
-import { getSeoPage } from 'wasp/client/operations';
-import SeoPageLayout from './SeoPageLayout';
 import {
-  Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Grid,
-  GridItem,
-  List,
-  ListItem,
-  Button,
-  Spinner,
-  Badge,
-  Divider,
-  useColorModeValue,
-  OrderedList,
-  UnorderedList,
   Alert,
+  AlertDescription,
   AlertIcon,
   AlertTitle,
-  AlertDescription
+  Box,
+  Button,
+  Divider,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  ListItem,
+  OrderedList,
+  Spinner,
+  Text,
+  UnorderedList,
+  useColorModeValue,
+  VStack
 } from '@chakra-ui/react';
-import StructuredData, { 
-  createWebPageData, 
-  createHowToData 
-} from '../components/StructuredData';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getSeoPage, useQuery } from 'wasp/client/operations';
+import StructuredData, { createHowToData, createWebPageData } from '../components/StructuredData';
+import SeoPageLayout from './SeoPageLayout';
 
 export default function GuidePage() {
   const { topic } = useParams();
@@ -42,10 +36,10 @@ export default function GuidePage() {
   // Generate slug from topic parameter
   const guideSlug = `guia-${topic}`;
 
-  const { 
-    data: seoPageData, 
-    isLoading: seoPageLoading, 
-    error: seoPageError 
+  const {
+    data: seoPageData,
+    isLoading: seoPageLoading,
+    error: seoPageError
   } = useQuery(getSeoPage, { slug: guideSlug });
 
   useEffect(() => {
@@ -64,7 +58,7 @@ export default function GuidePage() {
     return (
       <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
         <VStack spacing={4}>
-          <Spinner size="lg" color="blue.500" thickness="4px" />
+          <Spinner size="lg" color="blue.500" thickness="4px"/>
           <Text color="gray.600">A carregar...</Text>
         </VStack>
       </Box>
@@ -152,7 +146,7 @@ export default function GuidePage() {
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >
-      <StructuredData data={[webPageData, howToData]} />
+      <StructuredData data={[webPageData, howToData]}/>
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">
@@ -172,14 +166,14 @@ export default function GuidePage() {
               Guia Completo
             </Heading>
           </HStack>
-          
+
           <Text color="gray.700" mb={6} lineHeight="tall">
-            Este guia foi criado para o ajudar a dominar todos os aspetos relacionados com {topic?.replace('-', ' ')}. 
+            Este guia foi criado para o ajudar a dominar todos os aspetos relacionados com {topic?.replace('-', ' ')}.
             Siga os passos apresentados para obter os melhores resultados.
           </Text>
 
           <Alert status="info" rounded="lg">
-            <AlertIcon />
+            <AlertIcon/>
             <Box>
               <AlertTitle>Tempo estimado:</AlertTitle>
               <AlertDescription>
@@ -189,14 +183,14 @@ export default function GuidePage() {
           </Alert>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Step-by-Step Guide */}
         <Box>
           <Heading size="lg" color="gray.900" mb={6}>
             Passos a Seguir
           </Heading>
-          
+
           <OrderedList spacing={6}>
             <ListItem>
               <Box>
@@ -204,7 +198,7 @@ export default function GuidePage() {
                   Preparação Inicial
                 </Heading>
                 <Text color="gray.700" lineHeight="tall" mb={4}>
-                  Antes de começar, reúna todas as informações necessárias sobre a sua experiência profissional, 
+                  Antes de começar, reúna todas as informações necessárias sobre a sua experiência profissional,
                   formação académica e competências relevantes.
                 </Text>
                 <UnorderedList color="gray.600" spacing={2}>
@@ -294,14 +288,14 @@ export default function GuidePage() {
           </OrderedList>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Best Practices */}
         <Box>
           <Heading size="lg" color="gray.900" mb={4}>
             Melhores Práticas
           </Heading>
-          
+
           <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
             <GridItem>
               <VStack spacing={4} align="stretch">
@@ -334,17 +328,17 @@ export default function GuidePage() {
           </Grid>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Common Mistakes */}
         <Box>
           <Heading size="lg" color="gray.900" mb={4}>
             Erros Comuns a Evitar
           </Heading>
-          
+
           <VStack spacing={4} align="stretch">
             <Alert status="warning" rounded="lg">
-              <AlertIcon />
+              <AlertIcon/>
               <Box>
                 <AlertTitle>Carta Genérica</AlertTitle>
                 <AlertDescription>
@@ -354,7 +348,7 @@ export default function GuidePage() {
             </Alert>
 
             <Alert status="error" rounded="lg">
-              <AlertIcon />
+              <AlertIcon/>
               <Box>
                 <AlertTitle>Foco Apenas em Si</AlertTitle>
                 <AlertDescription>
@@ -364,7 +358,7 @@ export default function GuidePage() {
             </Alert>
 
             <Alert status="warning" rounded="lg">
-              <AlertIcon />
+              <AlertIcon/>
               <Box>
                 <AlertTitle>Falta de Pesquisa</AlertTitle>
                 <AlertDescription>
@@ -375,7 +369,7 @@ export default function GuidePage() {
           </VStack>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Call to Action */}
         <Box bg="blue.50" p={6} rounded="lg" border="1px" borderColor="blue.200" textAlign="center">
@@ -383,7 +377,8 @@ export default function GuidePage() {
             Pronto para Aplicar o Que Aprendeu?
           </Heading>
           <Text color="gray.700" mb={6}>
-            Use a nossa ferramenta AI para criar uma carta de apresentação profissional seguindo todas as melhores práticas.
+            Use a nossa ferramenta AI para criar uma carta de apresentação profissional seguindo todas as melhores
+            práticas.
           </Text>
           <VStack spacing={4}>
             <a href="/">
@@ -404,7 +399,7 @@ export default function GuidePage() {
           <Heading size="lg" color="gray.900" mb={6}>
             Guias Relacionados
           </Heading>
-          
+
           <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
@@ -418,7 +413,7 @@ export default function GuidePage() {
                 </Text>
               </Box>
             </GridItem>
-            
+
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
                 <a href="/guia/exemplos" style={{ textDecoration: 'none' }}>
@@ -431,7 +426,7 @@ export default function GuidePage() {
                 </Text>
               </Box>
             </GridItem>
-            
+
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
                 <a href="/guia/dicas" style={{ textDecoration: 'none' }}>
@@ -444,7 +439,7 @@ export default function GuidePage() {
                 </Text>
               </Box>
             </GridItem>
-            
+
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
                 <a href="/guia/entrevistas" style={{ textDecoration: 'none' }}>
@@ -466,7 +461,8 @@ export default function GuidePage() {
             Carta de Apresentação.pt
           </Text>
           <Text color="gray.600" mb={4}>
-            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
+            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI,
+            designed for success.
           </Text>
           <a href="/">
             <Button colorScheme="blue" size="md">

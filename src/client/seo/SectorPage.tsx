@@ -1,29 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from 'wasp/client/operations';
-import { getSeoPage, getAllIndustries } from 'wasp/client/operations';
-import SeoPageLayout from './SeoPageLayout';
 import {
+  Badge,
   Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
+  Button,
+  Divider,
   Grid,
   GridItem,
-  List,
-  ListItem,
-  Button,
+  Heading,
+  HStack,
   Spinner,
-  Badge,
-  Divider,
-  useColorModeValue
+  Text,
+  useColorModeValue,
+  VStack
 } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getAllIndustries, getSeoPage, useQuery } from 'wasp/client/operations';
 import { Link } from 'wasp/client/router';
-import StructuredData, { 
-  createWebPageData, 
-  createOrganizationData 
-} from '../components/StructuredData';
+import StructuredData, { createOrganizationData, createWebPageData } from '../components/StructuredData';
+import SeoPageLayout from './SeoPageLayout';
 
 export default function SectorPage() {
   const { sector } = useParams();
@@ -38,30 +32,30 @@ export default function SectorPage() {
   // Generate slug from sector parameter
   const sectorSlug = `carta-apresentacao-sector-${sector}`;
 
-  const { 
-    data: seoPageData, 
-    isLoading: seoPageLoading, 
-    error: seoPageError 
+  const {
+    data: seoPageData,
+    isLoading: seoPageLoading,
+    error: seoPageError
   } = useQuery(getSeoPage, { slug: sectorSlug });
 
-  const { 
-    data: industries, 
-    isLoading: industriesLoading 
+  const {
+    data: industries,
+    isLoading: industriesLoading
   } = useQuery(getAllIndustries, {});
 
   useEffect(() => {
     if (seoPageData) {
       setPageData(seoPageData);
     }
-    
+
     if (industries && industries.length > 0 && sector) {
       // Filter industries by sector
-      const filtered = industries.filter((industry: any) => 
+      const filtered = industries.filter((industry: any) =>
         industry.sector?.toLowerCase() === sector.toLowerCase() ||
         industry.name.toLowerCase().includes(sector.toLowerCase())
       );
       setSectorIndustries(filtered);
-      
+
       if (seoPageData) {
         setLoading(false);
       }
@@ -77,7 +71,7 @@ export default function SectorPage() {
     return (
       <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
         <VStack spacing={4}>
-          <Spinner size="lg" color="blue.500" thickness="4px" />
+          <Spinner size="lg" color="blue.500" thickness="4px"/>
           <Text color="gray.600">A carregar...</Text>
         </VStack>
       </Box>
@@ -145,7 +139,7 @@ export default function SectorPage() {
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >
-      <StructuredData data={[webPageData, organizationData]} />
+      <StructuredData data={[webPageData, organizationData]}/>
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">
@@ -165,9 +159,10 @@ export default function SectorPage() {
               Sector de {sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Profissões'}
             </Heading>
           </HStack>
-          
+
           <Text color="gray.700" mb={6} lineHeight="tall">
-            O sector de {sector} oferece diversas oportunidades de carreira em Portugal, com profissões que vão desde posições de entrada até cargos de gestão sénior.
+            O sector de {sector} oferece diversas oportunidades de carreira em Portugal, com profissões que vão desde
+            posições de entrada até cargos de gestão sénior.
           </Text>
 
           <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
@@ -181,28 +176,31 @@ export default function SectorPage() {
                 </Box>
                 <Box>
                   <Text fontWeight="bold" color="gray.900" mb={2}>Sector:</Text>
-                  <Text color="gray.700">{sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Diversas áreas'}</Text>
+                  <Text
+                    color="gray.700">{sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Diversas áreas'}</Text>
                 </Box>
               </VStack>
             </GridItem>
             <GridItem>
               <Text color="gray.700" lineHeight="tall">
-                Descubra as melhores oportunidades no sector de {sector} e aprenda como criar cartas de apresentação que se destacam no mercado de trabalho português.
+                Descubra as melhores oportunidades no sector de {sector} e aprenda como criar cartas de apresentação que
+                se destacam no mercado de trabalho português.
               </Text>
             </GridItem>
           </Grid>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Professions in Sector */}
         <Box>
           <Heading size="lg" color="gray.900" mb={4}>
             Profissões no Sector de {sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Profissões'}
           </Heading>
-          
+
           <Text color="gray.700" mb={6} lineHeight="tall">
-            Explore as diferentes profissões disponíveis neste sector e descubra qual se adequa melhor ao seu perfil profissional.
+            Explore as diferentes profissões disponíveis neste sector e descubra qual se adequa melhor ao seu perfil
+            profissional.
           </Text>
 
           {sectorIndustries.length > 0 ? (
@@ -241,24 +239,25 @@ export default function SectorPage() {
           )}
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Career Tips */}
         <Box>
           <Heading size="lg" color="gray.900" mb={4}>
             Dicas de Carreira para o Sector
           </Heading>
-          
+
           <VStack spacing={4} align="stretch">
             <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
               <Text fontWeight="semibold" color="gray.900" mb={2}>
                 1. Mantenha-se Atualizado
               </Text>
               <Text color="gray.700" fontSize="sm">
-                O sector de {sector} está em constante evolução. Mantenha-se informado sobre as últimas tendências e tecnologias.
+                O sector de {sector} está em constante evolução. Mantenha-se informado sobre as últimas tendências e
+                tecnologias.
               </Text>
             </Box>
-            
+
             <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
               <Text fontWeight="semibold" color="gray.900" mb={2}>
                 2. Desenvolva Competências Relevantes
@@ -267,7 +266,7 @@ export default function SectorPage() {
                 Identifique as competências mais procuradas no sector e invista na sua formação contínua.
               </Text>
             </Box>
-            
+
             <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200">
               <Text fontWeight="semibold" color="gray.900" mb={2}>
                 3. Construa uma Rede Profissional
@@ -279,21 +278,22 @@ export default function SectorPage() {
           </VStack>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* FAQ Section */}
         <Box>
           <Heading size="lg" color="gray.900" mb={6}>
             Perguntas Frequentes
           </Heading>
-          
+
           <VStack spacing={6} align="stretch">
             <Box>
               <Heading size="md" color="gray.900" mb={3}>
                 Quais são as profissões mais procuradas no sector de {sector}?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                As profissões mais procuradas variam conforme as tendências do mercado, mas geralmente incluem posições que combinam competências técnicas com capacidades de liderança e inovação.
+                As profissões mais procuradas variam conforme as tendências do mercado, mas geralmente incluem posições
+                que combinam competências técnicas com capacidades de liderança e inovação.
               </Text>
             </Box>
 
@@ -302,7 +302,8 @@ export default function SectorPage() {
                 Como me preparar para uma carreira no sector de {sector}?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                Invista na formação adequada, desenvolva competências práticas através de estágios ou projetos, e mantenha-se atualizado com as tendências do sector.
+                Invista na formação adequada, desenvolva competências práticas através de estágios ou projetos, e
+                mantenha-se atualizado com as tendências do sector.
               </Text>
             </Box>
 
@@ -311,7 +312,8 @@ export default function SectorPage() {
                 Que competências são mais valorizadas no sector?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                Além das competências técnicas específicas, são valorizadas competências como resolução de problemas, comunicação, trabalho em equipa e adaptabilidade.
+                Além das competências técnicas específicas, são valorizadas competências como resolução de problemas,
+                comunicação, trabalho em equipa e adaptabilidade.
               </Text>
             </Box>
 
@@ -320,18 +322,20 @@ export default function SectorPage() {
                 Como personalizar uma carta de apresentação para este sector?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                Destaque a sua experiência relevante no sector, use terminologia específica da área, e demonstre conhecimento sobre as tendências e desafios do mercado.
+                Destaque a sua experiência relevante no sector, use terminologia específica da área, e demonstre
+                conhecimento sobre as tendências e desafios do mercado.
               </Text>
             </Box>
           </VStack>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Call to Action */}
         <Box bg="blue.50" p={6} rounded="lg" border="1px" borderColor="blue.200" textAlign="center">
           <Heading size="lg" color="gray.900" mb={4}>
-            Inicie a Sua Carreira no Sector de {sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Profissões'}
+            Inicie a Sua Carreira no Sector
+            de {sector ? sector.charAt(0).toUpperCase() + sector.slice(1) : 'Profissões'}
           </Heading>
           <Text color="gray.700" mb={6}>
             Crie uma carta de apresentação personalizada que destaque a sua adequação para o sector de {sector}.
@@ -355,7 +359,7 @@ export default function SectorPage() {
           <Heading size="lg" color="gray.900" mb={6}>
             Recursos Úteis
           </Heading>
-          
+
           <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
@@ -369,7 +373,7 @@ export default function SectorPage() {
                 </Text>
               </Box>
             </GridItem>
-            
+
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
                 <a href="/guia/exemplos" style={{ textDecoration: 'none' }}>
@@ -382,7 +386,7 @@ export default function SectorPage() {
                 </Text>
               </Box>
             </GridItem>
-            
+
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
                 <a href="/guia/dicas" style={{ textDecoration: 'none' }}>
@@ -395,7 +399,7 @@ export default function SectorPage() {
                 </Text>
               </Box>
             </GridItem>
-            
+
             <GridItem>
               <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
                 <a href="/guia/entrevistas" style={{ textDecoration: 'none' }}>
@@ -417,7 +421,8 @@ export default function SectorPage() {
             Carta de Apresentação.pt
           </Text>
           <Text color="gray.600" mb={4}>
-            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
+            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI,
+            designed for success.
           </Text>
           <a href="/" style={{ textDecoration: 'none' }}>
             <Button colorScheme="blue" size="md">

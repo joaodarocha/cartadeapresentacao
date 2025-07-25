@@ -25,7 +25,6 @@ import {
 } from '@chakra-ui/react';
 import StructuredData, { 
   createWebPageData, 
-  createJobPostingData,
   createLocalBusinessData 
 } from '../components/StructuredData';
 
@@ -138,16 +137,6 @@ export default function CityProfessionPage() {
     ? industryData.skills.split(',').map((s: string) => s.trim())
     : industryData.skills || [];
 
-  const jobPostingData = createJobPostingData(
-    industryData.name,
-    industryData.description,
-    cityData.name, // city
-    industryData.name, // industry
-    skills,
-    industryData.salaryMin,
-    industryData.salaryMax || industryData.averageSalary
-  );
-
   const localBusinessData = createLocalBusinessData(
     `${industryData.name} em ${cityData.name}`,
     `Oportunidades de ${industryData.name} em ${cityData.name}, Portugal`,
@@ -164,7 +153,7 @@ export default function CityProfessionPage() {
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >
-      <StructuredData data={[webPageData, jobPostingData, localBusinessData]} />
+      <StructuredData data={[webPageData, localBusinessData]} />
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">

@@ -1,30 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQuery } from 'wasp/client/operations';
-import { getSeoPage, getCityData, getAllIndustries } from 'wasp/client/operations';
-import SeoPageLayout from './SeoPageLayout';
 import {
   Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
+  Button,
+  Divider,
   Grid,
   GridItem,
+  Heading,
+  HStack,
   List,
   ListItem,
-  Button,
   Spinner,
-  Alert,
-  AlertIcon,
-  Badge,
-  Divider,
-  useColorModeValue
+  Text,
+  useColorModeValue,
+  VStack
 } from '@chakra-ui/react';
-import StructuredData, { 
-  createWebPageData, 
-  createLocalBusinessData 
-} from '../components/StructuredData';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getAllIndustries, getCityData, getSeoPage, useQuery } from 'wasp/client/operations';
+import StructuredData, { createLocalBusinessData, createWebPageData } from '../components/StructuredData';
+import SeoPageLayout from './SeoPageLayout';
 
 export default function CityPage() {
   const { city } = useParams();
@@ -40,21 +33,21 @@ export default function CityPage() {
   // Generate slug from city parameter
   const citySlug = `carta-apresentacao-${city}`;
 
-  const { 
-    data: seoPageData, 
-    isLoading: seoPageLoading, 
-    error: seoPageError 
+  const {
+    data: seoPageData,
+    isLoading: seoPageLoading,
+    error: seoPageError
   } = useQuery(getSeoPage, { slug: citySlug });
 
-  const { 
-    data: cityInfo, 
-    isLoading: cityLoading, 
-    error: cityError 
+  const {
+    data: cityInfo,
+    isLoading: cityLoading,
+    error: cityError
   } = useQuery(getCityData, { slug: city, id: undefined });
 
-  const { 
-    data: industries, 
-    isLoading: industriesLoading 
+  const {
+    data: industries,
+    isLoading: industriesLoading
   } = useQuery(getAllIndustries, {});
 
   useEffect(() => {
@@ -63,7 +56,7 @@ export default function CityPage() {
       setCityData(cityInfo);
       setLoading(false);
     }
-    
+
     if (industries && industries.length > 0) {
       // Get top 6 industries for related links
       setRelatedIndustries(industries.slice(0, 6));
@@ -79,7 +72,7 @@ export default function CityPage() {
     return (
       <Box minH="100vh" bg={bgColor} display="flex" alignItems="center" justifyContent="center">
         <VStack spacing={4}>
-          <Spinner size="lg" color="yellow.500" thickness="4px" />
+          <Spinner size="lg" color="yellow.500" thickness="4px"/>
           <Text color="gray.600">A carregar...</Text>
         </VStack>
       </Box>
@@ -107,11 +100,11 @@ export default function CityPage() {
     { label: cityData.name }
   ];
 
-  const relatedLinks = relatedIndustries.map(industry => ({
+  const relatedLinks = relatedIndustries.map(industry => ( {
     title: `${industry.name} em ${cityData.name}`,
     href: `/cidade/${city}/${industry.slug}`,
     description: `Oportunidades de ${industry.name} em ${cityData.name}`
-  }));
+  } ));
 
   // Add general related links
   relatedLinks.push(
@@ -150,7 +143,7 @@ export default function CityPage() {
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >
-      <StructuredData data={[webPageData, localBusinessData]} />
+      <StructuredData data={[webPageData, localBusinessData]}/>
       <VStack spacing={8} align="stretch">
         {/* Header */}
         <Box textAlign="center">
@@ -170,7 +163,7 @@ export default function CityPage() {
               Informação sobre {cityData.name}
             </Heading>
           </HStack>
-          
+
           <Text color="gray.700" mb={6} lineHeight="tall">
             {cityData.description || `${cityData.name} é uma cidade importante em Portugal com excelentes oportunidades de emprego.`}
           </Text>
@@ -190,22 +183,24 @@ export default function CityPage() {
             </GridItem>
             <GridItem>
               <Text color="gray.700" lineHeight="tall">
-                Procura emprego em {cityData.name}? Descubra como criar cartas de apresentação que se destacam no mercado de trabalho local.
+                Procura emprego em {cityData.name}? Descubra como criar cartas de apresentação que se destacam no
+                mercado de trabalho local.
               </Text>
             </GridItem>
           </Grid>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Job Market in City */}
         <Box>
           <Heading size="lg" color="gray.900" mb={4}>
             Oportunidades de Trabalho em {cityData.name}
           </Heading>
-          
+
           <Text color="gray.700" mb={6} lineHeight="tall">
-            {cityData.name} oferece um mercado de trabalho dinâmico com oportunidades em diversos sectores. A cidade destaca-se pela sua economia diversificada e qualidade de vida.
+            {cityData.name} oferece um mercado de trabalho dinâmico com oportunidades em diversos sectores. A cidade
+            destaca-se pela sua economia diversificada e qualidade de vida.
           </Text>
 
           <Grid templateColumns={{ base: '1fr', md: 'repeat(2, 1fr)' }} gap={6}>
@@ -226,21 +221,22 @@ export default function CityPage() {
           </Grid>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* FAQ Section */}
         <Box>
           <Heading size="lg" color="gray.900" mb={6}>
             Perguntas Frequentes
           </Heading>
-          
+
           <VStack spacing={6} align="stretch">
             <Box>
               <Heading size="md" color="gray.900" mb={3}>
                 Como é o mercado de trabalho em {cityData.name}?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                {cityData.name} oferece um mercado de trabalho dinâmico com oportunidades em diversos sectores. A cidade destaca-se pela sua economia diversificada e qualidade de vida.
+                {cityData.name} oferece um mercado de trabalho dinâmico com oportunidades em diversos sectores. A cidade
+                destaca-se pela sua economia diversificada e qualidade de vida.
               </Text>
             </Box>
 
@@ -249,7 +245,8 @@ export default function CityPage() {
                 Quais são os melhores sites para procurar emprego em {cityData.name}?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                Os principais sites incluem Net-Empregos, Sapo Emprego, LinkedIn, Indeed Portugal, e sites específicos das empresas locais. Muitas empresas também publicam vagas nas redes sociais.
+                Os principais sites incluem Net-Empregos, Sapo Emprego, LinkedIn, Indeed Portugal, e sites específicos
+                das empresas locais. Muitas empresas também publicam vagas nas redes sociais.
               </Text>
             </Box>
 
@@ -258,7 +255,8 @@ export default function CityPage() {
                 Como adaptar a carta de apresentação para empresas em {cityData.name}?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                Mencione o seu conhecimento sobre a cidade, destaque a sua disponibilidade para trabalhar localmente, e demonstre interesse na comunidade empresarial de {cityData.name}.
+                Mencione o seu conhecimento sobre a cidade, destaque a sua disponibilidade para trabalhar localmente, e
+                demonstre interesse na comunidade empresarial de {cityData.name}.
               </Text>
             </Box>
 
@@ -267,13 +265,14 @@ export default function CityPage() {
                 Qual é o custo de vida em {cityData.name}?
               </Heading>
               <Text color="gray.700" lineHeight="tall">
-                O custo de vida em {cityData.name} varia conforme a zona, mas geralmente oferece um bom equilíbrio entre oportunidades profissionais e qualidade de vida comparado com outras cidades europeias.
+                O custo de vida em {cityData.name} varia conforme a zona, mas geralmente oferece um bom equilíbrio entre
+                oportunidades profissionais e qualidade de vida comparado com outras cidades europeias.
               </Text>
             </Box>
           </VStack>
         </Box>
 
-        <Divider />
+        <Divider/>
 
         {/* Call to Action */}
         <Box bg="blue.50" p={6} rounded="lg" border="1px" borderColor="blue.200" textAlign="center">
@@ -302,21 +301,33 @@ export default function CityPage() {
           <Heading size="lg" color="gray.900" mb={6}>
             Conteúdo Relacionado
           </Heading>
-          
+
           <Grid templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }} gap={6}>
             {[
               { title: 'Administrador de Sistemas em Lisboa', href: '/cidade/lisboa/administrador-sistemas' },
-              { title: 'Oportunidades de Administrador de Sistemas em Lisboa', href: '/profissao/administrador-sistemas/lisboa' },
+              {
+                title: 'Oportunidades de Administrador de Sistemas em Lisboa',
+                href: '/profissao/administrador-sistemas/lisboa'
+              },
               { title: 'Advogado em Lisboa', href: '/cidade/lisboa/advogado' },
               { title: 'Oportunidades de Advogado em Lisboa', href: '/profissao/advogado/lisboa' },
               { title: 'Analista de Sistemas em Lisboa', href: '/cidade/lisboa/analista-sistemas' },
               { title: 'Oportunidades de Analista de Sistemas em Lisboa', href: '/profissao/analista-sistemas/lisboa' },
               { title: 'Analista Financeiro em Lisboa', href: '/cidade/lisboa/analista-financeiro' },
-              { title: 'Oportunidades de Analista Financeiro em Lisboa', href: '/profissao/analista-financeiro/lisboa' },
+              {
+                title: 'Oportunidades de Analista Financeiro em Lisboa',
+                href: '/profissao/analista-financeiro/lisboa'
+              },
               { title: 'Assistente Administrativo em Lisboa', href: '/cidade/lisboa/assistente-administrativo' },
-              { title: 'Oportunidades de Assistente Administrativo em Lisboa', href: '/profissao/assistente-administrativo/lisboa' },
+              {
+                title: 'Oportunidades de Assistente Administrativo em Lisboa',
+                href: '/profissao/assistente-administrativo/lisboa'
+              },
               { title: 'Atendimento ao Cliente em Lisboa', href: '/cidade/lisboa/atendimento-cliente' },
-              { title: 'Oportunidades de Atendimento ao Cliente em Lisboa', href: '/profissao/atendimento-cliente/lisboa' }
+              {
+                title: 'Oportunidades de Atendimento ao Cliente em Lisboa',
+                href: '/profissao/atendimento-cliente/lisboa'
+              }
             ].map((item, index) => (
               <GridItem key={index}>
                 <Box bg={cardBg} p={4} rounded="lg" border="1px" borderColor="gray.200" h="full">
@@ -336,7 +347,7 @@ export default function CityPage() {
           <Heading size="lg" color="gray.900" mb={6}>
             Recursos
           </Heading>
-          
+
           <List spacing={3}>
             <ListItem>
               <a href="/guia/como-escrever" style={{ textDecoration: 'none' }}>
@@ -368,7 +379,8 @@ export default function CityPage() {
             Carta de Apresentação.pt
           </Text>
           <Text color="gray.600" mb={4}>
-            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI, designed for success.
+            A ferramenta mais avançada para criar cartas de apresentação profissionais em Portugal. Powered by AI,
+            designed for success.
           </Text>
           <a href="/">
             <Button colorScheme="blue" size="md">
