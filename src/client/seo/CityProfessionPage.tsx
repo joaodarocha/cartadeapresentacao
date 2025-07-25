@@ -132,6 +132,9 @@ export default function CityProfessionPage() {
     `https://cartadeapresentacao.pt/cidade/${city}/profissao/${profession}`
   );
 
+  // Set canonical URL - point to the more generic profession page as canonical
+  const canonicalUrl = `https://cartadeapresentacao.pt/profissao/${profession}`;
+
   // Parse skills if they're stored as a string
   const skills = typeof industryData.skills === 'string' 
     ? industryData.skills.split(',').map((s: string) => s.trim())
@@ -150,6 +153,7 @@ export default function CityProfessionPage() {
       title={pageData.title}
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
+      canonicalUrl={canonicalUrl}
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >

@@ -131,11 +131,15 @@ export default function SectorPage() {
 
   const organizationData = createOrganizationData();
 
+  // Set canonical URL - sector pages are canonical
+  const canonicalUrl = `https://cartadeapresentacao.pt/setor/${sector}`;
+
   return (
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
+      canonicalUrl={canonicalUrl}
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >

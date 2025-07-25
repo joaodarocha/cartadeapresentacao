@@ -135,11 +135,15 @@ export default function CityPage() {
     cityData.region
   );
 
+  // Set canonical URL - city pages are canonical
+  const canonicalUrl = `https://cartadeapresentacao.pt/cidade/${city}`;
+
   return (
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
+      canonicalUrl={canonicalUrl}
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >

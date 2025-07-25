@@ -138,11 +138,15 @@ export default function GuidePage() {
     "PT30M" // 30 minutes
   );
 
+  // Set canonical URL - guide pages are canonical
+  const canonicalUrl = `https://cartadeapresentacao.pt/guia/${topic}`;
+
   return (
     <SeoPageLayout
       title={pageData.title}
       metaDescription={pageData.metaDescription}
       keywords={pageData.keywords && typeof pageData.keywords === 'string' ? pageData.keywords.split(',').map((k: string) => k.trim()) : Array.isArray(pageData.keywords) ? pageData.keywords : []}
+      canonicalUrl={canonicalUrl}
       breadcrumbs={breadcrumbs}
       relatedLinks={relatedLinks}
     >

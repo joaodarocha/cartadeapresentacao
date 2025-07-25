@@ -1,11 +1,13 @@
 import { Box, Button, Container, Grid, GridItem, Heading, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { Link } from 'wasp/client/router';
+import SeoHead from '../components/SeoHead';
 
 interface SeoPageLayoutProps {
   title: string;
   metaDescription: string;
   keywords?: string[];
+  canonicalUrl?: string;
   breadcrumbs?: Array<{ label: string; href?: string }>;
   children: React.ReactNode;
   structuredData?: object;
@@ -16,6 +18,7 @@ export default function SeoPageLayout({
                                         title,
                                         metaDescription,
                                         keywords = [],
+                                        canonicalUrl,
                                         breadcrumbs = [],
                                         children,
                                         structuredData,
@@ -26,51 +29,15 @@ export default function SeoPageLayout({
   const cardBg = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
-  // Set document title and meta tags
-  React.useEffect(() => {
-    document.title = title;
-
-    // Update meta description
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute('content', metaDescription);
-    }
-    else {
-      metaDesc = document.createElement('meta');
-      metaDesc.setAttribute('name', 'description');
-      metaDesc.setAttribute('content', metaDescription);
-      document.head.appendChild(metaDesc);
-    }
-
-    // Update meta keywords
-    if (keywords.length > 0) {
-      let metaKeywords = document.querySelector('meta[name="keywords"]');
-      if (metaKeywords) {
-        metaKeywords.setAttribute('content', keywords.join(', '));
-      }
-      else {
-        metaKeywords = document.createElement('meta');
-        metaKeywords.setAttribute('name', 'keywords');
-        metaKeywords.setAttribute('content', keywords.join(', '));
-        document.head.appendChild(metaKeywords);
-      }
-    }
-
-    // Add structured data
-    if (structuredData) {
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.textContent = JSON.stringify(structuredData);
-      document.head.appendChild(script);
-
-      return () => {
-        document.head.removeChild(script);
-      };
-    }
-  }, [title, metaDescription, keywords, structuredData]);
-
   return (
     <Box minH="100vh" bg={'transparent'}>
+      <SeoHead
+        title={title}
+        description={metaDescription}
+        keywords={keywords.join(', ')}
+        canonicalUrl={canonicalUrl}
+      />
+      
       {/* Main Content */}
       <Container maxW="7xl" px={{ base: 4, sm: 6, lg: 8 }} py={8}>
         <Grid templateColumns={{ base: '1fr', lg: '3fr 1fr' }} gap={8}>
