@@ -21,38 +21,6 @@ interface WebPageData extends BaseStructuredData {
   breadcrumb?: BreadcrumbListData;
 }
 
-interface JobPostingData extends BaseStructuredData {
-  '@type': 'JobPosting';
-  title: string;
-  description: string;
-  hiringOrganization: {
-    '@type': 'Organization';
-    name: string;
-    sameAs: string;
-  };
-  jobLocation: {
-    '@type': 'Place';
-    address: {
-      '@type': 'PostalAddress';
-      addressCountry: string;
-      addressLocality?: string;
-    };
-  };
-  employmentType: string;
-  industry: string;
-  skills?: string[];
-  baseSalary?: {
-    '@type': 'MonetaryAmount';
-    currency: string;
-    value: {
-      '@type': 'QuantitativeValue';
-      minValue: number;
-      maxValue: number;
-      unitText: string;
-    };
-  };
-}
-
 interface LocalBusinessData extends BaseStructuredData {
   '@type': 'LocalBusiness';
   name: string;
@@ -142,13 +110,12 @@ interface OrganizationData extends BaseStructuredData {
 interface StructuredDataProps {
   data: 
     | WebPageData 
-    | JobPostingData 
     | LocalBusinessData 
     | HowToData 
     | BreadcrumbListData 
     | FAQData 
     | OrganizationData
-    | Array<WebPageData | JobPostingData | LocalBusinessData | HowToData | BreadcrumbListData | FAQData | OrganizationData>;
+    | Array<WebPageData | LocalBusinessData | HowToData | BreadcrumbListData | FAQData | OrganizationData>;
 }
 
 const StructuredData: React.FC<StructuredDataProps> = ({ data }) => {
@@ -182,49 +149,6 @@ export const createWebPageData = (
     url: 'https://cartadeapresentacao.pt'
   },
   ...(breadcrumb && { breadcrumb })
-});
-
-export const createJobPostingData = (
-  title: string,
-  description: string,
-  city?: string,
-  industry?: string,
-  skills?: string[],
-  salaryMin?: number,
-  salaryMax?: number
-): JobPostingData => ({
-  '@context': 'https://schema.org',
-  '@type': 'JobPosting',
-  title,
-  description,
-  hiringOrganization: {
-    '@type': 'Organization',
-    name: 'Carta de Apresentação.pt',
-    sameAs: 'https://cartadeapresentacao.pt'
-  },
-  jobLocation: {
-    '@type': 'Place',
-    address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'PT',
-      ...(city && { addressLocality: city })
-    }
-  },
-  employmentType: 'FULL_TIME',
-  industry: industry || 'General',
-  ...(skills && { skills }),
-  ...(salaryMin && salaryMax && {
-    baseSalary: {
-      '@type': 'MonetaryAmount',
-      currency: 'EUR',
-      value: {
-        '@type': 'QuantitativeValue',
-        minValue: salaryMin,
-        maxValue: salaryMax,
-        unitText: 'YEAR'
-      }
-    }
-  })
 });
 
 export const createLocalBusinessData = (
